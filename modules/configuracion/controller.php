@@ -103,5 +103,12 @@ class ConfiguracionController {
         $this->model->save();
 		header("Location: " . URL_APP . "/configuracion/panel");
 	}
+
+	function info() {
+		SessionHandler()->check_session();
+		print phpinfo();
+		exit;
+	}
+
 }
 ?>
