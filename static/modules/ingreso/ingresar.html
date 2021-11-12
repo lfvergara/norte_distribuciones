@@ -38,16 +38,23 @@
                             <input type="number" class="form-control" id="numero_factura" name="numero_factura" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label>Fecha</label>
+                            <label>Fecha Emisión</label>
                             <input type="date" class="form-control" id="fecha" name="fecha" value="{fecha}" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label>Vencimiento</label>
-                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" value="{fecha}" required>
+                            <label>Fecha Ingreso</label>
+                            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" value="{fecha}" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label>Flete (%)</label>
-                            
+                            <label>Vencimiento</label>
+                            <select class="form-control m-bot15" name="vencimiento" id="vencimiento" onChange="actualizarFechaVencimiento();" required>
+                                <option value="14" selected>14 Días</option>
+                                <option value="21">21 Días</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Fecha Vencimiento</label>
+                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Percepción IVA</label>
