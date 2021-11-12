@@ -46,23 +46,24 @@
                             <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" value="{fecha}" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label>IVA</label>
-                            <select class="form-control m-bot15" name="iva" id="iva" onChange="actualizarCostoFinal();" required>
-                                <option value="21" selected>21%</option>
-                                <option value="10.5">10.5%</option>
-                                <option value="0">0%</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3">
                             <label>Flete (%)</label>
                             
                         </div>
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-3">
                             <label>Percepción IVA</label>
-                            <select class="form-control m-bot15" name="percepcion_iva" id="percepcion_iva" onChange="actualizarCostoFinal();" required>
-                                <option value="0" selected>0%</option>
-                                <option value="3">3%</option>
-                            </select>
+                            <input type="number" class="form-control" id="percepcion_iva" name="percepcion_iva" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Imp. Interno</label>
+                            <input type="number" class="form-control" id="impuesto_interno" name="impuesto_interno" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Ing. Brutos</label>
+                            <input type="number" class="form-control" id="ingresos_brutos" name="ingresos_brutos" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>IVA</label>
+                            <input type="number" class="form-control" id="iva" name="iva" required>
                         </div>
                         <div class="form-group col-lg-4">
                             <label>Condición IVA</label>
