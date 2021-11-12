@@ -56,7 +56,7 @@
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Flete (%)</label>
-                            <input type="number" class="form-control" id="costo_distribucion" name="costo_distribucion" value="{ingreso-costo_distribucion}" step="0.01" onBlur="actualizarCostoFinal();" required>
+                            
                         </div>
                         <div class="form-group col-lg-4">
                             <label>Percepción IVA</label>
@@ -90,18 +90,6 @@
                                     </button>
                                 </span>
                                 <input type="hidden" name="proveedor" id="proveedor" value="{proveedor-proveedor_id}">
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-6">
-                            <label>Actualiza Stock?</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" {ingreso-checked_actualiza_stock_si} value="1" id="actualiza_stock" name="opcion_stock" disabled> Si
-                                </label>
-                                &nbsp;&nbsp;&nbsp;
-                                <label>
-                                    <input type="radio" {ingreso-checked_actualiza_stock_no} value="0" id="actualiza_stock" name="opcion_stock" disabled> No
-                                </label>
                             </div>
                         </div>
                         <div class="form-group col-lg-6">
@@ -179,6 +167,9 @@
                     </div>
                     <div class="form-group col-lg-12" align="right" id="div_array_ingresos">
                         <input type="hidden" name="ingreso_id" id="ingreso_id" value="{ingreso-ingreso_id}">
+                        <input type="hidden" value="1" id="actualiza_stock" name="opcion_stock">
+                        <input type="hidden" value="0" id="actualiza_precio_producto" name="opcion_producto_proveedor">
+                        <input type="hidden" id="costo_distribucion" name="costo_distribucion" value="0">
                         <input type="hidden" name="producto" id="producto">
                         <input type="hidden" name="suma_total" id="input_suma_total" value="{ingreso-costo_total}">
                         <input type="hidden" name="suma_total_iva" id="input_suma_total_iva" value="{ingreso-costo_total_iva}">
@@ -685,12 +676,6 @@
             flag_array = 1;
             array.push("<strong>[ERROR]</strong> Por favor seleccione el IVA.");
         }
-
-        var costo_distribucion = document.getElementById("costo_distribucion").value;
-        if (costo_distribucion == null || costo_distribucion == "") {
-            flag_array = 1;
-            array.push("<strong>[ERROR]</strong> Por favor complete el COSTO DE DISTRIBUCIÓN.");
-        } 
 
         if (flag_array == 0) {
             var div_productos = document.getElementById("div_productos");

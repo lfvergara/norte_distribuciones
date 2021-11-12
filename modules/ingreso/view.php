@@ -100,8 +100,6 @@ class IngresoView extends View {
 		$opcion_stock = $obj_ingreso->actualiza_stock;
 		$obj_ingreso->checked_actualiza_precio_producto_si = ($opcion_precio == 1) ? 'checked' : '';
 		$obj_ingreso->checked_actualiza_precio_producto_no = ($opcion_precio == 0) ? 'checked' : '';
-		$obj_ingreso->checked_actualiza_stock_si = ($opcion_stock == 1) ? 'checked' : '';
-		$obj_ingreso->checked_actualiza_stock_no = ($opcion_stock == 0) ? 'checked' : '';
 		$obj_ingreso->proveedor->descripcion = $txt_proveedor;
 		
 		$obj_ingreso = $this->set_dict($obj_ingreso);

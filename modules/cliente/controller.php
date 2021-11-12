@@ -55,8 +55,12 @@ class ClienteController {
 		$tipofactura_collection = Collector()->get('TipoFactura');
 		$listaprecio_collection = Collector()->get('ListaPrecio');
 		$categoriacliente_collection = Collector()->get('CategoriaCliente');
-		$this->view->agregar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $condicionfiscal_collection,
-							 $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection,$listaprecio_collection,$categoriacliente_collection);
+
+		foreach ($listaprecio_collection as $clave=>$valor) {
+			if ($clave->oculto == 1) unset($listaprecio_collection[$clave]);
+		}
+
+		$this->view->agregar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $condicionfiscal_collection, $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection,$listaprecio_collection,$categoriacliente_collection);
 	}
 
 	function consultar($arg) {
@@ -80,6 +84,11 @@ class ClienteController {
 		$tipofactura_collection = Collector()->get('TipoFactura');
 		$listaprecio_collection = Collector()->get('ListaPrecio');
 		$categoriacliente_collection = Collector()->get('CategoriaCliente');
+
+		foreach ($listaprecio_collection as $clave=>$valor) {
+			if ($clave->oculto == 1) unset($listaprecio_collection[$clave]);
+		}
+
 		$this->view->editar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $condicionfiscal_collection, $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection, $this->model,$listaprecio_collection,$categoriacliente_collection);
 	}
 

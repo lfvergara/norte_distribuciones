@@ -55,7 +55,7 @@
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Flete (%)</label>
-                            <input type="number" class="form-control" id="costo_distribucion" name="costo_distribucion" value="0" step="0.01" onBlur="actualizarCostoFinal();" required>
+                            
                         </div>
                         <div class="form-group col-lg-4">
                             <label>Percepción IVA</label>
@@ -89,38 +89,14 @@
                             </div>
                         </div>
                         <div class="form-group col-lg-4">
-                            <label>Actualiza Stock?</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" value="1" id="actualiza_stock" name="opcion_stock"> Si
-                                </label>
-                                &nbsp;&nbsp;&nbsp;
-                                <label>
-                                    <input type="radio" checked value="0" id="actualiza_stock" name="opcion_stock"> No
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
                             <label>Actualiza precio producto?</label>
                             <div class="radio">
                                 <label>
-                                    <input type="radio" value="1" id="actualiza_producto" name="opcion_producto"> Si
+                                    <input type="radio" value="1" id="actualiza_producto" name="opcion_producto" checked> Si
                                 </label>
                                 &nbsp;&nbsp;&nbsp;
                                 <label>
-                                    <input type="radio" checked value="0" id="actualiza_producto" name="opcion_producto"> No
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label>Aplica % flete a productos del proveedor?</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" value="1" id="actualiza_precio_producto" name="opcion_producto_proveedor"> Si
-                                </label>
-                                &nbsp;&nbsp;&nbsp;
-                                <label>
-                                    <input type="radio" checked value="0" id="actualiza_precio_producto" name="opcion_producto_proveedor"> No
+                                    <input type="radio" value="0" id="actualiza_producto" name="opcion_producto"> No
                                 </label>
                             </div>
                         </div>
@@ -185,6 +161,9 @@
                     </div>
                     <div class="form-group col-lg-12" align="right" id="div_array_ingresos">
                         <input type="hidden" name="producto" id="producto">
+                        <input type="hidden" id="costo_distribucion" name="costo_distribucion" value="0">
+                        <input type="hidden" value="1" id="actualiza_stock" name="opcion_stock">
+                        <input type="hidden" value="0" id="actualiza_precio_producto" name="opcion_producto_proveedor">
                         <input type="hidden" name="suma_total" id="input_suma_total">
                         <input type="hidden" name="suma_total_iva" id="input_suma_total_iva">
                         <button class="btn btn-app" onclick="verificarIngreso();" id="btn_cargar"> <i class="fa fa-level-up"></i> Cargar Ingreso </button>
@@ -681,12 +660,6 @@
         if (iva_id == null || iva_id == "") {
             flag_array = 1;
             array.push("<strong>[ERROR]</strong> Por favor seleccione el IVA.");
-        }
-
-        var costo_distribucion = document.getElementById("costo_distribucion").value;
-        if (costo_distribucion == null || costo_distribucion == "") {
-            flag_array = 1;
-            array.push("<strong>[ERROR]</strong> Por favor complete el COSTO DE DISTRIBUCIÓN.");
         }
 
         if (flag_array == 0) {
