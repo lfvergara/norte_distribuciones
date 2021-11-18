@@ -277,8 +277,11 @@
         var slt_vencimiento = document.getElementById("vencimiento");
         var vencimiento = slt_vencimiento.options[slt_vencimiento.selectedIndex].value;
 
+        var nueva_fecha = fecha_ingreso.setDate(fecha_ingreso.getDate() + vencimiento);
         console.log(fecha_ingreso);
         console.log(vencimiento);
+        console.log(nueva_fecha);
+
         if (fecha_ingreso != null) {
 
         }
