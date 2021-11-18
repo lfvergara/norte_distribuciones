@@ -280,10 +280,10 @@
 
         var d = new Date(fecha_ingreso);
         var nueva_fecha = new Date(d.setDate(d.getDate() + vencimiento));
-        
-        var fecha_final = nueva_fecha.getFullYear() + '-' + (nueva_fecha.getMonth()+1) + "-" + (nueva_fecha.getDate());
-        fecha_final = new Date(fecha_final);
-        document.getElementById('fecha_vencimiento').value = fecha_final;
+        var todayDate = nueva_fecha.toISOString().slice(0,10);
+        //var fecha_final = nueva_fecha.getFullYear() + '-' + (nueva_fecha.getMonth()+1) + "-" + (nueva_fecha.getDate());
+        //fecha_final = new Date(fecha_final);
+        document.getElementById('fecha_vencimiento').value = todayDate;
     }
 
     function actualizarCostoTotal() {
