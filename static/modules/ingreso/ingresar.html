@@ -280,9 +280,9 @@
 
         var d = new Date(fecha_ingreso);
         var nueva_fecha = new Date(d.setDate(d.getDate() + vencimiento));
+        
         var dia = nueva_fecha.getDay();
         var mes = nueva_fecha.getMonth();
-        mes = parseInt(mes) + 1;
         var anio = nueva_fecha.getFullYear();
         var fecha_final = anio + '-' + mes + '-' + dia; 
 
