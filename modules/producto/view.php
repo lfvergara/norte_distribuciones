@@ -145,16 +145,7 @@ class ProductoView extends View {
 		$tbl_stock_array = file_get_contents("static/modules/stock/tbl_stock_array.html");
 		$tbl_stock_array = $this->render_regex_dict('TBL_STOCK', $tbl_stock_array, $stock_collection);
 
-		$costo_flete = $obj_producto->costo + (($obj_producto->costo * $obj_producto->flete) / 100);
-		$costo_iva = (($costo_flete * $obj_producto->iva) / 100) + $costo_flete;
-		$valor_ganancia = $costo_iva * $obj_producto->porcentaje_ganancia / 100;
-		$valor_venta = $costo_iva + $valor_ganancia;
-
-		$obj_producto->costo_iva = round($costo_iva, 2);
-		$obj_producto->valor_ganancia = round($valor_ganancia, 2);
-		$obj_producto->valor_venta = round($valor_venta, 2);
 		$obj_producto = $this->set_dict($obj_producto);
-
 		$render = $this->render($obj_producto, $gui);
 		$render = str_replace('{tbl_stock_array}', $tbl_stock_array, $render);
 		$render = $this->render_breadcrumb($render);

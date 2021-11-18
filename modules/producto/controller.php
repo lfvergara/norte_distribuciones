@@ -222,7 +222,7 @@ class ProductoController {
 		$this->model->dias_reintegro = filter_input(INPUT_POST, 'dias_reintegro');
 		$this->model->unidad_bulto = filter_input(INPUT_POST, 'unidad_bulto');
 		$this->model->pisos_pallet = filter_input(INPUT_POST, 'pisos_pallet');
-		$this->model->unidad_pallet = filter_input(INPUT_POST, 'unidad_pallet');
+		$this->model->bulto_pallet = filter_input(INPUT_POST, 'bulto_pallet');
 		$this->model->ubicacion = filter_input(INPUT_POST, 'ubicacion');
 		$this->model->oculto = 0;
 		$this->model->barcode = filter_input(INPUT_POST, 'barcode');
