@@ -87,18 +87,21 @@ class ProductoView extends View {
 		print $template;
 	}
 
-	function agregar($productomarca_collection, $productocategoria_collection, $productounidad_collection) {
+	function agregar($productomarca_collection, $productocategoria_collection, $productounidad_collection, $proveedor_collection) {
 		$gui = file_get_contents("static/modules/producto/agregar.html");
 		$gui_slt_productomarca = file_get_contents("static/common/slt_productomarca.html");
 		$gui_slt_productocategoria = file_get_contents("static/common/slt_productocategoria.html");
 		$gui_slt_productounidad = file_get_contents("static/common/slt_productounidad.html");
+		$gui_slt_proveedor = file_get_contents("static/common/slt_proveedor.html");
 
 		$gui_slt_productomarca = $this->render_regex('SLT_PRODUCTOMARCA', $gui_slt_productomarca, $productomarca_collection);
 		$gui_slt_productocategoria = $this->render_regex('SLT_PRODUCTOCATEGORIA', $gui_slt_productocategoria, $productocategoria_collection);
 		$gui_slt_productounidad = $this->render_regex('SLT_PRODUCTOUNIDAD', $gui_slt_productounidad, $productounidad_collection);
+		$gui_slt_proveedor = $this->render_regex('SLT_PROVEEDOR', $gui_slt_proveedor, $proveedor_collection);
 		$render = str_replace('{slt_productomarca}', $gui_slt_productomarca, $gui);
 		$render = str_replace('{slt_productocategoria}', $gui_slt_productocategoria, $render);
 		$render = str_replace('{slt_productounidad}', $gui_slt_productounidad, $render);
+		$render = str_replace('{slt_proveedor}', $gui_slt_proveedor, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;

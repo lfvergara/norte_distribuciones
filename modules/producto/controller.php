@@ -133,6 +133,7 @@ class ProductoController {
 		$productomarca_collection = Collector()->get('ProductoMarca');
 		$productocategoria_collection = Collector()->get('ProductoCategoria');
 		$productounidad_collection = Collector()->get('ProductoUnidad');
+		$proveedor_collection = Collector()->get('Proveedor');
 
 		foreach ($productomarca_collection as $clave=>$valor) {
 			if ($valor->oculto == 1) unset($productomarca_collection[$clave]);
@@ -146,7 +147,12 @@ class ProductoController {
 			if ($valor->oculto == 1) unset($productounidad_collection[$clave]);
 		}
 
-		$this->view->agregar($productomarca_collection, $productocategoria_collection , $productounidad_collection);
+		foreach ($proveedor_collection as $clave=>$valor) {
+			if ($valor->oculto == 1) unset($proveedor_collection[$clave]);
+		}
+
+
+		$this->view->agregar($productomarca_collection, $productocategoria_collection , $productounidad_collection, $proveedor_collection);
 	}
 
 	function editar($arg) {
