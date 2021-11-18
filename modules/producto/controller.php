@@ -233,10 +233,12 @@ class ProductoController {
 		$this->model->save();
 		$producto_id = $this->model->producto_id;
 
-		$this->model->producto_id = $producto_id;
-		$this->model->get();
-		$this->model->codigo = $producto_id;
-		$this->model->save();
+		$pdm = new ProductoDetalle();
+		$pdm->fecha = date('Y-m-d');
+		$pdm->precio_costo = filter_input(INPUT_POST, 'costo');
+		$pdm->producto_id = $producto_id;
+		$pdm->proveedor_id = filter_input(INPUT_POST, 'proveedor');
+		$pdm->save();
 
 		header("Location: " . URL_APP . "/producto/listar");
 	}
