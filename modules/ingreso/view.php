@@ -38,6 +38,9 @@ class IngresoView extends View {
 		$tbl_proveedor_array = $this->render_regex_dict('TBL_PROVEEDOR', $tbl_proveedor_array, $proveedor_collection);
 		$slt_tipofactura = $this->render_regex('SLT_TIPOFACTURA', $slt_tipofactura, $tipofactura_collection);
 
+		$fecha_sys = strtotime(date('Y-m-d'));
+		$vencimiento_default = date("Y-m-d", strtotime("14 days", $fecha_sys));
+
 		$render = str_replace('{hora}', date('H:i:s'), $gui);
 		$render = str_replace('{fecha}', date('Y-m-d'), $render);
 		$render = str_replace('{slt_condicionpago}', $slt_condicionpago, $render);
@@ -45,6 +48,7 @@ class IngresoView extends View {
 		$render = str_replace('{slt_tipofactura}', $slt_tipofactura, $render);
 		$render = str_replace('{tbl_producto}', $tbl_producto_array, $render);
 		$render = str_replace('{tbl_proveedor}', $tbl_proveedor_array, $render);
+		$render = str_replace('{fecha_vencimiento}', $vencimiento_default, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;

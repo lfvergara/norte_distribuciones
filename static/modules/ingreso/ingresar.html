@@ -54,7 +54,7 @@
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Fecha Vencimiento</label>
-                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
+                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" value="{fecha_vencimiento}" required>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Percepción IVA</label>
@@ -278,6 +278,7 @@
         var vencimiento = slt_vencimiento.options[slt_vencimiento.selectedIndex].value;
 
         console.log(fecha_ingreso);
+        console.log(vencimiento);
         if (fecha_ingreso != null) {
 
         }
