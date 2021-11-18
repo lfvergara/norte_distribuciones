@@ -27,6 +27,7 @@ class Producto extends StandardObject {
 		$this->unidad_bulto = 0;
 		$this->pisos_pallet = 0;
 		$this->bulto_pallet = 0;
+		$this->ubicacion = '';
 		$this->oculto = 0;
         $this->barcode = '';
         $this->detalle = '';
