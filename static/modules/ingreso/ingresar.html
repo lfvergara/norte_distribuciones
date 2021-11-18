@@ -276,7 +276,7 @@
         var fecha_ingreso = document.getElementById("fecha_ingreso").value;
         var slt_vencimiento = document.getElementById("vencimiento");
         var vencimiento = slt_vencimiento.options[slt_vencimiento.selectedIndex].value;
-        vencimiento = parseInt(vencimiento) + 1;
+        vencimiento = parseInt(vencimiento);
 
         var d = new Date(fecha_ingreso);
         var nueva_fecha = new Date(d.setDate(d.getDate() + vencimiento));
