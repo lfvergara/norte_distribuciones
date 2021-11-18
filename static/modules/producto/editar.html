@@ -122,15 +122,15 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Precio Costo</label>
-                        <input type="number" class="form-control" id="costo" name="costo" value="0" step="0.001" onchange="calculaPrecioVenta();" required>
+                        <input type="number" class="form-control" id="costo" name="costo" value="{producto-costo}" step="0.001" onchange="calculaPrecioVenta();" required>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Ganancia (%)</label>
-                        <input type="number" class="form-control" id="porcentaje_ganancia" name="porcentaje_ganancia" value="40" step="0.001" onchange="calculaPrecioVenta();" required>
+                        <input type="number" class="form-control" id="porcentaje_ganancia" name="porcentaje_ganancia" value="{producto-porcentaje_ganancia}" step="0.001" onchange="calculaPrecioVenta();" required>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Precio Venta</label>
-                        <input type="number" class="form-control" id="precio_venta" name="precio_venta" step="0.001" value="0" required>
+                        <input type="number" class="form-control" id="precio_venta" name="precio_venta" step="0.001" value="{producto-precio_venta}" required>
                     </div>
                     <!--
                     <div class="form-group col-lg-12">
@@ -256,7 +256,7 @@
             document.getElementById('precio_venta').value = valor_venta.toFixed(2);
         }
     }
-    
+
     function verificarProducto() {
         var array = new Array();
         var flag_array = 0;
