@@ -38,33 +38,40 @@
                             <input type="number" class="form-control" id="numero_factura" name="numero_factura" value="{ingreso-numero_factura}" required>
                         </div>
                         <div class="form-group col-lg-3">
-                            <label>Fecha</label>
-                            <input type="date" class="form-control" id="fecha" name="fecha" value="{ingreso-fecha}">
+                            <label>Fecha Emisión</label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" value="{ingreso-fecha}" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Fecha Ingreso</label>
+                            <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso" value="{ingreso-fecha_ingreso}" onchange="actualizarFechaVencimiento();" required>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Vencimiento</label>
-                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" value="{ingreso-fecha_vencimiento}">
+                            <select class="form-control m-bot15" name="vencimiento" id="vencimiento" onchange="actualizarFechaVencimiento();" required>
+                                <option value="{ingreso-vencimiento}" selected>{ingreso-vencimiento} Días</option>
+                                <option value="14">14 Días</option>
+                                <option value="21">21 Días</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Fecha Vencimiento</label>
+                            <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" value="{ingreso-fecha_vencimiento}" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Percepción IVA</label>
+                            <input type="number" class="form-control" id="percepcion_iva" name="percepcion_iva" value="0" onchange="actualizarCostoFinal();" value="{ingreso-percepcion_iva}" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Imp. Interno</label>
+                            <input type="number" class="form-control" id="impuesto_interno" name="impuesto_interno" value="0" onchange="actualizarCostoFinal();" value="{ingreso-impuesto_interno}" required>
+                        </div>
+                        <div class="form-group col-lg-3">
+                            <label>Ing. Brutos</label>
+                            <input type="number" class="form-control" id="ingresos_brutos" name="ingresos_brutos" value="0" onchange="actualizarCostoFinal();" value="{ingreso-ingresos_brutos}" required>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>IVA</label>
-                            <select class="form-control m-bot15" name="iva" id="iva" onChange="actualizarCostoFinal();" required>
-                                <option value="{ingreso-iva}" selected>{ingreso-iva}%</option>
-                                <option value="21">21%</option>
-                                <option value="10.5">10.5%</option>
-                                <option value="0">0%</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-lg-3">
-                            <label>Flete (%)</label>
-                            
-                        </div>
-                        <div class="form-group col-lg-4">
-                            <label>Percepción IVA</label>
-                            <select class="form-control m-bot15" name="percepcion_iva" id="percepcion_iva" onChange="actualizarCostoFinal();" required>
-                                <option value="{ingreso-percepcion_iva}" selected>{ingreso-percepcion_iva}%</option>
-                                <option value="0">0%</option>
-                                <option value="3">3%</option>
-                            </select>
+                            <input type="number" class="form-control" id="iva" name="iva" value="0" onchange="actualizarCostoFinal();" value="{ingreso-iva}" required>
                         </div>
                         <div class="form-group col-lg-4">
                             <label>Condición IVA</label>
