@@ -17,13 +17,15 @@
         <div class="x_content">
             <div class=" form">
                 <form class="form" id="formulario_guardar" method="post" action="{url_app}/producto/guardar">
-                    <div class="form-group col-lg-8">
-                        <label>Producto</label>
+                    <div class="form-group col-lg-6">
+                        <label>Descripción</label>
                         <input type="text" class="form-control" id="denominacion" name="denominacion" required>
                     </div>
-                    <div class="form-group col-lg-4">
-                        <label>Peso(Kg)</label>
-                        <input type="number" class="form-control" id="peso" name="peso" required>
+                    <div class="form-group col-lg-6">
+                        <label>Proveedor</label>
+                        <select class="form-control m-bot15" name="proveedor" id="proveedor" required>
+                            {slt_proveedor}
+                        </select>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Marca</label>
@@ -38,34 +40,34 @@
                         </select>
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>Unidad</label>
+                        <label>Unidad Venta</label>
                         <select class="form-control m-bot15" name="productounidad" id="productounidad" required>
                             {slt_productounidad}
                         </select>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Stock Mínimo</label>
-                        <input type="number" class="form-control" id="stock_minimo" name="stock_minimo" value="10" required>
+                        <input type="number" class="form-control" id="stock_minimo" name="stock_minimo" value="0" required>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Stock Ideal</label>
-                        <input type="number" class="form-control" id="stock_ideal" name="stock_ideal" value="15" required>
+                        <input type="number" class="form-control" id="stock_ideal" name="stock_ideal" value="0" required>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Días Reintegro</label>
-                        <input type="number" class="form-control" id="dias_reintegro" name="dias_reintegro" required>
+                        <input type="number" class="form-control" id="dias_reintegro" name="dias_reintegro" value="0" required>
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>Costo</label>
-                        <input type="number" class="form-control" id="costo" name="costo" value="{producto-costo}" step="0.001" required>
+                        <label>Unidad por Bulto</label>
+                        <input type="number" class="form-control" id="unidad_bulto" name="unidad_bulto" value="0" required>
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>Flete (%)</label>
-                        <input type="number" class="form-control" id="flete" name="flete" step="0.001" required>
+                        <label>Pisos por Pallet</label>
+                        <input type="number" class="form-control" id="pisos_pallet" name="pisos_pallet" value="0" required>
                     </div>
                     <div class="form-group col-lg-4">
-                        <label>Ganancia (%)</label>
-                        <input type="number" class="form-control" id="porcentaje_ganancia" name="porcentaje_ganancia" value="40" step="0.001" required>
+                        <label>Bultos por Pallet</label>
+                        <input type="number" class="form-control" id="bulto_pallet" name="bulto_pallet" value="0" required>
                     </div>
                     <div class="form-group col-lg-4">
                         <label>IVA</label>
@@ -92,15 +94,32 @@
                             <option value="1">SI</option>
                         </select>
                     </div>
+                    <div class="form-group col-lg-4">
+                        <label>Precio Costo</label>
+                        <input type="number" class="form-control" id="costo" name="costo" value="{producto-costo}" step="0.001" required>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Ganancia (%)</label>
+                        <input type="number" class="form-control" id="porcentaje_ganancia" name="porcentaje_ganancia" value="40" step="0.001" required>
+                    </div>
+                    <div class="form-group col-lg-4">
+                        <label>Precio Venta</label>
+                        <input type="number" class="form-control" id="flete" name="flete" step="0.001" required>
+                    </div>
+                    
+                    <!--
                     <div class="form-group col-lg-12">
                         <label>BarCode</label>
                         <input type="text" class="form-control" id="barcode" name="barcode" required>
                     </div>
+                    -->
                     <div class="form-group col-lg-12">
                         <label>Detalle</label>
                         <textarea class="form-control" id="detalle" name="detalle" rows="3"></textarea>
                     </div>
                     <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                        <input type="number" class="form-control" id="peso" name="peso" value="0" required>
+                        <input type="number" class="form-control" id="flete" name="flete" value="0" required>
                         <a href="#" class="btn btn-app" onclick="verificarProducto();"> <i class="fa fa-save"></i> Guardar </a>
                     </div>
                 </form>
