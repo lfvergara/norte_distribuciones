@@ -161,7 +161,6 @@ class IngresoController {
 
 	function guardar() {
 		SessionHandler()->check_session();
-		print_r($_POST);exit;
 		$punto_venta = filter_input(INPUT_POST, 'punto_venta');
 		$numero_factura = filter_input(INPUT_POST, 'numero_factura');
 		$fecha = filter_input(INPUT_POST, 'fecha');
