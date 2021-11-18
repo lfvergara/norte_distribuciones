@@ -21,7 +21,7 @@ class ProductoController {
 	}
 
 	function listar() {
-		$select = "p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, ROUND(p.costo, 2) as COSTO, p.iva AS IVA, p.stock_ideal AS STIDEAL, p.porcentaje_ganancia AS GANANCIA, p.descuento AS DESCUENTO, p.stock_minimo AS STMINIMO, p.producto_id AS PRODUCTO_ID, ROUND(((p.costo * p.descuento)/100),2) AS VALOR_DESC, ROUND((p.costo - ((p.costo * p.descuento)/100)),2) AS CD, ROUND(((p.costo - ((p.costo * p.descuento)/100)) * p.iva / 100),2) AS VALOR_IVA, ROUND((((p.costo - ((p.costo * p.descuento)/100)) * p.iva / 100) + (p.costo - ((p.costo * p.descuento)/100))),2) AS COIV, ROUND(((((p.costo - ((p.costo * p.descuento)/100)) * p.iva / 100) + (p.costo - ((p.costo * p.descuento)/100))) * p.porcentaje_ganancia / 100),2) AS VALOR_GANANCIA, ROUND((((((p.costo + ((p.costo * p.flete)/100)) * p.iva / 100) + (p.costo + ((p.costo * p.flete)/100))) * p.porcentaje_ganancia / 100) + (((p.costo + ((p.costo * p.flete)/100)) * p.iva / 100) + (p.costo + ((p.costo * p.flete)/100)))),2) AS VALOR_VENTA";
+		$select = "p.producto_id AS PRODUCTO_ID, p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, ROUND(p.costo, 2) as COSTO, p.iva AS IVA, p.precio_venta AS VENTA";
 		$from = "producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "p.oculto = 0";
 		$producto_collection = CollectorCondition()->get('Producto', $where, 4, $from, $select);
@@ -29,7 +29,7 @@ class ProductoController {
 	}
 
 	function ocultos() {
-		$select = "p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, p.costo as COSTO, p.iva AS IVA, p.stock_ideal AS STIDEAL, p.porcentaje_ganancia AS GANANCIA, p.descuento AS DESCUENTO, p.stock_minimo AS STMINIMO, p.producto_id AS PRODUCTO_ID, ROUND(((p.costo * p.descuento)/100),2) AS VALOR_DESC, ROUND((p.costo - ((p.costo * p.descuento)/100)),2) AS CD, ROUND(((p.costo - ((p.costo * p.descuento)/100)) * p.iva / 100),2) AS VALOR_IVA, ROUND((((p.costo - ((p.costo * p.descuento)/100)) * p.iva / 100) + (p.costo - ((p.costo * p.descuento)/100))),2) AS COIV, ROUND(((((p.costo - ((p.costo * p.descuento)/100)) * p.iva / 100) + (p.costo - ((p.costo * p.descuento)/100))) * p.porcentaje_ganancia / 100),2) AS VALOR_GANANCIA, ROUND((((((p.costo + ((p.costo * p.flete)/100)) * p.iva / 100) + (p.costo + ((p.costo * p.flete)/100))) * p.porcentaje_ganancia / 100) + (((p.costo + ((p.costo * p.flete)/100)) * p.iva / 100) + (p.costo + ((p.costo * p.flete)/100)))),2) AS VALOR_VENTA";
+		$select = "p.producto_id AS PRODUCTO_ID, p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, ROUND(p.costo, 2) as COSTO, p.iva AS IVA, p.precio_venta AS VENTA";
 		$from = "producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "p.oculto = 1";
 		$producto_collection = CollectorCondition()->get('Producto', $where, 4, $from, $select);
@@ -206,19 +206,24 @@ class ProductoController {
 	function guardar() {
 		SessionHandler()->check_session();
 
-		$this->model->codigo = 0;
+		$this->model->codigo = filter_input(INPUT_POST, 'codigo');
 		$this->model->denominacion = filter_input(INPUT_POST, 'denominacion');
 		$this->model->peso = filter_input(INPUT_POST, 'peso');
 		$this->model->costo = filter_input(INPUT_POST, 'costo');
 		$this->model->descuento = 0;
 		$this->model->flete = filter_input(INPUT_POST, 'flete');
 		$this->model->porcentaje_ganancia = filter_input(INPUT_POST, 'porcentaje_ganancia');
+		$this->model->precio_venta = filter_input(INPUT_POST, 'precio_venta');
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->exento = filter_input(INPUT_POST, 'exento');
 		$this->model->no_gravado = filter_input(INPUT_POST, 'no_gravado');
 		$this->model->stock_minimo = filter_input(INPUT_POST, 'stock_minimo');
 		$this->model->stock_ideal = filter_input(INPUT_POST, 'stock_ideal');
 		$this->model->dias_reintegro = filter_input(INPUT_POST, 'dias_reintegro');
+		$this->model->unidad_bulto = filter_input(INPUT_POST, 'unidad_bulto');
+		$this->model->pisos_pallet = filter_input(INPUT_POST, 'pisos_pallet');
+		$this->model->unidad_pallet = filter_input(INPUT_POST, 'unidad_pallet');
+		$this->model->ubicacion = filter_input(INPUT_POST, 'ubicacion');
 		$this->model->oculto = 0;
 		$this->model->barcode = filter_input(INPUT_POST, 'barcode');
 		$this->model->detalle = filter_input(INPUT_POST, 'detalle');
@@ -248,12 +253,17 @@ class ProductoController {
 		$this->model->descuento = 0;
 		$this->model->flete = filter_input(INPUT_POST, 'flete');
 		$this->model->porcentaje_ganancia = filter_input(INPUT_POST, 'porcentaje_ganancia');
+		$this->model->precio_venta = filter_input(INPUT_POST, 'precio_venta');
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->exento = filter_input(INPUT_POST, 'exento');
 		$this->model->no_gravado = filter_input(INPUT_POST, 'no_gravado');
 		$this->model->stock_minimo = filter_input(INPUT_POST, 'stock_minimo');
 		$this->model->stock_ideal = filter_input(INPUT_POST, 'stock_ideal');
 		$this->model->dias_reintegro = filter_input(INPUT_POST, 'dias_reintegro');
+		$this->model->unidad_bulto = filter_input(INPUT_POST, 'unidad_bulto');
+		$this->model->pisos_pallet = filter_input(INPUT_POST, 'pisos_pallet');
+		$this->model->unidad_pallet = filter_input(INPUT_POST, 'unidad_pallet');
+		$this->model->ubicacion = filter_input(INPUT_POST, 'ubicacion');
 		$this->model->barcode = filter_input(INPUT_POST, 'barcode');
 		$this->model->detalle = filter_input(INPUT_POST, 'detalle');
 		$this->model->productomarca = filter_input(INPUT_POST, 'productomarca');
