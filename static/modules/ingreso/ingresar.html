@@ -283,12 +283,14 @@
         var dia = nueva_fecha.getDay();
         var mes = nueva_fecha.getMonth();
         mes = parseInt(mes) + 1;
-        var anio = nueva_fecha.getYear();
+        var anio = nueva_fecha.getFullYear();
         var fecha_final = anio + '-' + mes + '-' + dia; 
 
         console.log(fecha_ingreso);
         console.log(vencimiento);
-        console.log(fecha_final);
+        console.log(dia);
+        console.log(mes);
+        console.log(anio);
 
         if (fecha_ingreso != null) {
 
