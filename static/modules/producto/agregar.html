@@ -179,7 +179,7 @@
         var iva = slt_iva.options[slt_iva.selectedIndex].value;
 
         if (costo == 0) {
-            return false;
+            document.getElementById('precio_venta').value = 0;
         } else {
             var monto_iva = (iva * costo) / 100;
             var costo_iva = parseFloat(costo) + parseFloat(monto_iva);
