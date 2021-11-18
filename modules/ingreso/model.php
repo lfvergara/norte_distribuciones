@@ -14,6 +14,7 @@ class Ingreso extends StandardObject {
 		$this->punto_venta = 0;
 		$this->numero_factura = 0;
 		$this->fecha = '';
+		$this->fecha_ingreso = '';
 		$this->vencimiento = 0;
 		$this->fecha_vencimiento = '';
 		$this->hora = '';
