@@ -280,12 +280,15 @@
 
         var d = new Date(fecha_ingreso);
         var nueva_fecha = new Date(d.setDate(d.getDate() + vencimiento));
-        
-
+        var dia = nueva_fecha.getDay();
+        var mes = nueva_fecha.getMonth();
+        mes = parseInt(mes) + 1;
+        var anio = nueva_fecha.getYear();
+        var fecha_final = anio + '-' + mes + '-' + dia; 
 
         console.log(fecha_ingreso);
         console.log(vencimiento);
-        console.log(nueva_fecha.toISOString());
+        console.log(fecha_final);
 
         if (fecha_ingreso != null) {
 
