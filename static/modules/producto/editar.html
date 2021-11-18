@@ -240,6 +240,23 @@
     </div>
 </div>
 <script>
+    function calculaPrecioVenta() {
+        var costo = document.getElementById('costo').value;
+        var porcentaje_ganancia = document.getElementById('porcentaje_ganancia').value;
+        var slt_iva = document.getElementById("iva");
+        var iva = slt_iva.options[slt_iva.selectedIndex].value;
+
+        if (costo == 0) {
+            document.getElementById('precio_venta').value = 0;
+        } else {
+            var monto_iva = (iva * costo) / 100;
+            var costo_iva = parseFloat(costo) + parseFloat(monto_iva);
+            var monto_ganancia = (porcentaje_ganancia * costo_iva) / 100;
+            var valor_venta = parseFloat(costo_iva) + parseFloat(monto_ganancia);
+            document.getElementById('precio_venta').value = valor_venta.toFixed(2);
+        }
+    }
+    
     function verificarProducto() {
         var array = new Array();
         var flag_array = 0;
