@@ -282,7 +282,8 @@
         var nueva_fecha = new Date(d.setDate(d.getDate() + vencimiento));
         
         var fecha_final = nueva_fecha.getFullYear() + '-' + (nueva_fecha.getMonth()+1) + "-" + (nueva_fecha.getDate());
-        document.getElementById('fecha_vencimiento').value = fecha_final;
+        var fecha_final_2 =  (nueva_fecha.getDate()) + '/' + (nueva_fecha.getMonth()+1) + "/" + nueva_fecha.getFullYear();
+        document.getElementById('fecha_vencimiento').value = fecha_final_2;
     }
 
     function actualizarCostoTotal() {
