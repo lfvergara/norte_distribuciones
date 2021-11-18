@@ -186,6 +186,8 @@ class IngresoController {
 		$this->model->hora = $hora;
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->percepcion_iva = filter_input(INPUT_POST, 'percepcion_iva');
+		$this->model->impuesto_interno = filter_input(INPUT_POST, 'impuesto_interno');
+		$this->model->ingresos_brutos = filter_input(INPUT_POST, 'ingresos_brutos');
 		$this->model->costo_distribucion = $costo_distribucion;
 		$this->model->costo_total = filter_input(INPUT_POST, 'suma_total');
 		$this->model->costo_total_iva = $costo_final;

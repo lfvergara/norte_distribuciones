@@ -18,6 +18,8 @@ class Ingreso extends StandardObject {
 		$this->hora = '';
 		$this->iva = 0.00;
 		$this->percepcion_iva = 0.00;
+		$this->impuesto_interno = 0.00;
+		$this->ingresos_brutos = 0.00;
 		$this->costo_distribucion = 0.00;
 		$this->costo_total = 0.00;
 		$this->costo_total_iva = 0.00;
