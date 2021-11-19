@@ -793,3 +793,11 @@ CREATE TABLE IF NOT EXISTS vendedorempleado (
     , empleado_id INT(11)
     , INDEX (empleado_id)
 ) ENGINE=InnoDb;
+
+CREATE TABLE IF NOT EXISTS cuentacontable (
+    cuentacontable_id INT(11) NOT NULL 
+        AUTO_INCREMENT PRIMARY KEY
+    , codigo INT(11)
+    , denominacion VARCHAR(250)
+    , oculto INT(1)
+) ENGINE=InnoDb;
