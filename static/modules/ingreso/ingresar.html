@@ -244,7 +244,8 @@
                 return false;
             } else {
                 document.getElementById('cantidad').value = cantidad;
-                actualizarCostoTotal(producto_id);
+                ini_producto_id = producto_id;
+                actualizarCostoTotal();
             }
         }
     }
