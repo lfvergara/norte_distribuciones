@@ -145,8 +145,6 @@
                         </div>
                     </div>
                     <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
-                        <input type="hidden" name="descuento" id="descuento" value="0" class="form-control">
-                        <input type="hidden" name="impacto_ganancia" id="impacto_ganancia" value="1" class="form-control">
                         <a href="#" class="btn btn-app" onclick="verificarCliente();"> <i class="fa fa-save"></i> Agregar </a>
                     </div>
                 </form>
@@ -180,21 +178,6 @@
 function verificarCliente() {
     var array = new Array();
     var flag_array = 0;
-
-    /*
-    var documento = document.getElementById("documento").value;
-    if (documento == null || documento.length == 0 || documento == "") {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor complete el número de DOCUMENTO.");
-    }
-
-    var documentotipo = document.getElementById("documentotipo");
-    var documentotipo_id = documentotipo.options[documentotipo.selectedIndex].value;
-    if (documentotipo_id == null || documentotipo_id.length == 0 || documentotipo_id == "" || documentotipo_id == 0) {
-        flag_array = 1;
-        array.push("<strong>[ERROR]</strong> Por favor seleccione el TIPO DE DOCUMENTO.");
-    }
-    */
 
     if (flag_array == 0) {
         var flag = $.ajax({

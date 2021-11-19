@@ -94,7 +94,7 @@ class ClienteController {
 		SessionHandler()->check_session();
 		$this->model->razon_social = filter_input(INPUT_POST, 'razon_social');
 		$this->model->nombre_fantasia = filter_input(INPUT_POST, 'nombre_fantasia');
-		$this->model->descuento = filter_input(INPUT_POST, 'descuento');
+		$this->model->descuento = 0;
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->documento = filter_input(INPUT_POST, 'documento');
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
@@ -103,7 +103,7 @@ class ClienteController {
 		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
-		$this->model->impacto_ganancia = filter_input(INPUT_POST, 'impacto_ganancia');
+		$this->model->impacto_ganancia = 1;
 		$this->model->dias_vencimiento_cuenta_corriente = filter_input(INPUT_POST, 'dias_vencimiento_cuenta_corriente');
 		$this->model->oculto = 0;
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
@@ -156,7 +156,6 @@ class ClienteController {
 		$this->model->get();
 		$this->model->razon_social = filter_input(INPUT_POST, 'razon_social');
 		$this->model->nombre_fantasia = filter_input(INPUT_POST, 'nombre_fantasia');
-		$this->model->descuento = filter_input(INPUT_POST, 'descuento');
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->documento = filter_input(INPUT_POST, 'documento');
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
@@ -165,7 +164,6 @@ class ClienteController {
 		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
-		$this->model->impacto_ganancia = filter_input(INPUT_POST, 'impacto_ganancia');
 		$this->model->dias_vencimiento_cuenta_corriente = filter_input(INPUT_POST, 'dias_vencimiento_cuenta_corriente');
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
 		$this->model->ordenentrega = filter_input(INPUT_POST, 'ordenentrega');
