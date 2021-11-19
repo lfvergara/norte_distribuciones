@@ -229,6 +229,26 @@
     var i = 1; 
     array_ids = new Array();
 
+    function actualizarCantidad(producto_id) {
+        var bultos = document.getElementById('bultos').value;
+        if (bultos == 0) {
+            return false;
+        } else {
+            var cantidad = $.ajax({
+                url: '{url_app}/ingreso/traer_cantidad_bulto_ajax/' + producto_id + '@' + bultos,
+                    dataType: 'text',
+                    async: false
+            }).responseText;
+
+            if (parseInt(cantidad) <= 0) {
+                return false;
+            } else {
+                document.getElementById('cantidad').value = cantidad;
+                actualizarCostoTotal(producto_id);
+            }
+        }
+    }
+
     function buscarProveedor() {
         document.getElementById('div_form_producto').style.display = "none";
         document.getElementById('div_lst_producto').style.display = "none";

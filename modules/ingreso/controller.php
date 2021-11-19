@@ -693,6 +693,19 @@ class IngresoController {
 		$this->view->traer_formulario_producto_ajax($pm);
 	}
 
+	function traer_cantidad_bulto_ajax($arg) {
+		$ids = explode('@', $arg);
+		$producto_id = $ids[0];
+		$bultos = $ids[1];
+		$pm = new Producto();
+		$pm->producto_id = $arg;
+		$pm->get();
+
+		$unidad_bulto = $pm->unidad_bulto;
+		$cantidad = $unidad_bulto * $bultos;
+		print $cantidad;		
+	}
+
 	function traer_formulario_editar_producto_ajax($arg) {
 		$ids = explode('@', $arg);
 		$ingreso_id = $ids[0];
