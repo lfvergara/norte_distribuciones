@@ -765,5 +765,32 @@ class IngresoController {
 
 		$this->view->traer_formulario_editar_ingresar_ajax($this->model, $proveedor_collection, $tipofactura_collection);
 	}
+
+	function traer_proveedor_tipofactura_ajax($arg) {
+		$pm = new Proveedor();
+		$pm->proveedor_id = $arg;
+		$pm->get();
+
+		$condicioniva_id = $pm->condicioniva->condicioniva_id;
+		switch ($condicioniva_id) {
+			case 1:
+				$tipofactura_id = 1;
+				break;
+			case 2:
+				$tipofactura_id = 3;
+				break;
+			case 3:
+				$tipofactura_id = 2;
+				break;
+			default:
+				$tipofactura_id = 2;
+				break;
+		}
+
+		$tfm = new TipoFactura();
+		$tipofactura = $tfm->tipofactura_id . '@';
+		$tipofactura .= $tfm->nomenclatura . ' - ' . $tfm->denominacion;
+		print $tipofactura;
+	}
 }
 ?>

@@ -22,13 +22,14 @@
             <div class=" form">
                 <form class="form" id="formulario_guardar" method="post" action="{url_app}/ingreso/guardar">
                     <div class="col-lg-6">
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-6">
                             <label>Tipo Factura</label>
                             <select class="form-control m-bot15" name="tipofactura" id="tipofactura" required>
                                 <option value="2" id="opt_tipofactura_selected" selected>R - REMITO</option>
                                 {slt_tipofactura}
                             </select>
                         </div>
+
                         <div class="form-group col-lg-3">
                             <label>Pto Venta</label>
                             <input type="number" class="form-control" id="punto_venta" name="punto_venta" required>
@@ -286,11 +287,32 @@
                 dataType: 'text',
                 async: false
         }).responseText;
+
+        var tipofactura = $.ajax({
+            url: '{url_app}/ingreso/traer_proveedor_tipofactura_ajax/' + proveedor_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+
+        var elementos_tipofactura = tipofactura.split('@');
+        completarProveedor(elementos_tipofactura[0], elementos_tipofactura[1]);
         
         document.getElementById('proveedor_denominacion').value = denominacion_proveedor;
         document.getElementById('div_form_producto').style.display = "none";
         document.getElementById('div_lst_producto').style.display = "block";
         document.getElementById('div_tbl_proveedor').style.display = "none";
+    }
+
+    function completarProveedor(tipofactura0, tipofactura1) {
+        var slt_tipofactura = document.getElementById('tipofactura');
+        var opt_tipofactura_selected = document.getElementById('opt_tipofactura_selected');
+        slt_tipofactura.removeChild(opt_tipofactura_selected);
+        var new_opt_tipofactura_selected = document.createElement('option');
+        new_opt_tipofactura_selected.setAttribute('value', parseInt(tipofactura0));
+        new_opt_tipofactura_selected.innerHTML = tipofactura1;
+        new_opt_tipofactura_selected.setAttribute('selected', 'selected');
+        new_opt_tipofactura_selected.setAttribute('id', 'opt_tipofactura_selected');
+        slt_tipofactura.appendChild(new_opt_tipofactura_selected);
     }
 
     function actualizarFechaVencimiento() {
