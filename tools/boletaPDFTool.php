@@ -35,7 +35,7 @@ class BoletaPDF extends View {
 
         $gui_html = str_replace('{contenido}', $contenido, $gui_html);
         $dompdf = new Dompdf();
-        $dompdf->set_paper("A4", "landscape");
+        $dompdf->set_paper("A4", "portrait");
         $dompdf->load_html($gui_html);
         $dompdf->render();
         $dompdf->stream("NotaCredito.pdf");
