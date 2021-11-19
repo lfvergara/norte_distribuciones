@@ -231,10 +231,10 @@
 
     function actualizarCantidad(producto_id) {
         var bultos = document.getElementById('bultos').value;
-        console.log(bultos);
         if (parseInt(bultos) <= 0) {
             return false;
         } else {
+            console.log(bultos);
             var cantidad = $.ajax({
                 url: '{url_app}/ingreso/traer_cantidad_bulto_ajax/' + producto_id + '@' + bultos,
                     dataType: 'text',
