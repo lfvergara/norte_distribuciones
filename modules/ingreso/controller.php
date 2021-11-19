@@ -772,6 +772,7 @@ class IngresoController {
 		$pm->get();
 
 		$condicioniva_id = $pm->condicioniva->condicioniva_id;
+		print_r($condicioniva_id);exit;
 		switch ($condicioniva_id) {
 			case 1:
 				$tipofactura_id = 1;
