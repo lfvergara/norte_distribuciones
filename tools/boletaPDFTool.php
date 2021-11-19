@@ -19,7 +19,7 @@ class BoletaPDF extends View {
         $obj_ingreso = $this->set_dict($obj_ingreso);
         $obj_proveedor = $this->set_dict($obj_proveedor);
 
-        $new_array = array_chunk($ingresodetalle_collection, 14);
+        $new_array = array_chunk($ingresodetalle_collection, 25);
         $contenido = '';
         foreach ($new_array as $ingresodetalle_array) {
             $gui_boletatestigo = file_get_contents("static/common/plantillas_facturas/boleta.html");
