@@ -772,7 +772,6 @@ class IngresoController {
 		$pm->get();
 
 		$condicioniva_id = $pm->condicioniva->condicioniva_id;
-		print_r($condicioniva_id);exit;
 		switch ($condicioniva_id) {
 			case 1:
 				$tipofactura_id = 1;
@@ -791,6 +790,7 @@ class IngresoController {
 		$tfm = new TipoFactura();
 		$tipofactura = $tfm->tipofactura_id . '@';
 		$tipofactura .= $tfm->nomenclatura . ' - ' . $tfm->denominacion;
+		print_r($tipofactura);exit;
 		print $tipofactura;
 	}
 }
