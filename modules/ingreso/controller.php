@@ -698,7 +698,7 @@ class IngresoController {
 		$producto_id = $ids[0];
 		$bultos = $ids[1];
 		$pm = new Producto();
-		$pm->producto_id = $arg;
+		$pm->producto_id = $producto_id;
 		$pm->get();
 
 		$unidad_bulto = $pm->unidad_bulto;
