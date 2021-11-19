@@ -63,7 +63,7 @@ class ProductoView extends View {
 		foreach ($proveedor_collection as $clave=>$valor) unset($proveedor_collection[$clave]->infocontacto_collection);
 
 		$productomarca_collection = $this->order_collection_objects($productomarca_collection, 'denominacion', SORT_ASC);
-		$proveedor_collection = $this->order_collection_objects($proveedor_collection, 'denominacion', SORT_ASC);
+		$proveedor_collection = $this->order_collection_objects($proveedor_collection, 'razon_social', SORT_ASC);
 
 		$tbl_listaprecio_array = $this->render_regex_dict('TBL_LISTAPRECIO', $tbl_listaprecio_array, $producto_collection);
 		$gui_slt_productomarca = $this->render_regex('SLT_PRODUCTOMARCA', $gui_slt_productomarca, $productomarca_collection);
