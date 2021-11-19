@@ -236,6 +236,27 @@
     var i = 1; 
     array_ids = [{ingreso-array_producto_ids}];
 
+    function actualizarCantidad(producto_id) {
+        var bultos = document.getElementById('bultos').value;
+        if (parseInt(bultos) <= 0) {
+            return false;
+        } else {
+            var cantidad = $.ajax({
+                url: '{url_app}/ingreso/traer_cantidad_bulto_ajax/' + producto_id + '@' + bultos,
+                    dataType: 'text',
+                    async: false
+            }).responseText;
+
+            if (parseInt(cantidad) <= 0) {
+                return false;
+            } else {
+                document.getElementById('cantidad').value = cantidad;
+                ini_producto_id = producto_id;
+                actualizarCostoTotal();
+            }
+        }
+    }
+    
     function buscarProveedor() {
         document.getElementById('div_form_producto').style.display = "none";
         document.getElementById('div_lst_producto').style.display = "none";
@@ -272,11 +293,32 @@
                 dataType: 'text',
                 async: false
         }).responseText;
+
+        var tipofactura = $.ajax({
+            url: '{url_app}/ingreso/traer_proveedor_tipofactura_ajax/' + proveedor_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+        
+        var elementos_tipofactura = tipofactura.split('@');
+        completarProveedor(elementos_tipofactura[0], elementos_tipofactura[1]);
         
         document.getElementById('proveedor_denominacion').value = denominacion_proveedor;
         document.getElementById('div_form_producto').style.display = "none";
         document.getElementById('div_lst_producto').style.display = "block";
         document.getElementById('div_tbl_proveedor').style.display = "none";
+    }
+
+    function completarProveedor(tipofactura0, tipofactura1) {
+        var slt_tipofactura = document.getElementById('tipofactura');
+        var opt_tipofactura_selected = document.getElementById('opt_tipofactura_selected');
+        slt_tipofactura.removeChild(opt_tipofactura_selected);
+        var new_opt_tipofactura_selected = document.createElement('option');
+        new_opt_tipofactura_selected.setAttribute('value', parseInt(tipofactura0));
+        new_opt_tipofactura_selected.innerHTML = tipofactura1;
+        new_opt_tipofactura_selected.setAttribute('selected', 'selected');
+        new_opt_tipofactura_selected.setAttribute('id', 'opt_tipofactura_selected');
+        slt_tipofactura.appendChild(new_opt_tipofactura_selected);
     }
 
     function actualizarFechaVencimiento() {
