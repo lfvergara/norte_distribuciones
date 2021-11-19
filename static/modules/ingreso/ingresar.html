@@ -231,7 +231,7 @@
 
     function actualizarCantidad(producto_id) {
         var bultos = document.getElementById('bultos').value;
-        if (bultos == 0) {
+        if (parseInt(bultos) <= 0) {
             return false;
         } else {
             var cantidad = $.ajax({
