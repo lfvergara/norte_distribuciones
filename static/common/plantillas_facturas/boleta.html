@@ -1,0 +1,65 @@
+<table style=" width: 100%;" cellspacing="0">
+    <tr>
+        <td style=" width: 99%; padding-right: 5px;">
+            <table style="border: 1px #000 solid;" cellspacing="1">
+                <tr style=" text-align: center; font-size: 16px; border: 1px #000 solid;">
+                    <td style="border-bottom: 1px #000 solid;" colspan="3">BOLETA TESTIGO</td>
+                </tr>
+                <tr style="font-size: 18px; padding:5px 0 8px 0;">
+                    <td style="width: 45%; border-top: 1px #000 solid; text-align: center; font-size: 25px; " colspan="3">
+                        <table cellspacing="0">
+                            <tr style=" text-align: center; font-size: 16px;">
+                                <td style="width: 90%; text-align: left; font-size: 15px;" colspan="2">
+                                    Apellido y Nombre / Razón Social: {proveedor-razon_social}
+                                </td>
+                            </tr>
+                            <tr style=" text-align: center; font-size: 16px;">
+                                <td style="width: 45%; text-align: left; font-size: 15px;">
+                                    Documento: {proveedor-documento}
+                                </td>
+                                <td style="width: 45%; text-align: left; font-size: 15px;">
+                                    Condición de Venta: {condicionpago-denominacion}<br>
+                                    Referencia: {tipofactura-nomenclatura} {ingreso-punto_venta}-{ingreso-numero_factura}
+                                </td>
+                            </tr>
+                            <tr style=" text-align: center; font-size: 16px;">
+                                <td style="width: 45%; text-align: left; font-size: 15px; ">
+                                    Condición frente al IVA: {proveedor-condicioniva}
+                                </td>
+                                <td style="width: 45%; text-align: left; font-size: 15px;">
+                                    Domicilio: {proveedor-domicilio}
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr style="font-size: 18px; padding:5px 0 8px 0;">
+                    <td style="width: 100%; text-align: center; font-size: 25px; height: 345px !important; vertical-align: top;" colspan="3">
+                        <table cellspacing="0" style="width: 100%;">
+                            <tr style=" text-align: center; font-size: 12px;">
+                                <td style="text-align: left; font-size: 12px; border: 1px #000 solid; background-color: #ccc;">Producto</td>
+                                <td style="text-align: left; font-size: 12px; border: 1px #000 solid; background-color: #ccc;">Cant</td>
+                                <td style="text-align: left; font-size: 12px; border: 1px #000 solid; background-color: #ccc;">$ Unit.</td>
+                                <td style="text-align: left; font-size: 12px; border: 1px #000 solid; background-color: #ccc;">%</td>
+                                <td style="text-align: left; font-size: 12px; border: 1px #000 solid; background-color: #ccc;">$ Bonif.</td>
+                                <td style="text-align: left; font-size: 12px; border: 1px #000 solid; background-color: #ccc;">Subtotal </td>
+                            </tr>
+                            {tbl_notacreditodetalle}
+                        </table>
+                    </td>
+                </tr>
+                <tr style="font-size: 15px; padding:5px 0 8px 0;">
+                    <td style="width: 60%; border-top: 1px #000 solid; text-align: center; font-size: 25px;" colspan="3">
+                    </td>
+                </tr>
+                <tr style="font-size: 13px; padding:5px 0 8px 0;">
+                    <td style="width: 60%; border-top: 1px #000 solid; text-align: center; font-size: 25px;" colspan="2">
+                    </td>
+                    <td style="width: 5%; border-top: 1px #000 solid; text-align: right; font-size: 13px; background-color: #ccc;">
+                        <strong>Importe Total: ${notacredito-importe_total}</strong>
+                    </td>
+                </tr>
+            </table>
+        </td>        
+    </tr>
+</table>
