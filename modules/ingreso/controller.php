@@ -695,8 +695,6 @@ class IngresoController {
 
 	function traer_cantidad_bulto_ajax($arg) {
 		$ids = explode('@', $arg);
-
-		print_r($ids);exit;
 		$producto_id = $ids[0];
 		$bultos = $ids[1];
 		$pm = new Producto();
