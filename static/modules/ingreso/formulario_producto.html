@@ -14,11 +14,11 @@
     </div>
     <div class="form-group col-lg-4">
         <label>Bulto/Bandeja ({producto-unidad_bulto}uns.)</label>
-        <input type="number" class="form-control" name="bultos" id="bultos" onchange="actualizarCantidad();" value="0" required>
+        <input type="number" class="form-control" name="bultos" id="bultos" value="0" onchange="actualizarCantidad({producto-producto_id});" required>
     </div>
     <div class="form-group col-lg-4">
         <label>Cantidad</label>
-        <input type="number" class="form-control" name="cantidad" id="cantidad" onblur="actualizarCostoTotal({producto-producto_id});" required>
+        <input type="number" class="form-control" name="cantidad" id="cantidad" onblur="actualizarCostoTotal();" required>
     </div>
     <div class="form-group col-lg-4">
         <label>P.Unitario</label>
