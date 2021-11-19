@@ -25,7 +25,7 @@
                         <div class="form-group col-lg-4">
                             <label>Tipo Factura</label>
                             <select class="form-control m-bot15" name="tipofactura" id="tipofactura" required>
-                                <option value="{tipofactura-tipofactura_id}" selected>{tipofactura-nomenclatura}</option>
+                                <option value="{tipofactura-tipofactura_id}" id="opt_tipofactura_selected" selected>{tipofactura-nomenclatura}</option>
                                 {slt_tipofactura}
                             </select>
                         </div>
@@ -256,7 +256,7 @@
             }
         }
     }
-    
+
     function buscarProveedor() {
         document.getElementById('div_form_producto').style.display = "none";
         document.getElementById('div_lst_producto').style.display = "none";
