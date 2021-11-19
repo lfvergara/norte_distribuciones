@@ -48,7 +48,6 @@ class ClienteController {
 		$provincia_collection = Collector()->get('Provincia');
 		$documentotipo_collection = Collector()->get('DocumentoTipo');
 		$condicioniva_collection = Collector()->get('CondicionIVA');
-		$condicionfiscal_collection = Collector()->get('CondicionFiscal');
 		$frecuenciaventa_collection = Collector()->get('FrecuenciaVenta');
 		$vendedor_collection = Collector()->get('Vendedor');
 		$flete_collection = Collector()->get('Flete');
@@ -60,7 +59,7 @@ class ClienteController {
 			if ($clave->oculto == 1) unset($listaprecio_collection[$clave]);
 		}
 
-		$this->view->agregar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $condicionfiscal_collection, $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection,$listaprecio_collection,$categoriacliente_collection);
+		$this->view->agregar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection,$listaprecio_collection,$categoriacliente_collection);
 	}
 
 	function consultar($arg) {
@@ -77,7 +76,6 @@ class ClienteController {
 		$provincia_collection = Collector()->get('Provincia');
 		$documentotipo_collection = Collector()->get('DocumentoTipo');
 		$condicioniva_collection = Collector()->get('CondicionIVA');
-		$condicionfiscal_collection = Collector()->get('CondicionFiscal');
 		$frecuenciaventa_collection = Collector()->get('FrecuenciaVenta');
 		$vendedor_collection = Collector()->get('Vendedor');
 		$flete_collection = Collector()->get('Flete');
@@ -89,7 +87,7 @@ class ClienteController {
 			if ($clave->oculto == 1) unset($listaprecio_collection[$clave]);
 		}
 
-		$this->view->editar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $condicionfiscal_collection, $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection, $this->model,$listaprecio_collection,$categoriacliente_collection);
+		$this->view->editar($provincia_collection, $documentotipo_collection, $condicioniva_collection, $frecuenciaventa_collection, $vendedor_collection, $flete_collection, $tipofactura_collection, $this->model,$listaprecio_collection,$categoriacliente_collection);
 	}
 
 	function guardar() {
@@ -113,7 +111,7 @@ class ClienteController {
 		$this->model->entregaminima = filter_input(INPUT_POST, 'entregaminima');
 		$this->model->observacion = filter_input(INPUT_POST, 'observacion');
 		$this->model->condicioniva = filter_input(INPUT_POST, 'condicioniva');
-		$this->model->condicionfiscal = filter_input(INPUT_POST, 'condicionfiscal');
+		$this->model->condicionfiscal = filter_input(INPUT_POST, 'condicioniva');
 		$this->model->frecuenciaventa = filter_input(INPUT_POST, 'frecuenciaventa');
 		$this->model->vendedor = filter_input(INPUT_POST, 'vendedor');
 		$this->model->flete = filter_input(INPUT_POST, 'flete');
@@ -174,7 +172,7 @@ class ClienteController {
 		$this->model->entregaminima = filter_input(INPUT_POST, 'entregaminima');
 		$this->model->observacion = filter_input(INPUT_POST, 'observacion');
 		$this->model->condicioniva = filter_input(INPUT_POST, 'condicioniva');
-		$this->model->condicionfiscal = filter_input(INPUT_POST, 'condicionfiscal');
+		$this->model->condicionfiscal = filter_input(INPUT_POST, 'condicioniva');
 		$this->model->frecuenciaventa = filter_input(INPUT_POST, 'frecuenciaventa');
 		$this->model->vendedor = filter_input(INPUT_POST, 'vendedor');
 		$this->model->flete = filter_input(INPUT_POST, 'flete');
@@ -223,17 +221,8 @@ class ClienteController {
 	function buscar() {
 		SessionHandler()->check_session();
 		$buscar = filter_input(INPUT_POST, 'buscar');
-		$select = "c.cliente_id AS CLIENTE_ID, c.localidad AS LOCALIDAD, pr.denominacion AS PROVINCIA, c.codigopostal AS CODPOSTAL,
-				   c.razon_social AS RAZON_SOCIAL, cf.denominacion AS CONDICIONFISCAL, ci.denominacion AS CIV,
-				   CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR,
-				   CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA, c.iva AS CONDIVA,
-				   c.descuento AS DESCUENTO";
-		$from = "cliente c INNER JOIN provincia pr ON c.provincia = pr.provincia_id INNER JOIN
-				 condicionfiscal cf ON c.condicionfiscal = cf.condicionfiscal_id INNER JOIN
-				 condicioniva ci ON c.condicioniva = ci.condicioniva_id INNER JOIN
-				 documentotipo dt ON c.documentotipo = dt.documentotipo_id INNER JOIN
-				 vendedor v ON c.vendedor = v.vendedor_id INNER JOIN
-				 frecuenciaventa fv ON c.frecuenciaventa = fv.frecuenciaventa_id";
+		$select = "c.cliente_id AS CLIENTE_ID, c.localidad AS LOCALIDAD, pr.denominacion AS PROVINCIA, c.codigopostal AS CODPOSTAL, c.razon_social AS RAZON_SOCIAL, cf.denominacion AS CONDICIONFISCAL, ci.denominacion AS CIV, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA, c.iva AS CONDIVA, c.descuento AS DESCUENTO";
+		$from = "cliente c INNER JOIN provincia pr ON c.provincia = pr.provincia_id INNER JOIN condicionfiscal cf ON c.condicionfiscal = cf.condicionfiscal_id INNER JOIN condicioniva ci ON c.condicioniva = ci.condicioniva_id INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id INNER JOIN vendedor v ON c.vendedor = v.vendedor_id INNER JOIN frecuenciaventa fv ON c.frecuenciaventa = fv.frecuenciaventa_id";
 		$where = "c.razon_social LIKE '%{$buscar}%' OR c.documento LIKE '%{$buscar}%'";
 		$cliente_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);
 		$this->view->listar($cliente_collection);
