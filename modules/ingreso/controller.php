@@ -232,6 +232,13 @@ class IngresoController {
 			$pm->producto_id = $ingreso['producto_id'];
 			$pm->get();
 			$pm->costo = $costo_base;
+			$iva = $pm->iva;
+			$porcentaje_ganancia = $pm->porcentaje_ganancia;
+			$valor_iva = ($iva * $costo_base) / 100;
+			$costo_iva = $valor_iva + $costo_base;
+			$valor_ganancia = ($valor_ganancia * $costo_iva) / 100;
+			$precio_venta = $costo_iva + $valor_ganancia;
+			$pm->precio_venta = round($precio_venta, 2);
 			if ($opcion_actualiza_producto == 1) $pm->save();
 
 			$idm = new IngresoDetalle();
