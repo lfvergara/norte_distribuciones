@@ -788,9 +788,10 @@ class IngresoController {
 		}
 
 		$tfm = new TipoFactura();
+		$tfm->tipofactura_id = $tipofactura_id;
+		$tfm->get();
 		$tipofactura = $tfm->tipofactura_id . '@';
 		$tipofactura .= $tfm->nomenclatura . ' - ' . $tfm->denominacion;
-		print_r($tipofactura);exit;
 		print $tipofactura;
 	}
 }
