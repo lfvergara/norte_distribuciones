@@ -22,15 +22,15 @@ class BoletaPDF extends View {
         $new_array = array_chunk($ingresodetalle_collection, 14);
         $contenido = '';
         foreach ($new_array as $ingresodetalle_array) {
-            $gui_notacreditoNC = file_get_contents("static/common/plantillas_facturas/boleta.html");
-            $gui_tbl_notacreditoNC = file_get_contents("static/common/plantillas_facturas/tbl_notacreditoNC.html");
-            $gui_tbl_notacreditoNC = $this->render_regex_dict('TBL_NOTACREDITODETALLE', $gui_tbl_notacreditoNC, $ingresodetalle_collection);
+            $gui_boletatestigo = file_get_contents("static/common/plantillas_facturas/boleta.html");
+            $gui_tbl_boletatestigo = file_get_contents("static/common/plantillas_facturas/tbl_boletatestigo.html");
+            $gui_tbl_boletatestigo = $this->render_regex_dict('TBL_INGRESODETALLE', $gui_tbl_boletatestigo, $ingresodetalle_collection);
 
-            $gui_notacreditoNC = $this->render($obj_ingreso, $gui_notacreditoNC);
-            $gui_notacreditoNC = $this->render($obj_proveedor, $gui_notacreditoNC);
-            $gui_notacreditoNC = str_replace('{tbl_notacreditodetalle}', $gui_tbl_notacreditoNC, $gui_notacreditoNC);
+            $gui_boletatestigo = $this->render($obj_ingreso, $gui_boletatestigo);
+            $gui_boletatestigo = $this->render($obj_proveedor, $gui_boletatestigo);
+            $gui_boletatestigo = str_replace('{tbl_ingresodetalle}', $gui_tbl_boletatestigo, $gui_boletatestigo);
 
-            $contenido .= $gui_notacreditoNC;
+            $contenido .= $gui_boletatestigo;
         }
 
         $gui_html = str_replace('{contenido}', $contenido, $gui_html);
@@ -38,7 +38,7 @@ class BoletaPDF extends View {
         $dompdf->set_paper("A4", "portrait");
         $dompdf->load_html($gui_html);
         $dompdf->render();
-        $dompdf->stream("NotaCredito.pdf");
+        $dompdf->stream("BoletaTestigo.pdf");
         exit;
     }
 }
