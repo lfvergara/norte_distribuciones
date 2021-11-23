@@ -805,9 +805,13 @@ CREATE TABLE IF NOT EXISTS cuentacontable (
 CREATE TABLE IF NOT EXISTS almacen (
     almacen_id INT(11) NOT NULL 
         AUTO_INCREMENT PRIMARY KEY
-    , codigo INT(11)
+    , codigo VARCHAR(50)
     , denominacion VARCHAR(250)
     , direccion VARCHAR(250)
     , localidad VARCHAR(250)
     , oculto INT(1)
 ) ENGINE=InnoDb;
+
+ALTER TABLE `usuario` ADD `almacen` INT NULL DEFAULT '1' AFTER `nivel`, ADD INDEX (`almacen`);
+ALTER TABLE `usuario` ADD FOREIGN KEY (`almacen`) REFERENCES `almacen`(`almacen_id`) ON DELETE SET NULL ON UPDATE RESTRICT;
+ALTER TABLE `stock` ADD `almacen_id` INT NULL DEFAULT '1' AFTER `producto_id`, ADD INDEX (`almacen_id`);
