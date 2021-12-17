@@ -105,6 +105,7 @@ class ClienteController {
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
 		$this->model->impacto_ganancia = 1;
+		$this->model->habilita_cuenta_corriente = filter_input(INPUT_POST, 'habilita_cuenta_corriente');
 		$this->model->dias_vencimiento_cuenta_corriente = filter_input(INPUT_POST, 'dias_vencimiento_cuenta_corriente');
 		$this->model->oculto = 0;
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
@@ -166,6 +167,7 @@ class ClienteController {
 		$this->model->barrio = filter_input(INPUT_POST, 'barrio');
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
+		$this->model->habilita_cuenta_corriente = filter_input(INPUT_POST, 'habilita_cuenta_corriente');
 		$this->model->dias_vencimiento_cuenta_corriente = filter_input(INPUT_POST, 'dias_vencimiento_cuenta_corriente');
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
 		$this->model->ordenentrega = filter_input(INPUT_POST, 'ordenentrega');

@@ -28,6 +28,7 @@ class Cliente extends StandardObject {
         $this->latitud = '';
         $this->longitud = '';
         $this->impacto_ganancia = 0;
+        $this->habilita_cuenta_corriente = 0;
         $this->dias_vencimiento_cuenta_corriente = 0;
         $this->oculto = 0;
 		$this->ordenentrega = 0;
