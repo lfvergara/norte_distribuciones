@@ -85,63 +85,63 @@
                         <input type="number" name="dias_vencimiento_cuenta_corriente" id="dias_vencimiento_cuenta_corriente" value="{cliente-dias_vencimiento_cuenta_corriente}" class="form-control">
                     </div>
                     <div class="form-group col-lg-8">
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Lista Precios</label>
                             <select class="form-control m-bot15" name="lista_precio" required>
                                 <option value="{listaprecio-listaprecio}">{listaprecio-denominacion} ( {listaprecio-condicion} {listaprecio-porcentaje}% )</option>
                                 {slt_listaprecio}
                             </select>
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Categoria</label>
                             <select class="form-control m-bot15" name="categoriacliente" id="categoriacliente" required>
                               <option value="{categoriacliente-categoriacliente_id}">{categoriacliente-denominacion}</option>
                                 {slt_categoriacliente}
                             </select>
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-5" style="padding-left: 0px;">
                             <label>Provincia</label>
                             <select class="form-control m-bot15" name="provincia" required>
                                 <option value="{provincia-provincia_id}">{provincia-denominacion}</option>
                                 {slt_provincia}
                             </select>
                         </div>
-                        <div class="form-group col-lg-6">
+                        <div class="form-group col-lg-5" style="padding-left: 0px;">
                             <label>Localidad</label>
                             <input type="text" class="form-control" id="localidad" name="localidad" value="{cliente-localidad}" required>
                         </div>
-                        <div class="form-group col-lg-12">
+                        <div class="form-group col-lg-2" style="padding-left: 0px;">
+                            <label>Código Postal</label>
+                            <input type="text" class="form-control" id="codigopostal" name="codigopostal" value="{cliente-codigopostal}" required>
+                        </div>
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Barrio</label>
                             <input type="text" class="form-control" id="barrio" name="barrio" value="{cliente-barrio}" required>
                         </div>
-                        <div class="form-group col-lg-12">
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Domicilio</label>
                             <input type="text" class="form-control" id="domicilio" name="domicilio" value="{cliente-domicilio}" required>
                         </div>
                         {lst_input_infocontacto}                        
                     </div>
                     <div class="form-group col-lg-4">
-                        <div class="form-group">
+                        <div class="form-group col-lg-6" style="padding-right: 0px;">
                             <label>Orden de Entrega</label>
                             <input type="text" class="form-control" id="ordenentrega" name="ordenentrega" value="{cliente-ordenentrega}" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6" style="padding-right: 0px;">
                             <label>% de Entrega Minima</label>
                             <input type="text" class="form-control" id="entregaminima" name="entregaminima" value="{cliente-entregaminima}" required>
                         </div>
-                        <div class="form-group">
-                            <label>Código Postal</label>
-                            <input type="text" class="form-control" id="codigopostal" name="codigopostal" value="{cliente-codigopostal}" required>
-                        </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6" style="padding-right: 0px;">
                             <label>Latitud</label>
                             <input type="text" class="form-control" id="latitud" name="latitud" value="{cliente-latitud}" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-6" style="padding-right: 0px;">
                             <label>Longitud</label>
                             <input type="text" class="form-control" id="longitud" name="longitud" value="{cliente-longitud}" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group col-lg-12" style="padding-right: 0px;">
                             <label>Observación</label>
                             <textarea class="form-control" id="observacion" name="observacion" rows="7">{cliente-observacion}</textarea>
                         </div>
