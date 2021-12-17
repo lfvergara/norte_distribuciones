@@ -114,18 +114,22 @@
                                 {slt_categoriacliente}
                             </select>
                         </div>
-                        <div class="form-group col-lg-5" style="padding-left: 0px;">
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Provincia</label>
                             <select class="form-control m-bot15" name="provincia" required>
                                 <option value="{provincia-provincia_id}">{provincia-denominacion}</option>
                                 {slt_provincia}
                             </select>
                         </div>
-                        <div class="form-group col-lg-5" style="padding-left: 0px;">
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
+                            <label>Departamento</label>
+                            <input type="text" class="form-control" id="departamento" name="departamento" value="{cliente-departamento}" required>
+                        </div>
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Localidad</label>
                             <input type="text" class="form-control" id="localidad" name="localidad" value="{cliente-localidad}" required>
                         </div>
-                        <div class="form-group col-lg-2" style="padding-left: 0px;">
+                        <div class="form-group col-lg-6" style="padding-left: 0px;">
                             <label>Código Postal</label>
                             <input type="text" class="form-control" id="codigopostal" name="codigopostal" value="{cliente-codigopostal}" required>
                         </div>

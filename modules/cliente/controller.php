@@ -98,6 +98,7 @@ class ClienteController {
 		$this->model->descuento = 0;
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->documento = filter_input(INPUT_POST, 'documento');
+		$this->model->departamento = filter_input(INPUT_POST, 'departamento');
 		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
 		$this->model->provincia = filter_input(INPUT_POST, 'provincia');
@@ -162,6 +163,7 @@ class ClienteController {
 		$this->model->nombre_fantasia = filter_input(INPUT_POST, 'nombre_fantasia');
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
 		$this->model->documento = filter_input(INPUT_POST, 'documento');
+		$this->model->departamento = filter_input(INPUT_POST, 'departamento');
 		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
 		$this->model->provincia = filter_input(INPUT_POST, 'provincia');
