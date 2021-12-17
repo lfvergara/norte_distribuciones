@@ -27,7 +27,7 @@ class ClienteController {
 
 	function listar() {
     	SessionHandler()->check_session();
-		$select = "c.cliente_id AS CLIENTE_ID, LPAD(c.cliente_id, 5, 0) AS CODCLI, c.barrio AS BARRIO, pr.denominacion AS PROVINCIA, c.codigopostal AS CODPOSTAL, CONCAT (c.razon_social, ' (', c.nombre_fantasia, ')') AS RAZON_SOCIAL, cf.denominacion AS CONDICIONFISCAL, ci.denominacion AS CIV, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA, c.iva AS CONDIVA, c.dias_vencimiento_cuenta_corriente AS DVCC, c.descuento AS DESCUENTO,fl.denominacion AS FLETE";
+		$select = "c.cliente_id AS CLIENTE_ID, c.codigo AS CODCLI, c.barrio AS BARRIO, pr.denominacion AS PROVINCIA, c.codigopostal AS CODPOSTAL, CONCAT (c.razon_social, ' (', c.nombre_fantasia, ')') AS RAZON_SOCIAL, cf.denominacion AS CONDICIONFISCAL, ci.denominacion AS CIV, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA, c.iva AS CONDIVA, c.dias_vencimiento_cuenta_corriente AS DVCC, c.descuento AS DESCUENTO,fl.denominacion AS FLETE";
 		$from = "cliente c INNER JOIN provincia pr ON c.provincia = pr.provincia_id INNER JOIN condicionfiscal cf ON c.condicionfiscal = cf.condicionfiscal_id INNER JOIN condicioniva ci ON c.condicioniva = ci.condicioniva_id INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id INNER JOIN vendedor v ON c.vendedor = v.vendedor_id INNER JOIN frecuenciaventa fv ON c.frecuenciaventa = fv.frecuenciaventa_id INNER JOIN flete fl ON fl.flete_id = c.flete";
 		$where = "c.oculto = 0";
 		$cliente_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);
@@ -36,7 +36,7 @@ class ClienteController {
 
 	function ocultos() {
     	SessionHandler()->check_session();
-		$select = "c.cliente_id AS CLIENTE_ID, LPAD(c.cliente_id, 5, 0) AS CODCLI, c.barrio AS BARRIO, pr.denominacion AS PROVINCIA, c.codigopostal AS CODPOSTAL, c.razon_social AS RAZON_SOCIAL, cf.denominacion AS CONDICIONFISCAL, ci.denominacion AS CIV, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA, c.iva AS CONDIVA, c.descuento AS DESCUENTO,fl.denominacion AS FLETE";
+		$select = "c.cliente_id AS CLIENTE_ID, c.codigo AS CODCLI, c.barrio AS BARRIO, pr.denominacion AS PROVINCIA, c.codigopostal AS CODPOSTAL, c.razon_social AS RAZON_SOCIAL, cf.denominacion AS CONDICIONFISCAL, ci.denominacion AS CIV, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA, c.iva AS CONDIVA, c.descuento AS DESCUENTO,fl.denominacion AS FLETE";
 		$from = "cliente c INNER JOIN provincia pr ON c.provincia = pr.provincia_id INNER JOIN condicionfiscal cf ON c.condicionfiscal = cf.condicionfiscal_id INNER JOIN condicioniva ci ON c.condicioniva = ci.condicioniva_id INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id INNER JOIN vendedor v ON c.vendedor = v.vendedor_id INNER JOIN frecuenciaventa fv ON c.frecuenciaventa = fv.frecuenciaventa_id INNER JOIN flete fl ON fl.flete_id = c.flete";
 		$where = "c.oculto = 1";
 		$cliente_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);
