@@ -85,36 +85,40 @@
                         <input type="number" name="dias_vencimiento_cuenta_corriente" id="dias_vencimiento_cuenta_corriente" value="{cliente-dias_vencimiento_cuenta_corriente}" class="form-control">
                     </div>
                     <div class="form-group col-lg-8">
-                        <div class="form-group">
+                        <div class="form-group col-lg-6">
                             <label>Lista Precios</label>
                             <select class="form-control m-bot15" name="lista_precio" required>
                                 <option value="{listaprecio-listaprecio}">{listaprecio-denominacion} ( {listaprecio-condicion} {listaprecio-porcentaje}% )</option>
                                 {slt_listaprecio}
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Provincia</label>
-                            <select class="form-control m-bot15" name="provincia" required>
-                                <option value="{provincia-provincia_id}">{provincia-denominacion}</option>
-                                {slt_provincia}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Barrio</label>
-                            <input type="text" class="form-control" id="barrio" name="barrio" value="{cliente-barrio}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Domicilio</label>
-                            <input type="text" class="form-control" id="domicilio" name="domicilio" value="{cliente-domicilio}" required>
-                        </div>
-                        {lst_input_infocontacto}
-                        <div class="form-group">
+                        <div class="form-group col-lg-6">
                             <label>Categoria</label>
                             <select class="form-control m-bot15" name="categoriacliente" id="categoriacliente" required>
                               <option value="{categoriacliente-categoriacliente_id}">{categoriacliente-denominacion}</option>
                                 {slt_categoriacliente}
                             </select>
                         </div>
+                        <div class="form-group col-lg-6">
+                            <label>Provincia</label>
+                            <select class="form-control m-bot15" name="provincia" required>
+                                <option value="{provincia-provincia_id}">{provincia-denominacion}</option>
+                                {slt_provincia}
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Localidad</label>
+                            <input type="text" class="form-control" id="localidad" name="localidad" value="{cliente-localidad}" required>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label>Barrio</label>
+                            <input type="text" class="form-control" id="barrio" name="barrio" value="{cliente-barrio}" required>
+                        </div>
+                        <div class="form-group col-lg-12">
+                            <label>Domicilio</label>
+                            <input type="text" class="form-control" id="domicilio" name="domicilio" value="{cliente-domicilio}" required>
+                        </div>
+                        {lst_input_infocontacto}                        
                     </div>
                     <div class="form-group col-lg-4">
                         <div class="form-group">
