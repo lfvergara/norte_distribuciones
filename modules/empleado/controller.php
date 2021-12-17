@@ -60,7 +60,7 @@ class EmpleadoController {
 		$this->model->telefono = filter_input(INPUT_POST, 'telefono');
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
 		$this->model->codigopostal = filter_input(INPUT_POST, 'codigopostal');
-		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
+		$this->model->barrio = filter_input(INPUT_POST, 'barrio');
 		$this->model->observacion = filter_input(INPUT_POST, 'observacion');
 		$this->model->oculto = 0;
 		$this->model->provincia = filter_input(INPUT_POST, 'provincia');
@@ -83,7 +83,7 @@ class EmpleadoController {
 		$this->model->telefono = filter_input(INPUT_POST, 'telefono');
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
 		$this->model->codigopostal = filter_input(INPUT_POST, 'codigopostal');
-		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
+		$this->model->barrio = filter_input(INPUT_POST, 'barrio');
 		$this->model->observacion = filter_input(INPUT_POST, 'observacion');
 		$this->model->provincia = filter_input(INPUT_POST, 'provincia');
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
@@ -117,8 +117,7 @@ class EmpleadoController {
 	function buscar() {
 		SessionHandler()->check_session();
 		$buscar = filter_input(INPUT_POST, 'buscar');
-		$select = "e.empleado_id AS EMPLEADO_ID, e.localidad AS LOCALIDAD, pr.denominacion AS PROVINCIA, e.codigopostal AS CODPOSTAL,
-				   e.apellido AS APELLIDO, e.nombre AS NOMBRE, e.documento AS DOCUMENTO";
+		$select = "e.empleado_id AS EMPLEADO_ID, e.barrio AS BARRIO, pr.denominacion AS PROVINCIA, e.codigopostal AS CODPOSTAL, e.apellido AS APELLIDO, e.nombre AS NOMBRE, e.documento AS DOCUMENTO";
 		$from = "empleado e INNER JOIN provincia pr ON c.provincia = pr.provincia_id";
 		$where = "e.apellido LIKE '%{$buscar}%' OR e.nombre LIKE '%{$buscar}%' OR e.documento LIKE '%{$buscar}%'";
 		$empleado_collection = CollectorCondition()->get('Empleado', $where, 4, $from, $select);
@@ -734,7 +733,7 @@ class EmpleadoController {
 		$fvm->get();
 		$frecuencia_denominacion = $fvm->dia_1 . "/" . $fvm->dia_2;
 
-		$select = "LPAD(c.cliente_id, 5, 0) AS CODCLI, c.razon_social AS CLIENTE, c.nombre_fantasia AS FANTASIA, c.domicilio AS DOMICILIO, c.localidad AS BARRIO,
+		$select = "LPAD(c.cliente_id, 5, 0) AS CODCLI, c.razon_social AS CLIENTE, c.nombre_fantasia AS FANTASIA, c.domicilio AS DOMICILIO, c.barrio AS BARRIO,
 				   CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, cf.denominacion AS CONDICION, tf.nomenclatura AS TIPOFAC";
 		$from = "cliente c INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id INNER JOIN condicionfiscal cf ON c.condicionfiscal = cf.condicionfiscal_id INNER JOIN
 				 tipofactura tf ON c.tipofactura = tf.tipofactura_id";

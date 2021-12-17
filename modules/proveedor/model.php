@@ -13,7 +13,7 @@ class Proveedor extends StandardObject {
 		$this->documento = 0;
         $this->domicilio = '';
         $this->codigopostal = 0;
-        $this->localidad = 0;
+        $this->localidad = '';
         $this->oculto = 0;
 		$this->observacion = '';
         $this->provincia = $provincia;

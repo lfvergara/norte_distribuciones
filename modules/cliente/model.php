@@ -23,7 +23,7 @@ class Cliente extends StandardObject {
 		$this->documento = 0;
         $this->domicilio = '';
         $this->codigopostal = 0;
-        $this->localidad = 0;
+        $this->barrio = '';
         $this->latitud = '';
         $this->longitud = '';
         $this->impacto_ganancia = 0;

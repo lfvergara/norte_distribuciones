@@ -255,7 +255,7 @@ class CuentaCorrienteProveedorController {
 		}
 
 		$select = "i.ingreso_id, date_format(i.fecha, '%d/%m/%Y') AS FECHA, CONCAT(LPAD(i.punto_venta, 4, 0), '-', LPAD(i.numero_factura, 8, 0)) AS FACTURA, 
-				   p.razon_social AS PROVEEDOR, p.localidad AS BARRIO, p.domicilio AS DOMICILIO, 
+				   p.razon_social AS PROVEEDOR, p.localidad AS LOCALIDAD, p.domicilio AS DOMICILIO, 
 				   ((IF((SELECT ROUND(SUM(ccpia.importe),2) FROM cuentacorrienteproveedor ccpia WHERE ccpia.tipomovimientocuenta = 2 AND ccpia.ingreso_id = ccp.ingreso_id) IS NULL, 0, (SELECT ROUND(SUM(ccpia.importe),2)
 				   FROM cuentacorrienteproveedor ccpia WHERE ccpia.tipomovimientocuenta = 2 AND ccpia.ingreso_id = ccp.ingreso_id))) - (SELECT ROUND(SUM(ccpd.importe),2) FROM cuentacorrienteproveedor ccpd
 				   WHERE ccpd.tipomovimientocuenta = 1 AND ccpd.ingreso_id = ccp.ingreso_id)) AS BALANCE";

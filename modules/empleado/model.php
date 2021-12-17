@@ -13,7 +13,7 @@ class Empleado extends StandardObject {
                 $this->telefono = 0;
                 $this->domicilio = '';
                 $this->codigopostal = 0;
-                $this->localidad = 0;
+                $this->empleado = '';
                 $this->observacion = '';
 		$this->oculto = 0;
                 $this->provincia = $provincia;

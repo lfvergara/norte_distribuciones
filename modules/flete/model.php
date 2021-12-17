@@ -10,7 +10,7 @@ class Flete extends StandardObject {
 		$this->denominacion = '';
         $this->documento = 0;
         $this->domicilio = '';
-        $this->localidad = 0;
+        $this->barrio = '';
         $this->latitud = '';
         $this->longitud = '';
 		$this->observacion = '';

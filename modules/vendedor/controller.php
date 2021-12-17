@@ -30,7 +30,7 @@ class VendedorController {
 	}
 
 	function listar() {
-		$select = "v.vendedor_id AS VENDEDOR_ID, v.localidad AS LOCALIDAD, pr.denominacion AS PROVINCIA, v.codigopostal AS CODPOSTAL,
+		$select = "v.vendedor_id AS VENDEDOR_ID, v.barrio AS BARRIO, pr.denominacion AS PROVINCIA, v.codigopostal AS CODPOSTAL,
 				   v.apellido AS APELLIDO, v.nombre AS NOMBRE, v.documento AS DOCUMENTO, v.comision AS COMISION,
 				   CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA";
 		$from = "vendedor v INNER JOIN provincia pr ON v.provincia = pr.provincia_id INNER JOIN
@@ -693,7 +693,7 @@ class VendedorController {
 		$documento = (is_null(filter_input(INPUT_POST, 'documento'))) ? 0 : filter_input(INPUT_POST, 'documento');
 		$codigopostal = (is_null(filter_input(INPUT_POST, 'codigopostal'))) ? 0 : filter_input(INPUT_POST, 'codigopostal');
 		$domicilio = (is_null(filter_input(INPUT_POST, 'domicilio'))) ? '-' : filter_input(INPUT_POST, 'domicilio');
-		$localidad = (is_null(filter_input(INPUT_POST, 'localidad'))) ? '-' : filter_input(INPUT_POST, 'localidad');
+		$barrio = (is_null(filter_input(INPUT_POST, 'barrio'))) ? '-' : filter_input(INPUT_POST, 'barrio');
 		$provincia = filter_input(INPUT_POST, 'provincia');
 		$documentotipo = filter_input(INPUT_POST, 'documentotipo');
 		
@@ -705,7 +705,7 @@ class VendedorController {
 		$this->model->documentotipo = $documentotipo;
 		$this->model->provincia = $provincia;
 		$this->model->codigopostal = $codigopostal;
-		$this->model->localidad = $localidad;
+		$this->model->barrio = $barrio;
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
 		$this->model->domicilio = $domicilio;
@@ -752,7 +752,7 @@ class VendedorController {
 		$em->telefono = $telefono;
 		$em->domicilio = $domicilio;
 		$em->codigopostal = $codigopostal;
-		$em->localidad = $localidad;
+		$em->barrio = $barrio;
 		$em->observacion = 'Vendedor';
 		$em->oculto = 0;
 		$em->provincia = $provincia;
@@ -788,7 +788,7 @@ class VendedorController {
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
 		$this->model->provincia = filter_input(INPUT_POST, 'provincia');
 		$this->model->codigopostal = filter_input(INPUT_POST, 'codigopostal');
-		$this->model->localidad = filter_input(INPUT_POST, 'localidad');
+		$this->model->barrio = filter_input(INPUT_POST, 'barrio');
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');
@@ -840,7 +840,7 @@ class VendedorController {
 	function buscar() {
 		SessionHandler()->check_session();
 		$buscar = filter_input(INPUT_POST, 'buscar');
-		$select = "v.vendedor_id AS VENDEDOR_ID, v.localidad AS LOCALIDAD, pr.denominacion AS PROVINCIA, v.codigopostal AS CODPOSTAL,
+		$select = "v.vendedor_id AS VENDEDOR_ID, v.barrio AS BARRIO, pr.denominacion AS PROVINCIA, v.codigopostal AS CODPOSTAL,
 				   v.apellido AS APELLIDO, v.nombre AS NOMBRE, v.documento AS DOCUMENTO, v.comision AS COMISION,
 				   CONCAT(fv.denominacion, ' (', fv.dia_1, '-', fv.dia_2, ')') AS FRECUENCIAVENTA";
 		$from = "vendedor v INNER JOIN provincia pr ON c.provincia = pr.provincia_id INNER JOIN
@@ -909,7 +909,7 @@ class VendedorController {
 		$fvm->get();
 		$frecuencia_denominacion = $fvm->dia_1 . "/" . $fvm->dia_2;
 
-		$select = "LPAD(c.cliente_id, 5, 0) AS CODCLI, c.razon_social AS CLIENTE, c.nombre_fantasia AS FANTASIA, c.domicilio AS DOMICILIO, c.localidad AS BARRIO, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, cf.denominacion AS CONDICION, tf.nomenclatura AS TIPOFAC, (SELECT valor FROM infocontacto ic INNER JOIN infocontactocliente icc ON ic.infocontacto_id = icc.compositor WHERE icc.compuesto = c.cliente_id AND ic.denominacion = 'Teléfono') AS TEL, f.denominacion AS FLETE";
+		$select = "LPAD(c.cliente_id, 5, 0) AS CODCLI, c.razon_social AS CLIENTE, c.nombre_fantasia AS FANTASIA, c.domicilio AS DOMICILIO, c.barrio AS BARRIO, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO, cf.denominacion AS CONDICION, tf.nomenclatura AS TIPOFAC, (SELECT valor FROM infocontacto ic INNER JOIN infocontactocliente icc ON ic.infocontacto_id = icc.compositor WHERE icc.compuesto = c.cliente_id AND ic.denominacion = 'Teléfono') AS TEL, f.denominacion AS FLETE";
 		$from = "cliente c INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id INNER JOIN condicionfiscal cf ON c.condicionfiscal = cf.condicionfiscal_id INNER JOIN tipofactura tf ON c.tipofactura = tf.tipofactura_id INNER JOIN flete f ON c.flete = f.flete_id";
 		$where = "c.vendedor = {$vendedor_id} AND c.frecuenciaventa = {$frecuenciaventa_id} AND c.oculto = 0";
 		$cliente_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);

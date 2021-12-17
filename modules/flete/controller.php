@@ -19,7 +19,7 @@ class FleteController {
 	}
 
 	function listar() {
-		$select = "f.flete_id AS FLETE_ID, f.localidad AS LOCALIDAD, f.denominacion AS DENOMINACION, 
+		$select = "f.flete_id AS FLETE_ID, f.barrio AS BARRIO, f.denominacion AS DENOMINACION, 
 				   CONCAT(dt.denominacion, ' ', f.documento) AS DOCUMENTO";
 		$from = "flete f INNER JOIN documentotipo dt ON f.documentotipo = dt.documentotipo_id";
 		$where = "f.oculto = 0";
@@ -55,7 +55,7 @@ class FleteController {
 		$this->model->denominacion = $denominacion;	
 		$this->model->documento = filter_input(INPUT_POST, 'documento');	
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');	
-		$this->model->localidad = filter_input(INPUT_POST, 'localidad');	
+		$this->model->barrio = filter_input(INPUT_POST, 'barrio');	
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');	
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');	
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');	
@@ -107,7 +107,7 @@ class FleteController {
 		$this->model->denominacion = filter_input(INPUT_POST, 'denominacion');	
 		$this->model->documento = filter_input(INPUT_POST, 'documento');	
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');	
-		$this->model->localidad = filter_input(INPUT_POST, 'localidad');	
+		$this->model->barrio = filter_input(INPUT_POST, 'barrio');	
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');	
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');	
 		$this->model->domicilio = filter_input(INPUT_POST, 'domicilio');	
@@ -158,7 +158,7 @@ class FleteController {
 
 	function buscar() {
 		$buscar = filter_input(INPUT_POST, 'buscar');
-		$select = "f.flete_id AS FLETE_ID, f.localidad AS LOCALIDAD, f.denominacion AS DENOMINACION, 
+		$select = "f.flete_id AS FLETE_ID, f.barrio AS BARRIO, f.denominacion AS DENOMINACION, 
 				   CONCAT(dt.denominacion, ' ', f.documento) AS DOCUMENTO";
 		$from = "flete f INNER JOIN documentotipo dt ON f.documentotipo = dt.documentotipo_id";
 		$where = "f.denominacion LIKE '%{$buscar}%' OR f.documento LIKE '%{$buscar}%'";
