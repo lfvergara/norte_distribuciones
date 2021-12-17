@@ -92,6 +92,7 @@ class ClienteController {
 
 	function guardar() {
 		SessionHandler()->check_session();
+		$this->model->codigo = filter_input(INPUT_POST, 'codigo');
 		$this->model->razon_social = filter_input(INPUT_POST, 'razon_social');
 		$this->model->nombre_fantasia = filter_input(INPUT_POST, 'nombre_fantasia');
 		$this->model->descuento = 0;
@@ -156,6 +157,7 @@ class ClienteController {
 		$cliente_id = filter_input(INPUT_POST, 'cliente_id');
 		$this->model->cliente_id = $cliente_id;
 		$this->model->get();
+		$this->model->codigo = filter_input(INPUT_POST, 'codigo');
 		$this->model->razon_social = filter_input(INPUT_POST, 'razon_social');
 		$this->model->nombre_fantasia = filter_input(INPUT_POST, 'nombre_fantasia');
 		$this->model->iva = filter_input(INPUT_POST, 'iva');
