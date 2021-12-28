@@ -25,7 +25,18 @@ class ProductoController {
 		$from = "producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "p.oculto = 0";
 		$producto_collection = CollectorCondition()->get('Producto', $where, 4, $from, $select);
-		$this->view->listar($producto_collection);
+
+		$productomarca_collection = Collector()->get('ProductoMarca');
+		foreach ($productomarca_collection as $clave=>$valor) {
+			if($valor->oculto == 1) unset($productomarca_collection[$clave]);
+		}
+
+		$proveedor_collection = Collector()->get('Proveedor');
+		foreach ($proveedor_collection as $clave=>$valor) {
+			if($valor->oculto == 1) unset($proveedor_collection[$clave]);
+		}
+
+		$this->view->listar($producto_collection, $productomarca_collection, $proveedor_collection);
 	}
 
 	function ocultos() {
@@ -42,15 +53,7 @@ class ProductoController {
 		$where = "p.oculto = 0";
 		$producto_collection = CollectorCondition()->get('Producto', $where, 4, $from, $select);
 
-		$productomarca_collection = Collector()->get('ProductoMarca');
-		foreach ($productomarca_collection as $clave=>$valor) {
-			if($valor->oculto == 1) unset($productomarca_collection[$clave]);
-		}
-
-		$proveedor_collection = Collector()->get('Proveedor');
-		foreach ($proveedor_collection as $clave=>$valor) {
-			if($valor->oculto == 1) unset($proveedor_collection[$clave]);
-		}
+		
 
 		$this->view->lista_precio($producto_collection, $productomarca_collection, $proveedor_collection);
 	}

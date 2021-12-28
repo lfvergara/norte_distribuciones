@@ -16,7 +16,7 @@ class ProductoView extends View {
 		print $template;
 	}
 
-	function listar($producto_collection) {
+	function listar($producto_collection, $productomarca_collection, $proveedor_collection) {
 		$user_level = $_SESSION["data-login-" . APP_ABREV]["usuario-nivel"];
 		$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
 
@@ -31,13 +31,18 @@ class ProductoView extends View {
 				break;
 		}
 
-		if($usuario_id == 13){
-			$gui = file_get_contents("static/modules/producto/listar.html");
-			$tbl_producto_array = file_get_contents("static/modules/producto/tbl_producto_array.html");
-		}
+		$gui_slt_productomarca = file_get_contents("static/common/slt_productomarca.html");
+		$gui_slt_proveedor = file_get_contents("static/common/slt_proveedor.html");
+
+		foreach ($proveedor_collection as $clave=>$valor) unset($proveedor_collection[$clave]->infocontacto_collection);
+
+		$productomarca_collection = $this->order_collection_objects($productomarca_collection, 'denominacion', SORT_ASC);
+		$proveedor_collection = $this->order_collection_objects($proveedor_collection, 'razon_social', SORT_ASC);
 
 		$tbl_producto_array = $this->render_regex_dict('TBL_PRODUCTO', $tbl_producto_array, $producto_collection);
 		$render = str_replace('{tbl_producto}', $tbl_producto_array, $gui);
+		$render = str_replace('{slt_proveedor}', $gui_slt_proveedor, $render);
+		$render = str_replace('{slt_productomarca}', $gui_slt_productomarca, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
