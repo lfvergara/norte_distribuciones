@@ -706,8 +706,8 @@ class ReporteController {
 							   '{pago_proveedores}'=>$pago_proveedores,
 							   '{pago_comisiones}'=>$egreso_comision_hoy,
 							   '{gasto_diario}'=>$gasto_diario,
-								 '{liquidacion}'=>$liquidacion,
-								 '{vehiculos}'=>$vehiculos,
+							   '{liquidacion}'=>$liquidacion,
+							   '{vehiculos}'=>$vehiculos,
 							   '{caja}'=>$calculo_cajadiaria,
 							   '{fecha}'=>$fecha_sys);
 		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor,$detalle_gasto_diario,$detalle_liquidacion,$detalle_vehiculos,$detalle_comision, 1);
@@ -1729,7 +1729,7 @@ class ReporteController {
 
     	$select = "ROUND(SUM(e.importe_total),2) AS CONTADO";
 		$from = "egreso e INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega esen ON ee.estadoentrega = esen.estadoentrega_id";
-		$where = "e.condicionpago = 2 AND e.fecha = '{$fecha_sys}' AND esen.estadoentrega_id = 4";
+		$where = "e.condicionpago = 2 AND ee.fecha = '{$fecha_sys}' AND esen.estadoentrega_id = 4";
 		$sum_contado = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 		$sum_contado = (is_array($sum_contado)) ? $sum_contado[0]['CONTADO'] : 0;
 		$sum_contado = (is_null($sum_contado)) ? 0 : $sum_contado;
