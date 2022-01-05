@@ -12,6 +12,7 @@ var objAJAX = ajax();
 
 function confirma_formulario(tipo, path) {  
   var enlace = "/static/common/alertas/confirma_formulario.html";        
+  //var enlace = "/norte_distribuciones/static/common/alertas/confirma_formulario.html";        
   var div_modal = document.getElementById('div_modal');
   switch(tipo) {
     case 1:

@@ -1,13 +1,13 @@
 <?php
 # Ambiente del sistema
 const AMBIENTE = "prod";
-const SO_UNIX = true;
+const SO_UNIX = false;
 
 # Credenciales para la conexión con la base de datos MySQL
 const DB_HOST = 'localhost';
-const DB_USER = 'Takodana';
-const DB_PASS = 'n0rt3d15tr1buc10n35';
-const DB_NAME = 'dh.tordo.prod';
+const DB_USER = 'root';
+const DB_PASS = '';
+const DB_NAME = 'norte';
 
 
 # Algoritmos utilizados para la encriptación de credenciales
@@ -32,7 +32,7 @@ if (SO_UNIX == true) {
 	define('URL_STATIC', "/norte_distribuciones/static/template/");
 
 	# Directorio private del sistema
-	$url_private = "c:/dhTordoFiles/private/";
+	$url_private = "d:/codeando/privatesDesarrollo/dhTordoNorteFiles/";
 	define('URL_PRIVATE', $url_private);
 	ini_set("include_path", URL_PRIVATE);
 }

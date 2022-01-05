@@ -80,7 +80,7 @@ class PedidoVendedorController {
 		$from = "vendedor v";
 		$where = "v.oculto = 0 ORDER BY CONCAT(v.apellido, ' ', v.nombre) ASC";
 		$vendedor_collection = CollectorCondition()->get('Vendedor', $where, 4, $from, $select);
-		$this->view->panel1($pedidovendedor_collection, $vendedor_collection);
+		$this->view->panel($pedidovendedor_collection, $vendedor_collection);
 	}
 
 	function agregar() {
