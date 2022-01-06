@@ -796,10 +796,7 @@ class ReporteController {
 		$cobranza = $sum_contado + $ingreso_cuentacorriente_hoy;
 
 		$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL";
-		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN vendedor ve ON e.vendedor = ve.vendedor_id INNER JOIN
-				 condicionpago cp ON e.condicionpago = cp.condicionpago_id INNER JOIN condicioniva ci ON e.condicioniva = ci.condicioniva_id INNER JOIN
-				 egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega ese ON ee.estadoentrega = ese.estadoentrega_id LEFT JOIN
-				 egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN vendedor ve ON e.vendedor = ve.vendedor_id INNER JOIN condicionpago cp ON e.condicionpago = cp.condicionpago_id INNER JOIN condicioniva ci ON e.condicioniva = ci.condicioniva_id INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega ese ON ee.estadoentrega = ese.estadoentrega_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
 		$where = "e.fecha = '{$fecha_filtro}'";
 		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
@@ -845,8 +842,7 @@ class ReporteController {
 		$pago_proveedores = $egreso_cuentacorrienteproveedor_hoy + $egreso_contadoproveedor_hoy;
 
 		//DETALLE PAGO PROVEEDORES
-		$select = "p.razon_social AS RAZSOC, p.proveedor_id AS PID,
-				   ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 OR ccp.tipomovimientocuenta = 3 THEN ccp.importe ELSE 0 END),2) AS TSALIDA,'{$fecha_filtro}' AS FECHA";
+		$select = "p.razon_social AS RAZSOC, p.proveedor_id AS PID, ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 OR ccp.tipomovimientocuenta = 3 THEN ccp.importe ELSE 0 END),2) AS TSALIDA,'{$fecha_filtro}' AS FECHA";
 		$from = "cuentacorrienteproveedor ccp INNER JOIN proveedor p ON ccp.proveedor_id = p.proveedor_id";
 		$where = "ccp.fecha = '{$fecha_filtro}' AND ccp.ingresotipopago != 4";
 		$groupby = "ccp.proveedor_id";
@@ -869,9 +865,7 @@ class ReporteController {
 						if ($temp_proveedor_id == $proveedor_id) {
 							$detalle_pagoproveedor[$clave]["TSALIDA"] = $detalle_pagoproveedor[$clave]["TSALIDA"] + $detalle_contadoproveedor_hoy[$k]["TSALIDA"];
 						} else {
-							$array_temp = array("PID"=>$valor["PID"],
-												"RAZSOC"=>$valor["RAZSOC"],
-												"TSALIDA"=>$valor["TSALIDA"]);
+							$array_temp = array("PID"=>$valor["PID"], "RAZSOC"=>$valor["RAZSOC"], "TSALIDA"=>$valor["TSALIDA"]);
 							$detalle_pagoproveedor[] = $array_temp;
 						}
 					}
@@ -958,8 +952,8 @@ class ReporteController {
 							   '{pago_proveedores}'=>$pago_proveedores,
 							   '{pago_comisiones}'=>$egreso_comision_hoy,
 							   '{gasto_diario}'=>$gasto_diario,
-								 '{liquidacion}'=>$liquidacion,
-								 '{vehiculos}'=>$vehiculos,
+							   '{liquidacion}'=>$liquidacion,
+							   '{vehiculos}'=>$vehiculos,
 							   '{caja}'=>$calculo_cajadiaria,
 							   '{fecha}'=>$fecha_filtro);
 		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor,$detalle_gasto_diario,$detalle_liquidacion,$detalle_vehiculos,$detalle_comision, 2);
