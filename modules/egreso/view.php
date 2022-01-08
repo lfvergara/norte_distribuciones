@@ -493,7 +493,7 @@ class EgresoView extends View {
 	}
 
 	function traer_formulario_reingreso_producto_ajax($obj_producto, $obj_ingresodetalle) {
-		$gui = file_get_contents("static/modules/egreso/formulario_reingreso_producto.html");		
+		$gui = file_get_contents("static/modules/egreso/formulario_editar_egreso_producto.html");		
 		
 		$costo_iva = (($obj_producto->costo * $obj_producto->iva) / 100) + $obj_producto->costo;
 		$valor_ganancia = $costo_iva * $obj_producto->porcentaje_ganancia / 100;
