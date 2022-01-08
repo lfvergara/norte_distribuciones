@@ -66,22 +66,8 @@
                         </div>
                     </div>
                     <div class="col-lg-6" id="div_productos">
-                        <div class="form-group col-lg-12" id="div_lst_producto">
-                            <label>Producto</label>
-                            <table id="tbl_producto" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr style="font-size: 12px;">
-                                        <th></th>
-                                        <th>COD</th>
-                                        <th>Rubro</th>
-                                        <th>Descripción</th>
-                                        <th>Descripción</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_producto">
-                                    {tbl_producto}
-                                </tbody>
-                            </table>
+                        <div class="form-group col-lg-12" id="div_visor_producto">
+                            <label>Visor producto</label>
                         </div>
                         <div class="form-group col-lg-12" id="div_form_producto" style="display: none;"></div>
                     </div>
@@ -166,9 +152,25 @@
     var i = 1; 
     array_ids = new Array();
 
+    function editarCantidadProducto(producto_id, egresodetalle_id) {
+        ini_producto_id = producto_id;
+        document.getElementById('producto').value = producto_id;
+        var form_producto = $.ajax({
+            url: '{url_app}/egreso/traer_formulario_reingreso_producto_ajax/' + egresodetalle_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+
+        document.getElementById('div_form_producto').style.display = "block";
+        document.getElementById('div_form_producto').innerHTML = form_producto;
+        document.getElementById('div_visor_producto').style.display = "none";
+        document.getElementById('cantidad').focus();
+        actualizarCostoTotal();
+    }
+
     function buscarProducto() {
         document.getElementById('div_form_producto').style.display = "none";
-        document.getElementById('div_lst_producto').style.display = "block";
+        //document.getElementById('div_lst_producto').style.display = "block";
     }
 
     function seleccionarProducto(producto_id) {
@@ -182,7 +184,7 @@
 
         document.getElementById('div_form_producto').style.display = "block";
         document.getElementById('div_form_producto').innerHTML = form_producto;
-        document.getElementById('div_lst_producto').style.display = "none";
+        //document.getElementById('div_lst_producto').style.display = "none";
         document.getElementById('cantidad').focus();
         actualizarCostoTotal();
     }

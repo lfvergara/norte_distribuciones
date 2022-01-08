@@ -555,40 +555,12 @@ class EgresoController {
 		$this->model->egreso_id = $arg;
 		$this->model->get();
 
-		$select = "p.producto_id AS PRODUCTO_ID, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, pc.denominacion AS CATEGORIA, p.codigo AS CODIGO, p.stock_minimo AS STMINIMO, p.stock_ideal AS STIDEAL, p.costo as COSTO, p.iva AS IVA, p.porcentaje_ganancia AS GANANCIA, p.precio_venta AS VENTA";
-		$from = "producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id LEFT JOIN productodetalle pd ON p.producto_id = pd.producto_id LEFT JOIN proveedor prv ON pd.proveedor_id = prv.proveedor_id";
-		$where = "p.oculto = 0";
-		$groupby = "p.producto_id";
-		$producto_collection = CollectorCondition()->get('Producto', $where, 4, $from, $select, $groupby);
-		foreach ($producto_collection as $clave=>$valor) {
-			$producto_id = $valor['PRODUCTO_ID'];
-			$select = "MAX(s.stock_id) AS STOCK_ID";
-			$from = "stock s";
-			$where = "s.producto_id = {$producto_id}";
-			$groupby = "s.producto_id";
-			$stock_id = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
-			$stock_id = (is_array($stock_id) AND !empty($stock_id)) ? $stock_id[0]['STOCK_ID'] : 0;
-
-			if ($stock_id == 0) {
-				$producto_collection[$clave]['STOCK'] = 0;
-				$producto_collection[$clave]['CLASTO'] = 'danger';
-			} else {
-				$sm = new Stock();
-				$sm->stock_id = $stock_id;
-				$sm->get();
-				$class_stm = ($sm->cantidad_actual > 0) ? 'success' : 'danger';
-				
-				$producto_collection[$clave]['STOCK'] = $sm->cantidad_actual;
-				$producto_collection[$clave]['CLASTO'] = $class_stm;
-			}
-		}
-
 		$select = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.costo_producto AS COSTO, ed.importe AS IMPORTE, ed.egresodetalle_id AS EGRESODETALLEID, ed.producto_id AS PRODUCTO, ed.valor_descuento AS VD, ed.iva AS IVA, ed.neto_producto AS NETPRO";
 		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "ed.egreso_id = {$arg}";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
-		$this->view->reingreso($producto_collection, $egresodetalle_collection, $this->model);
+		$this->view->reingreso($egresodetalle_collection, $this->model);
 	}
 
 	function siguiente_remito() {
@@ -1597,6 +1569,19 @@ class EgresoController {
 		$cantidad_disponible = $sm->cantidad_actual;
 
 		$this->view->traer_formulario_producto_ajax($pm, $cantidad_disponible);
+	}
+
+	function traer_formulario_reingreso_producto_ajax($arg) {
+		$edm = new EgresoDetalle();
+		$edm->egresodetalle_id = $arg;
+		$edm->get();
+		$producto_id = $edm->producto_id;
+		
+		$pm = new Producto();
+		$pm->producto_id = $producto_id;
+		$pm->get();
+		
+		$this->view->traer_formulario_reingreso_producto_ajax($pm, $edm);
 	}
 
 	function traer_formulario_producto_barcode_ajax($arg) {

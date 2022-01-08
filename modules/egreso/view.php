@@ -271,15 +271,11 @@ class EgresoView extends View {
 		print $template;
 	}
 
-	function reingreso($producto_collection, $egresodetalle_collection, $obj_egreso) {
+	function reingreso($egresodetalle_collection, $obj_egreso) {
 		$gui = file_get_contents("static/modules/egreso/reingreso.html");
-		$tbl_producto_array = file_get_contents("static/modules/egreso/tbl_producto_array.html");
 		$tbl_editar_egresodetalle_array = file_get_contents("static/modules/egreso/tbl_editar_egresodetalle_array.html");
 		$hidden_editar_egresodetalle_array = file_get_contents("static/modules/egreso/hidden_editar_egresodetalle_array.html");
 
-		$tbl_producto_array = $this->render_regex_dict('TBL_PRODUCTO', $tbl_producto_array, $producto_collection);
-		$tbl_producto_array = str_replace('<!--TBL_PRODUCTO-->', '', $tbl_producto_array);
-		
 		if (!empty($egresodetalle_collection) OR is_array($egresodetalle_collection)) {
 			$j = 1;
 			foreach ($egresodetalle_collection as $clave=>$valor) {
@@ -287,11 +283,9 @@ class EgresoView extends View {
 				$j = $j + 1;
 			}
 
-			$tbl_editar_egresodetalle_array = $this->render_regex_dict('TBL_EGRESODETALLE', $tbl_editar_egresodetalle_array, 
-																		$egresodetalle_collection);
+			$tbl_editar_egresodetalle_array = $this->render_regex_dict('TBL_EGRESODETALLE', $tbl_editar_egresodetalle_array, $egresodetalle_collection);
 			$tbl_editar_egresodetalle_array = str_replace('<!--TBL_EGRESODETALLE-->', '', $tbl_editar_egresodetalle_array);
-			$hidden_editar_egresodetalle_array = $this->render_regex_dict('HDN_EGRESODETALLE', $hidden_editar_egresodetalle_array, 
-																		   $egresodetalle_collection);
+			$hidden_editar_egresodetalle_array = $this->render_regex_dict('HDN_EGRESODETALLE', $hidden_editar_egresodetalle_array, $egresodetalle_collection);
 			$hidden_editar_egresodetalle_array = str_replace('<!--HDN_EGRESODETALLE-->', '', $hidden_editar_egresodetalle_array);
 			$costo_base = 0;
 			foreach ($egresodetalle_collection as $clave=>$valor) $costo_base = $costo_base + $valor['IMPORTE'];
@@ -302,8 +296,7 @@ class EgresoView extends View {
 			$hidden_editar_egresodetalle_array = '';
 		}
 
-		unset($obj_egreso->cliente->infocontacto_collection, $obj_egreso->vendedor->infocontacto_collection, 
-			  $obj_egreso->cliente->vendedor->infocontacto_collection, $obj_egreso->egresoentrega);
+		unset($obj_egreso->cliente->infocontacto_collection, $obj_egreso->vendedor->infocontacto_collection, $obj_egreso->cliente->vendedor->infocontacto_collection, $obj_egreso->egresoentrega);
 		$txt_cliente = $obj_egreso->cliente->documentotipo->denominacion . ' ' . $obj_egreso->cliente->documento;
 		$txt_cliente .= ' - ' . $obj_egreso->cliente->razon_social;
 		$obj_egreso->cliente->descripcion = $txt_cliente;
@@ -312,8 +305,7 @@ class EgresoView extends View {
 		$obj_egreso->vendedor->descripcion = $txt_vendedor;
 		$obj_egreso->vendedor_id = $obj_egreso->vendedor->vendedor_id;
 		$obj_egreso = $this->set_dict($obj_egreso);
-		$render = str_replace('{tbl_producto}', $tbl_producto_array, $gui);
-		$render = str_replace('{egreso-costobase}', $costo_base, $render);
+		$render = str_replace('{egreso-costobase}', $costo_base, $gui);
 		$render = str_replace('{tbl_editar_egresodetalle_array}', $tbl_editar_egresodetalle_array, $render);
 		$render = str_replace('{hidden_editar_egresodetalle_array}', $hidden_editar_egresodetalle_array, $render);
 		$render = $this->render($obj_egreso, $render);
@@ -473,6 +465,30 @@ class EgresoView extends View {
 		
 		$gui = $this->render($obj_producto, $gui);
 		$gui = str_replace('{cantidad_disponible}', $cantidad_disponible, $gui);
+		print $gui;
+	}
+
+	function traer_formulario_editar_producto_ajax($obj_producto, $old_costo) {
+		$gui = file_get_contents("static/modules/egreso/formulario_editar_egreso_producto.html");		
+		$costo_iva = (($obj_producto->costo * $obj_producto->iva) / 100) + $obj_producto->costo;
+		$valor_ganancia = $costo_iva * $obj_producto->porcentaje_ganancia / 100;
+		$costo_iva_ganancia = $costo_iva + $valor_ganancia;
+		$valor_descuento = $costo_iva_ganancia * $obj_producto->descuento / 100;
+		$valor_venta = $costo_iva_ganancia - $valor_descuento;
+		$obj_producto->costo = round($obj_producto->costo, 3);
+		$obj_producto->costo_iva = round($costo_iva, 3);
+		$obj_producto->valor_ganancia = round($valor_ganancia, 3);
+		$obj_producto->valor_descuento = round($valor_descuento, 3);
+		$obj_producto->valor_venta = round($valor_venta, 3);
+		if (is_array($old_costo) AND !empty($old_costo)) {
+			$old_costo = $old_costo[0]['COSTO'];
+			$obj_producto->costo = $old_costo;
+		}
+		
+		$obj_producto->descripcion = $obj_producto->productomarca->denominacion . ' ' . $obj_producto->denominacion . ' ';
+		$obj_producto->contenido_unidad = $obj_producto->productounidad->denominacion;
+		$obj_producto = $this->set_dict($obj_producto);
+		$gui = $this->render($obj_producto, $gui);
 		print $gui;
 	}
 
