@@ -492,6 +492,31 @@ class EgresoView extends View {
 		print $gui;
 	}
 
+	function traer_formulario_reingreso_producto_ajax($obj_producto, $obj_ingresodetalle) {
+		$gui = file_get_contents("static/modules/egreso/formulario_reingreso_producto.html");		
+		
+		$costo_iva = (($obj_producto->costo * $obj_producto->iva) / 100) + $obj_producto->costo;
+		$valor_ganancia = $costo_iva * $obj_producto->porcentaje_ganancia / 100;
+		$costo_iva_ganancia = $costo_iva + $valor_ganancia;
+		$valor_descuento = $costo_iva_ganancia * $obj_producto->descuento / 100;
+		$valor_venta = $costo_iva_ganancia - $valor_descuento;
+		
+		$obj_producto->costo = round($obj_producto->costo, 3);
+		$obj_producto->costo_iva = round($costo_iva, 3);
+		$obj_producto->valor_ganancia = round($valor_ganancia, 3);
+		$obj_producto->valor_descuento = round($valor_descuento, 3);
+		$obj_producto->valor_venta = round($valor_venta, 3);
+		$obj_producto->descripcion = $obj_producto->productomarca->denominacion . ' ' . $obj_producto->denominacion . ' ';
+		$obj_producto->contenido_unidad = $obj_producto->productounidad->denominacion;
+		$obj_producto = $this->set_dict($obj_producto);
+		
+		$obj_ingresodetalle = $this->set_dict($obj_ingresodetalle);
+		
+		$gui = $this->render($obj_producto, $gui);
+		$gui = $this->render($obj_ingresodetalle, $gui);
+		print $gui;
+	}
+
 	function traer_formulario_producto_codebar_ajax($obj_producto, $cantidad_disponible, $pesaje) {
 		$gui = file_get_contents("static/modules/egreso/formulario_producto_barcode.html");		
 		$costo_flete = $obj_producto->costo + (($obj_producto->costo * $obj_producto->flete) / 100);
