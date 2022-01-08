@@ -164,8 +164,7 @@ class IngresoView extends View {
 			$array_producto_ids = implode(',', $array_producto_ids);
 			$obj_ingreso->array_producto_ids = $array_producto_ids;
 
-			$tbl_editar_ingresodetalle_array = $this->render_regex_dict('TBL_INGRESODETALLE', $tbl_editar_ingresodetalle_array, 
-																		$ingresodetalle_collection);
+			$tbl_editar_ingresodetalle_array = $this->render_regex_dict('TBL_INGRESODETALLE', $tbl_editar_ingresodetalle_array, $ingresodetalle_collection);
 			$tbl_editar_ingresodetalle_array = str_replace('<!--TBL_INGRESODETALLE-->', '', $tbl_editar_ingresodetalle_array);
 			$hidden_editar_ingresodetalle_array = $this->render_regex_dict('HDN_INGRESODETALLE', $hidden_editar_ingresodetalle_array, 
 																		   $ingresodetalle_collection);
