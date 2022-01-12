@@ -113,13 +113,39 @@ class PedidoVendedorController {
 	}
 
 	function traer_formulario_producto_ajax($arg) {
-		$producto_id = $arg;
+		$ids = explode('@', $arg);
+		$producto_id = $ids[0];
+		$pedidovendedor_id = $ids[1];
+
+		$this->model->pedidovendedor_id = $pedidovendedor_id;
+		$this->model->get();
+		$vendedor_id = $this->model->vendedor_id;
+
+		$select = "uv.usuario_id AS ID";
+		$from = "usuariovendedor uv";
+		$where = "uv.vendedor_id = {$vendedor_id}";
+		$usuario_id = CollectorCondition()->get('UsuarioVendedor', $where, 4, $from, $select);
+		$usuario_id = (is_array($usuario_id) AND !empty($usuario_id)) ? $usuario_id[0]['ID'] : 0;
+
 		$pm = new Producto();
 		$pm->producto_id = $producto_id;
 		$pm->get();
-		$select = "MAX(s.stock_id) AS MAXID";
-		$from = "stock s";
-		$where = "s.producto_id = {$producto_id}";
+
+		if ($usuario_id == 0) {
+			$select = "MAX(s.stock_id) AS MAXID";
+			$from = "stock s";
+			$where = "s.producto_id = {$producto_id} AND s.almacen_id = 1";
+		} else {
+			$um = new Usuario();
+			$um->usuario_id = $usuario_id;
+			$um->get();
+			$almacen_id = $um->almacen->almacen_id;
+
+			$select = "MAX(s.stock_id) AS MAXID";
+			$from = "stock s";
+			$where = "s.producto_id = {$producto_id} AND s.almacen_id = {$almacen_id}";
+		}
+
 		$stock_id = CollectorCondition()->get('Stock', $where, 4, $from, $select);
 		$stock_id = $stock_id[0]['MAXID'];
 
