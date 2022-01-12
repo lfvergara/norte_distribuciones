@@ -22,6 +22,7 @@ class Egreso extends StandardObject {
 		$this->emitido = 0;
 		$this->dias_alerta_comision = 0;
 		$this->dias_vencimiento = 0;
+		$this->usuario_id = 0;
 		$this->cliente = $cliente;
         $this->vendedor = $vendedor;
         $this->tipofactura = $tipofactura;
