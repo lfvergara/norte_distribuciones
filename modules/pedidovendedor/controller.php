@@ -581,7 +581,8 @@ class PedidoVendedorController {
 
 	function guardar_procesar() {
 		SessionHandler()->check_session();
-
+		$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
+		
 		$com = new Configuracion();
 		$com->configuracion_id = 1;
 		$com->get();
@@ -738,7 +739,6 @@ class PedidoVendedorController {
 		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id";
 		$where = "ed.egreso_id = {$egreso_id}";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
-
 		$flag_error = 0;
 		if ($tipofactura == 1 OR $tipofactura == 3) {
 			try {
@@ -789,7 +789,7 @@ class PedidoVendedorController {
 				$select = "MAX(s.stock_id) AS STOCK_ID";
 				$from = "stock s";
 				$where = "s.producto_id = {$temp_producto_id} AND s.almacen_id = {$almacen_id}";
-				$rst_stock = CollectorCondition()->get('Stock', $where_stock, 4, $from_stock, $select_stock);
+				$rst_stock = CollectorCondition()->get('Stock', $where, 4, $from, $select);
 
 				if ($rst_stock == 0 || empty($rst_stock) || !is_array($rst_stock)) {
 					$sm = new Stock();
@@ -822,6 +822,7 @@ class PedidoVendedorController {
 					$sm->save();
 				}
 			}
+
 			
 			$this->model->pedidovendedor_id = filter_input(INPUT_POST, 'pedidovendedor_id');
 			$this->model->get();
