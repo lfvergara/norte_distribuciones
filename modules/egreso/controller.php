@@ -1687,7 +1687,7 @@ class EgresoController {
 		$cm->cliente_id = $arg;
 		$cm->get();
 		$tipofactura = $cm->tipofactura->tipofactura_id . '@';
-		$tipofactura .= $cm->tipofactura->nomenclatura . ' - ' . $cm->tipofactura->denominacion;
+		$tipofactura .= $cm->tipofactura->nomenclatura . ' - ' . $cm->tipofactura->denominacion;		
 		print $tipofactura;
 	}
 
@@ -1698,6 +1698,15 @@ class EgresoController {
 		$condicioniva = $cm->condicioniva->condicioniva_id . '@' . $cm->condicioniva->denominacion;
 		print $condicioniva;
 	}
+
+	function traer_cliente_condicionpago_ajax($arg) {
+		$cm = new Cliente();
+		$cm->cliente_id = $arg;
+		$cm->get();
+		$habilita_cuenta_corriente = $cm->habilita_cuenta_corriente;
+		$condicionpago_collection = Collector()->get('CondicionPago');
+		$this->view->traer_cliente_condicionpago_ajax($condicionpago_collection, $habilita_cuenta_corriente);
+	}	
 
 	function verificar_vencimiento_cuenta_ajax($arg) {
 		$ccm = new ConfiguracionComprobante();

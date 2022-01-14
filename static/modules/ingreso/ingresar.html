@@ -364,7 +364,7 @@
             costo_total = parseFloat(costo_total) - parseFloat(valor_desc3);
         }
 
-        costo_total = costo_total.toFixed(3);
+        costo_total = costo_total.toFixed(4);
 
         document.getElementById('costo_total').value = costo_total;
     }
@@ -380,10 +380,10 @@
         } else {
             var valor_final = parseFloat(costo_base) + parseFloat(iva) + parseFloat(percepcion_iva) + parseFloat(ingresos_brutos) + parseFloat(impuesto_interno);
 
-            document.getElementById('suma_total').innerHTML = 'TOTAL: $' + costo_base.toFixed(2);
-            document.getElementById('suma_total_iva').innerHTML = 'TOTAL(IVA): $' + valor_final.toFixed(2);
-            document.getElementById('input_suma_total').value = costo_base.toFixed(2);
-            document.getElementById('input_suma_total_iva').value = valor_final.toFixed(2);
+            document.getElementById('suma_total').innerHTML = 'TOTAL: $' + costo_base.toFixed(4);
+            document.getElementById('suma_total_iva').innerHTML = 'TOTAL(IVA): $' + valor_final.toFixed(4);
+            document.getElementById('input_suma_total').value = costo_base.toFixed(4);
+            document.getElementById('input_suma_total_iva').value = valor_final.toFixed(4);
             buscarProducto();
         }
     }
@@ -531,10 +531,10 @@
             //VALOR FINAL
             var valor_final = parseFloat(costo_base) + parseFloat(iva) + parseFloat(percepcion_iva) + parseFloat(ingresos_brutos) + parseFloat(impuesto_interno);
             
-            document.getElementById('suma_total').innerHTML = 'SUBTOTAL: $' + costo_base.toFixed(2);
-            document.getElementById('suma_total_iva').innerHTML = 'TOTAL: $' + valor_final.toFixed(2);
-            document.getElementById('input_suma_total').value = costo_base.toFixed(2);
-            document.getElementById('input_suma_total_iva').value = valor_final.toFixed(2);
+            document.getElementById('suma_total').innerHTML = 'SUBTOTAL: $' + costo_base.toFixed(4);
+            document.getElementById('suma_total_iva').innerHTML = 'TOTAL: $' + valor_final.toFixed(4);
+            document.getElementById('input_suma_total').value = costo_base.toFixed(4);
+            document.getElementById('input_suma_total_iva').value = valor_final.toFixed(4);
 
             array_ids.push(producto_id);
             buscarProducto();
@@ -583,10 +583,10 @@
             //VALOR FINAL
             var valor_final = parseFloat(costo_base) + parseFloat(iva) + parseFloat(percepcion_iva) + parseFloat(ingresos_brutos) + parseFloat(impuesto_interno);
             
-            document.getElementById('suma_total').innerHTML = 'SUBTOTAL: $' + costo_base.toFixed(2);
-            document.getElementById('suma_total_iva').innerHTML = 'TOTAL: $' + valor_final.toFixed(2);
-            document.getElementById('input_suma_total').value = costo_base.toFixed(2);
-            document.getElementById('input_suma_total_iva').value = valor_final.toFixed(2);
+            document.getElementById('suma_total').innerHTML = 'SUBTOTAL: $' + costo_base.toFixed(4);
+            document.getElementById('suma_total_iva').innerHTML = 'TOTAL: $' + valor_final.toFixed(4);
+            document.getElementById('input_suma_total').value = costo_base.toFixed(4);
+            document.getElementById('input_suma_total_iva').value = valor_final.toFixed(4);
 
             buscarProducto();
         }
@@ -621,10 +621,10 @@
         //VALOR FINAL
         var valor_final = parseFloat(costo_base) + parseFloat(iva) + parseFloat(percepcion_iva) + parseFloat(ingresos_brutos) + parseFloat(impuesto_interno);
 
-        document.getElementById('suma_total').innerHTML = 'TOTAL: $' + costo_base.toFixed(2);
-        document.getElementById('suma_total_iva').innerHTML = 'TOTAL(IVA): $' + valor_final.toFixed(2);
-        document.getElementById('input_suma_total').value = costo_base.toFixed(2);
-        document.getElementById('input_suma_total_iva').value = valor_final.toFixed(2);
+        document.getElementById('suma_total').innerHTML = 'TOTAL: $' + costo_base.toFixed(4);
+        document.getElementById('suma_total_iva').innerHTML = 'TOTAL(IVA): $' + valor_final.toFixed(4);
+        document.getElementById('input_suma_total').value = costo_base.toFixed(4);
+        document.getElementById('input_suma_total_iva').value = valor_final.toFixed(4);
 
         bodyTblProducto.removeChild(trTblProducto);   
         div_array_ingresos.removeChild(input_producto_id);
