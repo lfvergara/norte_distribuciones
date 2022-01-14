@@ -357,6 +357,7 @@
                 async: false
         }).responseText;
 
+        document.getElementById('div_condicion_pago').innerHTML = condicionpago;
         var elementos_cliente_listaprecio = cliente_listaprecio.split('@');
         var elementos_cliente = cliente.split('@');
         var elementos_vendedor = vendedor.split('@');
@@ -400,11 +401,9 @@
                     return false;
                 } else {
                     completarCliente(elementos_tipofactura[0], elementos_tipofactura[1], elementos_condicioniva[0],elementos_condicioniva[1], elementos_cliente[1], elementos_vendedor[0], elementos_vendedor[1],elementos_cliente_listaprecio[0],elementos_cliente_listaprecio[1]);
-                    document.getElementById('div_condicion_pago').innerHTML = condicionpago;
                 }
             } else {
                 completarCliente(elementos_tipofactura[0], elementos_tipofactura[1], elementos_condicioniva[0], elementos_condicioniva[1], elementos_cliente[1], elementos_vendedor[0], elementos_vendedor[1],elementos_cliente_listaprecio[0], elementos_cliente_listaprecio[1]);
-                document.getElementById('div_condicion_pago').innerHTML = condicionpago;
             }
         }
 
