@@ -4,6 +4,7 @@
 class PedidoVendedorView extends View {
 	function panel($pedidovendedor_collection, $vendedor_collection) {
 		$gui = file_get_contents("static/modules/pedidovendedor/panel.html");
+		print_r($vendedor_collection);exit;
 		$gui_tbl_vendedor = file_get_contents("static/modules/pedidovendedor/tbl_vendedor_array.html");
 		$gui_tbl_vendedor = $this->render_regex_dict('TBL_VENDEDOR', $gui_slt_vendedor, $vendedor_collection);
 
