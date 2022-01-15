@@ -2,7 +2,7 @@
 require_once 'modules/pedidovendedor/model.php';
 
 
-class FacturacionLote() {
+class FacturacionLote {
 	function proceso_lote($arg) {
 		$pedidovendedor_id = $arg;
 		$pvm = new PedidoVendedor();
