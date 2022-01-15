@@ -39,7 +39,7 @@ class PedidoVendedorController {
 		$usuariovendedor_id = CollectorCondition()->get('UsuarioVendedor', $where, 4, $from, $select);
 
     	$dia_actual = date('Y-m-d');
-    	$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, UPPER(cl.nombre_fantasia) AS FANTASIA, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, UPPER(CONCAT(ve.APELLIDO, ' ', ve.nombre)) AS VENDEDOR, CASE pv.estadopedido WHEN 1 THEN 'inline-block' WHEN 2 THEN 'none' WHEN 3 THEN 'none' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 2 THEN 'PROCESADO' WHEN 3 THEN 'CANCELADO' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 2 THEN 'success' WHEN 3 THEN 'danger' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED, cl.cliente_id AS CLIID";
+    	$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, UPPER(cl.nombre_fantasia) AS FANTASIA, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, UPPER(CONCAT(ve.APELLIDO, ' ', ve.nombre)) AS VENDEDOR, CASE pv.estadopedido WHEN 1 THEN 'inline-block' WHEN 2 THEN 'none' WHEN 3 THEN 'none' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 2 THEN 'PROCESADO' WHEN 3 THEN 'CANCELADO' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 2 THEN 'success' WHEN 3 THEN 'danger' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED, cl.cliente_id AS CLIID, pv.egreso_id AS EGRID";
 
 		if ($usuario_rol == 5) {
 			$vendedor_id = $usuariovendedor_id[0]['VENID'];
@@ -74,6 +74,32 @@ class PedidoVendedorController {
 			} else {
 				$pedidovendedor_collection[$clave]["DISPLAY_ESTADO_CCC_VENCIDA"] = ($cant_facturas_vencidas > 0) ? 'inline-block': 'none';
 			}
+
+			$egreso_id = $valor['EGRID'];
+			if (!is_null($egreso_id) AND $egreso_id > 0) {
+				$em = new Egreso();
+				$em->egreso_id = $egreso_id;
+				$em->get();
+
+				$select = "eafip.punto_venta AS PUNTO_VENTA, eafip.numero_factura AS NUMERO_FACTURA, tf.nomenclatura AS TIPOFACTURA, eafip.cae AS CAE, eafip.vencimiento AS FVENCIMIENTO, eafip.fecha AS FECHA, tf.tipofactura_id AS TF_ID";
+				$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
+				$where = "eafip.egreso_id = {$egreso_id}";
+				$egresoafip = CollectorCondition()->get('EgresoAfip', $where, 4, $from, $select);
+
+				if (is_array($egresoafip) AND !empty($egresoafip)) {
+					$em->punto_venta = $egresoafip[0]['PUNTO_VENTA'];
+					$em->numero_factura = $egresoafip[0]['NUMERO_FACTURA'];
+					$em->tipofactura->nomenclatura = $egresoafip[0]['TIPOFACTURA'];
+				}
+
+				$tipofactura = $em->tipofactura->nomenclatura;
+				$punto_venta = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
+        		$numero_factura = "{$tipofactura} {$punto_venta}-" . str_pad($em->numero_factura, 8, '0', STR_PAD_LEFT);
+			} else {
+				$numero_factura = 'Sin Información';
+			}
+
+			$pedidovendedor_collection[$clave]["EGRESO"] = $numero_factura;
 		}		
 
 		$select = "v.vendedor_id AS ID, CONCAT(v.apellido, ' ', v.nombre) AS DENOMINACION";
