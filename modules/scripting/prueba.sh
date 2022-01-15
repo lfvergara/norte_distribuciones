@@ -22,6 +22,8 @@ do
  	#echo ${line[0]}
 
 	pedido_id=${line[0]}
+	#wget -q -O - "https://www.distribucionesnorte.com.ar/norte_distribuciones/pedidovendedor/consultar/4"
+	php-cgi -f /srv/websites/norte_distribuciones/modules/scripting/FacturacionLote.php pedidovendedor=$pedido_id
 	echo $pedido_id
 done < <(mysql  -u Takodana -pn0rt3d15tr1buc10n35 dh.tordo.prod -h localhost -N < getPedidoVendedor.sql &)
 
