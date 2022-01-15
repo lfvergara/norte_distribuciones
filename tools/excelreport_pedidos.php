@@ -10,7 +10,7 @@ class ExcelReport extends View {
   public $estilo_informacion = "";
   public $abecedario = array("B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
 
-  function extraer_informe_conjunto($subtitulo, $array_exportacion) {
+  function extraer_informe_conjunto($subtitulo, $array_datos, $array_consolidado) {
     date_default_timezone_set('America/Mexico_City');
     if (PHP_SAPI == 'cli') die('Este archivo solo se puede ver desde un navegador web');
     $objPHPExcel = new PHPExcel();
@@ -22,11 +22,95 @@ class ExcelReport extends View {
                                  ->setKeywords("infDHTordo")
                                  ->setCategory("infDHTordo");
     
-    $tituloReporte = "Norte Distribuciones";
+    $f = 0;
+    $tituloReporte = "RR Distribuciones";
+    $fechaReporte = date("d-m-Y");
+    $softReporte = "dhTordo";
+    foreach ($array_datos as $c=>$v) {
+      $vendedor = $array_datos[$c]['VENDEDOR'];
+      $array_exportacion = $array_datos[$c]['PEDIDOS'];
+      $tituloWeb = $tituloReporte;
+      $titulosColumnas = $array_exportacion[0];
+      $cantidadColumnas = count($titulosColumnas);
+      $cantidadColumnas = $cantidadColumnas - 1;
+      $ultimaLetraPosicion = "";
+      $this->estilo();
+
+      foreach ($this->abecedario as $clave=>$valor) {
+        if ($clave <= $cantidadColumnas) {
+          $objPHPExcel->setActiveSheetIndex($c);
+          $ultimaLetraPosicion = $valor;
+        }
+      }
+
+      $objPHPExcel->setActiveSheetIndex($c)
+                  ->setShowGridlines(false)
+                  ->mergeCells("B1:C1")
+                  ->mergeCells("D1:{$ultimaLetraPosicion}1")
+                  ->setCellValue("B1", $tituloReporte)
+                  ->setCellValue("D1", $fechaReporte)
+                  ->mergeCells("B2:{$ultimaLetraPosicion}2")
+                  ->setCellValue("B2", $subtitulo . ' - ' . $vendedor);
+
+      $l = 3;
+      $breack_row_temp = '';
+      $breack_row_ant = '';
+      $color_temp = 'second_info_style';  
+      $array_pedidos = array();
+      foreach ($array_exportacion as $registro) {
+        $pedido = $registro[2];
+        $flag = substr($pedido, 0, 1);
+
+        if ($flag == 'P') {
+          $array_pedidos[] = $pedido;
+          
+            foreach ($registro as $clave=>$valor) {
+              $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp; 
+              $posicion = $this->abecedario[$clave].$l; 
+              $objPHPExcel->setActiveSheetIndex($c)
+                          ->setCellValue($posicion, $registro[$clave]);
+              $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:D{$l}");
+            }
+          
+        } else {
+          foreach ($registro as $clave=>$valor) {    
+            $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp; 
+            $posicion = $this->abecedario[$clave].$l; 
+            $objPHPExcel->setActiveSheetIndex($c)
+                        ->setCellValue($posicion, $registro[$clave]);
+            $objPHPExcel->getActiveSheet()->setSharedStyle($this->second_info_style, "B{$l}:D{$l}");
+          }
+        }
+
+        $l++;
+      }
+
+      $celdas_titulos = "B3:{$ultimaLetraPosicion}3";
+      $celdas_informacion = "B3:D3";
+      $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($this->estilo_titulo);
+      $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($this->estilo_fecha);
+      $objPHPExcel->getActiveSheet()->getStyle('B2')->applyFromArray($this->estilo_subtitulo);
+
+      //ALTOS Y ANCHOS
+      $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(2);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(14);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(14);
+      
+      $objPHPExcel->getActiveSheet()->getRowDimension(1)->setRowHeight(32);
+      $objPHPExcel->getActiveSheet()->getRowDimension(2)->setRowHeight(53);
+      
+      $objPHPExcel->getActiveSheet()->setTitle($vendedor);
+      $objPHPExcel->setActiveSheetIndex($c);
+      $objPHPExcel->createSheet();
+      $f = $f + 1;
+    }
+    
+    $tituloReporte = "RR Distribuciones";
     $fechaReporte = date("d-m-Y");
     $softReporte = "dhTordo";
     $tituloWeb = $tituloReporte;
-    $titulosColumnas = $array_exportacion[0];
+    $titulosColumnas = array_shift($array_consolidado);
     $cantidadColumnas = count($titulosColumnas);
     $cantidadColumnas = $cantidadColumnas - 1;
     $ultimaLetraPosicion = "";
@@ -34,57 +118,42 @@ class ExcelReport extends View {
 
     foreach ($this->abecedario as $clave=>$valor) {
       if ($clave <= $cantidadColumnas) {
-        $objPHPExcel->setActiveSheetIndex(0);
+        $objPHPExcel->setActiveSheetIndex($f)
+                    ->setCellValue("{$valor}3",  $titulosColumnas[$clave]);
         $ultimaLetraPosicion = $valor;
       }
     }
 
-    $objPHPExcel->setActiveSheetIndex(0)
+    $objPHPExcel->setActiveSheetIndex($f)
                 ->setShowGridlines(false)
-                ->mergeCells("B1:C1")
-                ->mergeCells("D1:{$ultimaLetraPosicion}1")
+                ->mergeCells("B1:E1")
+                ->mergeCells("F1:{$ultimaLetraPosicion}1")
                 ->setCellValue("B1", $tituloReporte)
-                ->setCellValue("D1", $fechaReporte)
+                ->setCellValue("F1", $fechaReporte)
                 ->mergeCells("B2:{$ultimaLetraPosicion}2")
                 ->setCellValue("B2", $subtitulo);
 
-    $l = 3;
+    $l = 4;
     $breack_row_temp = '';
     $breack_row_ant = '';
-    $color_temp = 'second_info_style';  
-    $array_pedidos = array();
-    foreach ($array_exportacion as $registro) {
-      $pedido = $registro[2];
-      $flag = substr($pedido, 0, 1);
-
-      if ($flag == 'P') {
-        $array_pedidos[] = $pedido;
-        
-          foreach ($registro as $clave=>$valor) {
-            $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp; 
-            $posicion = $this->abecedario[$clave].$l; 
-            $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue($posicion, $registro[$clave]);
-            $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:D{$l}");
-          }
-        
-      } else {
-        foreach ($registro as $clave=>$valor) {    
-          $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp; 
-          $posicion = $this->abecedario[$clave].$l; 
-          $objPHPExcel->setActiveSheetIndex(0)
-                      ->setCellValue($posicion, $registro[$clave]);
-          $objPHPExcel->getActiveSheet()->setSharedStyle($this->second_info_style, "B{$l}:D{$l}");
-        }
+    $color_temp = 'second_info_style';
+    foreach ($array_consolidado as $registro) {
+      foreach ($registro as $clave=>$valor) {
+        $color = $registro[1];
+        $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
+        $posicion = $this->abecedario[$clave].$l;
+        $objPHPExcel->setActiveSheetIndex($f)
+                    ->setCellValue($posicion, $registro[$clave]);
+        $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
       }
 
       $l++;
     }
 
     $celdas_titulos = "B3:{$ultimaLetraPosicion}3";
-    $celdas_informacion = "B3:D3";
+    $celdas_informacion = "B4:{$ultimaLetraPosicion}".($l-1);
     $objPHPExcel->getActiveSheet()->getStyle('B1')->applyFromArray($this->estilo_titulo);
-    $objPHPExcel->getActiveSheet()->getStyle('D1')->applyFromArray($this->estilo_fecha);
+    $objPHPExcel->getActiveSheet()->getStyle('F1')->applyFromArray($this->estilo_fecha);
     $objPHPExcel->getActiveSheet()->getStyle('B2')->applyFromArray($this->estilo_subtitulo);
 
     //ALTOS Y ANCHOS
@@ -92,22 +161,27 @@ class ExcelReport extends View {
     $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(10);
     $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(14);
     $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(14);
-    
+    $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(7);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(10);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(40);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(30);
+    $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(300);
+
     $objPHPExcel->getActiveSheet()->getRowDimension(1)->setRowHeight(32);
     $objPHPExcel->getActiveSheet()->getRowDimension(2)->setRowHeight(53);
-    
-    /*
+
     foreach ($this->abecedario as $clave=>$valor) {
       if ($clave <= $cantidadColumnas) $objPHPExcel->getActiveSheet()->getStyle("{$valor}3")->applyFromArray($this->estilo_titulo_columnas);
     }
-    */
 
-    //$objPHPExcel->getActiveSheet()->setSharedStyle($this->estilo_informacion, "B3:D3");
-    //print_r($objPHPExcel);exit;
-    $objPHPExcel->getActiveSheet()->setTitle("infDHTordo");
-    $objPHPExcel->setActiveSheetIndex(0);
-    //$objPHPExcel->getActiveSheet(0)->freezePaneByColumnAndRow(0,3);
-
+    $objPHPExcel->getActiveSheet()->setTitle('Consolidado');
+    $objPHPExcel->setActiveSheetIndex($f);
+    $objPHPExcel->getActiveSheet(1)->freezePaneByColumnAndRow(0,4);
+    
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="infDHTordo.xlsx"');
     header('Cache-Control: max-age=0');
