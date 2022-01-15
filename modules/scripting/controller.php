@@ -14,6 +14,7 @@ class FacturacionLote {
 }
 
 $temp_id = filter_input(INPUT_GET, 'pedidovendedor_id');
+echo $temp_id;
 $flc = new FacturacionLote();
 $flc->proceso_lote($temp_id);
 ?>
