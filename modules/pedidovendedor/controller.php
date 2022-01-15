@@ -139,6 +139,11 @@ class PedidoVendedorController {
 		$condicionpago_collection = Collector()->get('CondicionPago');
 		$condicioniva_collection = Collector()->get('CondicionIVA');
 		$tipofactura_collection = Collector()->get('TipoFactura');
+
+		foreach ($tipofactura_collection as $clave=>$valor) {
+			if($valor->tipofactura_id > 3) unset($tipofactura_collection[$clave]);
+		}
+
 		$this->view->agregar($producto_collection, $cliente_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection);
 	}
 
