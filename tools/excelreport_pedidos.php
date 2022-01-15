@@ -58,10 +58,10 @@ class ExcelReport extends View {
       $color_temp = 'second_info_style';  
       $array_pedidos = array();
       foreach ($array_exportacion as $registro) {
-        $pedido = $registro[2];
-        $flag = substr($pedido, 0, 1);
+        $pedido = $registro[0];
+        $flag = substr($pedido, 0, 5);
 
-        if ($flag == 'P') {
+        if ($flag == 'Pedido') {
           $array_pedidos[] = $pedido;
           
             foreach ($registro as $clave=>$valor) {
