@@ -747,9 +747,15 @@ class PedidoVendedorController {
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			$valor_neto = $neto + ($flete * $neto / 100);
+			
+			if ($tipofactura == 2) {
+				$valor_neto = $neto + ($iva * $neto / 100);
+				$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
+			} else {
+				$valor_neto = $neto + ($flete * $neto / 100);
+			}
+			
 			$total_neto = $valor_neto * $cantidad;
-
 			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
 			$ganancia = round(($ganancia_temp - $total_neto),2);
 
@@ -929,10 +935,7 @@ class PedidoVendedorController {
 	}
 
 	function proceso_lote($arg) {
-		$ids = explode('@', $arg);
-		$pedidovendedor_id = $ids[0];
-		$tipofactura = $ids[1];
-		$condicioniva = $ids[2];
+		$pedidovendedor_id = $arg;
 		
 		$pvm = new PedidoVendedor();
 		$pvm->pedidovendedor_id = $pedidovendedor_id;
@@ -942,9 +945,8 @@ class PedidoVendedorController {
 		$condicionpago = $pvm->condicionpago->condicionpago_id;
 		$subtotal = $pvm->subtotal;
 		$importe_total = $pvm->importe_total;
-		//$pvm->estadopedido = 2;
-		//$pvm->save();
-		
+		$tipofactura = $pvm->tipofactura_id;
+		$condicioniva = $pvm->condicioniva_id;
 		$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
 		
 		$com = new Configuracion();
@@ -971,7 +973,6 @@ class PedidoVendedorController {
 		$comprobante = str_pad($punto_venta, 4, '0', STR_PAD_LEFT) . "-";
 		$comprobante .= str_pad($num_factura, 8, '0', STR_PAD_LEFT);
 
-		//$vendedor_id = filter_input(INPUT_POST, 'vendedor');
 		$vm = new Vendedor();
 		$vm->vendedor_id = $vendedor_id;
 		$vm->get();
@@ -989,7 +990,6 @@ class PedidoVendedorController {
 			$almacen_id = $um->almacen->almacen_id;
 		} else {
 			$almacen_id = 1;
-			//$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
 		}
 
 		$ecm = new EgresoComision();
@@ -1000,7 +1000,6 @@ class PedidoVendedorController {
 		$ecm->save();
 		$egresocomision_id = $ecm->egresocomision_id;
 
-		//$cliente_id = filter_input(INPUT_POST, 'cliente');
 		$cm = new Cliente();
 		$cm->cliente_id = $cliente_id;
 		$cm->get();
@@ -1057,14 +1056,22 @@ class PedidoVendedorController {
 			$cuentacorrientecliente_id = $cccm->cuentacorrientecliente_id;
 		}
 
-		$egresos_array = $_POST['egreso'];
+		$select = "pvd.producto_id AS PRODUCTO_ID, pvd.codigo_producto AS CODIGO, pvd.cantidad AS CANTIDAD, pvd.costo_producto AS COSTO, pvd.valor_descuento AS VALOR_DESCUENTO, pvd.importe AS IMPORTE, pvd.descripcion_producto AS DESCRIPCION, pvd.descuento AS DESCUENTO, pvd.iva AS IVA";
+		$from = "pedidovendedordetalle pvd";
+		$where = "pvd.pedidovendedor_id = {$pedidovendedor_id}";
+		$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
+
 		$egresodetalle_ids = array();
-		foreach ($egresos_array as $egreso) {
-			$producto_id = $egreso['producto_id'];
-			$cantidad = $egreso['cantidad'];
-			$costo_producto = $egreso['costo'];
-			$valor_descuento = $egreso['importe_descuento'];
-			$importe = $egreso['costo_total'];
+		foreach ($pedidovendedordetalle_collection as $pedidovendedor) {
+			$producto_id = $pedidovendedor['PRODUCTO_ID'];
+			$cantidad = $pedidovendedor['CANTIDAD'];
+			$costo_producto = $pedidovendedor['COSTO'];
+			$descuento = $pedidovendedor['DESCUENTO'];
+			$valor_descuento = $pedidovendedor['VALOR_DESCUENTO'];
+			$importe = $pedidovendedor['IMPORTE'];
+			$codigo = $pedidovendedor['CODIGO'];
+			$descripcion = $pedidovendedor['DESCRIPCION'];
+			$iva = $pedidovendedor['IVA'];
 
 			$pm = new Producto();
 			$pm->producto_id = $producto_id;
@@ -1073,24 +1080,30 @@ class PedidoVendedorController {
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			$valor_neto = $neto + ($flete * $neto / 100);
+			
+			if ($tipofactura == 2) {
+				$valor_neto = $neto + ($iva * $neto / 100);
+				$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
+			} else {
+				$valor_neto = $neto + ($flete * $neto / 100);
+			}
+			
 			$total_neto = $valor_neto * $cantidad;
-
 			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
 			$ganancia = round(($ganancia_temp - $total_neto),2);
 
 			$edm = new EgresoDetalle();
-			$edm->codigo_producto = $egreso['codigo'];
-			$edm->descripcion_producto = $egreso['descripcion'];
+			$edm->codigo_producto = $codigo;
+			$edm->descripcion_producto = $descripcion;
 			$edm->cantidad = $cantidad;
 			$edm->valor_descuento = $valor_descuento;
-			$edm->descuento = $egreso['descuento'];
+			$edm->descuento = $descuento;
 			$edm->neto_producto = $neto;
 			$edm->costo_producto = $costo_producto;
-			$edm->iva = $egreso['iva'];
+			$edm->iva = $iva;
 			$edm->importe = $importe;
 			$edm->valor_ganancia = $ganancia;
-			$edm->producto_id = $egreso['producto_id'];
+			$edm->producto_id = $producto_id;
 			$edm->egreso_id = $egreso_id;
 			$edm->egresodetalleestado = 1;
 			$edm->flete_producto = $flete;
@@ -1098,10 +1111,6 @@ class PedidoVendedorController {
 			$egresodetalle_ids[] = $edm->egresodetalle_id;
 		}
 
-		$select = "ed.producto_id AS PRODUCTO_ID, ed.codigo_producto AS CODIGO, ed.cantidad AS CANTIDAD";
-		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id";
-		$where = "ed.egreso_id = {$egreso_id}";
-		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 		$flag_error = 0;
 		if ($tipofactura == 1 OR $tipofactura == 3) {
 			try {
@@ -1146,6 +1155,10 @@ class PedidoVendedorController {
 			}
 		}
 
+		$select = "ed.producto_id AS PRODUCTO_ID, ed.codigo_producto AS CODIGO, ed.cantidad AS CANTIDAD";
+		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id";
+		$where = "ed.egreso_id = {$egreso_id}";
+		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 		if ($flag_error == 0) {
 			foreach ($egresodetalle_collection as $egreso) {
 				$temp_producto_id = $egreso['PRODUCTO_ID'];
