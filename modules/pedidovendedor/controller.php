@@ -44,11 +44,12 @@ class PedidoVendedorController {
 		if ($usuario_rol == 5) {
 			$vendedor_id = $usuariovendedor_id[0]['VENID'];
 			$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id";
-			$where = "pv.vendedor_id = {$vendedor_id} ORDER BY cl.razon_social ASC";
+			$where = "pv.vendedor_id = {$vendedor_id} AND pv.estadopedido IN (1,4) ORDER BY cl.razon_social ASC";
 			$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
 		} else {
-			$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id ORDER BY CONCAT(ve.APELLIDO, ' ', ve.nombre) DESC";
-			$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', NULL, 4, $from, $select);
+			$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id";
+			$where = "pv.estadopedido IN (1,4) ORDER BY CONCAT(ve.APELLIDO, ' ', ve.nombre) DESC";
+			$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
 		}
 
 		$pedidovendedor_collection = (is_array($pedidovendedor_collection) AND !empty($pedidovendedor_collection)) ? $pedidovendedor_collection : array();
