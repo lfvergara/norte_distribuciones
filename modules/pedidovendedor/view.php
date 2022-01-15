@@ -39,16 +39,25 @@ class PedidoVendedorView extends View {
 		print $template;
 	}
 
-	function agregar($producto_collection, $cliente_collection) {
+	function agregar($producto_collection, $cliente_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection) {
 		$gui = file_get_contents("static/modules/pedidovendedor/agregar.html");
 		$tbl_producto_array = file_get_contents("static/modules/pedidovendedor/tbl_producto_array.html");
 		$tbl_cliente_array = file_get_contents("static/modules/pedidovendedor/tbl_cliente_array.html");
+		$slt_tipofactura = file_get_contents("static/common/slt_tipofactura.html");
+		$slt_condicionpago = file_get_contents("static/common/slt_condicionpago.html");
+		$slt_condicioniva = file_get_contents("static/common/slt_condicioniva.html");
 		
+		$slt_tipofactura = $this->render_regex('SLT_TIPOFACTURA', $slt_tipofactura, $tipofactura_collection);
+		$slt_condicionpago = $this->render_regex('SLT_CONDICIONPAGO', $slt_condicionpago, $condicionpago_collection);
+		$slt_condicioniva = $this->render_regex('SLT_CONDICIONIVA', $slt_condicioniva, $condicioniva_collection);
 		$tbl_producto_array = $this->render_regex_dict('TBL_PRODUCTO', $tbl_producto_array, $producto_collection);
 		$tbl_cliente_array = $this->render_regex_dict('TBL_CLIENTE', $tbl_cliente_array, $cliente_collection);
 		
 		$render = str_replace('{hora}', date('H:i:s'), $gui);
 		$render = str_replace('{fecha}', date('Y-m-d'), $render);
+		$render = str_replace('{slt_tipofactura}', $slt_tipofactura, $render);
+		$render = str_replace('{slt_condicionpago}', $slt_condicionpago, $render);
+		$render = str_replace('{slt_condicioniva}', $slt_condicioniva, $render);
 		$render = str_replace('{tbl_producto}', $tbl_producto_array, $render);
 		$render = str_replace('{tbl_cliente}', $tbl_cliente_array, $render);
 		$render = $this->render_breadcrumb($render);
