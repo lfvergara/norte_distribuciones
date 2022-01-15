@@ -30,7 +30,7 @@ class PedidoVendedorView extends View {
 				break;
 		}
 
-		$tbl_pedidovendedor_array = $this->render_regex_dict('TBL_PEDIDOVENDEDOR', $tbl_pedidovendedor_array, $pedidovendedor_collection);		
+		$tbl_pedidovendedor_array = $this->render_regex_dict('TBL_PEDIDOVENDEDOR', $tbl_pedidovendedor_array, $pedidovendedor_collection);	
 		$render = str_replace('{tbl_pedidovendedor}', $tbl_pedidovendedor_array, $gui);
 		$render = str_replace('{slt_vendedor}', $gui_slt_vendedor, $render);
 		$render = str_replace('{usuario-display_descargar_pedidos}', $display_descargar, $render);
