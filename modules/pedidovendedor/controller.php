@@ -524,52 +524,37 @@ class PedidoVendedorController {
 
 		//PARÁMETROS
 		$tipo_descarga = filter_input(INPUT_POST, 'tipo_busqueda');
-		$vendedor_id = filter_input(INPUT_POST, 'vendedor');
 		$desde = filter_input(INPUT_POST, 'desde');
 		$hasta = filter_input(INPUT_POST, 'hasta');
+		$array_vendedor = $_POST["vendedor_id"];
+		$array_final = array();
+		$array_pedidos = array();
+		foreach ($array_vendedor as $vendedor_id) {
+			$vm = new Vendedor();
+			$vm->vendedor_id = $vendedor_id;
+			$vm->get();
+			$vendedor_denominacion = str_replace(' ', '_', $vm->apellido) . '_' . str_replace(' ', '_', $vm->nombre);
 
-		$vm = new Vendedor();
-		$vm->vendedor_id = $vendedor_id;
-		$vm->get();
-		$vendedor_denominacion = $vm->apellido . ' ' . $vm->nombre;
-
-		$select = "CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, pv.pedidovendedor_id AS NUMPED, c.razon_social AS CLIENTE, c.nombre_fantasia AS FANTASIA, CONCAT(pm.denominacion, ' ', pr.denominacion) AS PRODUCTO, pvd.descuento AS PORDES, pvd.valor_descuento AS VALDES, pvd.cantidad AS CANTIDAD, pvd.costo_producto AS COSTO, pvd.importe AS IMPORTE, c.cliente_id AS CLIID, tf.nomenclatura AS NOMENCLATURA,pr.codigo AS CODIGO";
-		$from = "pedidovendedor pv INNER JOIN cliente c ON pv.cliente_id = c.cliente_id INNER JOIN vendedor v ON pv.vendedor_id = v.vendedor_id INNER JOIN pedidovendedordetalle pvd ON pv.pedidovendedor_id = pvd.pedidovendedor_id INNER JOIN tipofactura tf ON c.tipofactura = tf.tipofactura_id INNER JOIN producto pr ON pvd.producto_id = pr.producto_id INNER JOIN productomarca pm ON pr.productomarca = pm.productomarca_id";
-
-		switch ($tipo_descarga) {
-			case 1:
-				if ($vendedor_id == 'all') {
-					$where = "pv.fecha BETWEEN '{$desde}' AND '{$hasta}' ORDER BY c.razon_social ASC";
-				} else {
-					$where = "pv.fecha BETWEEN '{$desde}' AND '{$hasta}' AND pv.vendedor_id = {$vendedor_id} ORDER BY c.razon_social ASC";
-				}
-
-				$subtitulo = "{$vendedor_denominacion} ({$desde} - {$hasta})";
-				break;
-		}
-
-		$datos_reporte = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
-		if (is_array($datos_reporte) AND !empty($datos_reporte)) {
-			$cliente_ids = array();
-			$pedidos = array();
-
+			$select = "CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, pv.pedidovendedor_id AS NUMPED, c.razon_social AS CLIENTE, c.nombre_fantasia AS FANTASIA, CONCAT(pm.denominacion, ' ', pr.denominacion) AS PRODUCTO, pvd.descuento AS PORDES, pvd.valor_descuento AS VALDES, pvd.cantidad AS CANTIDAD, pvd.costo_producto AS COSTO, pvd.importe AS IMPORTE, c.cliente_id AS CLIID, tf.nomenclatura AS NOMENCLATURA,pr.codigo AS CODIGO";
+			$from = "pedidovendedor pv INNER JOIN cliente c ON pv.cliente_id = c.cliente_id INNER JOIN vendedor v ON pv.vendedor_id = v.vendedor_id INNER JOIN pedidovendedordetalle pvd ON pv.pedidovendedor_id = pvd.pedidovendedor_id INNER JOIN tipofactura tf ON c.tipofactura = tf.tipofactura_id INNER JOIN producto pr ON pvd.producto_id = pr.producto_id INNER JOIN productomarca pm ON pr.productomarca = pm.productomarca_id";
+			$where = "pv.fecha BETWEEN '{$desde}' AND '{$hasta}' AND pv.vendedor_id = {$vendedor_id} ORDER BY c.razon_social ASC";
+			$datos_reporte = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
+			$pestaña = "{$vendedor_denominacion}";
+			
 			$array_exportacion = array();
-			foreach ($datos_reporte as $clave=>$valor) {
-				$cliente_id = $valor["CLIID"];
-				$numpedido = $valor["NUMPED"];
+			if (is_array($datos_reporte) AND !empty($datos_reporte)) {
+				$cliente_ids = array();
+				$pedidos = array();
 
-				if (!in_array($cliente_id, $cliente_ids) AND !in_array($numpedido, $pedidos)) {
-					$cliente_ids[] = $cliente_id;
-					$pedidos[] = $numpedido;
-					$array_encabezados = array($valor["CLIENTE"], $valor["NOMENCLATURA"], 'P'. $valor["NUMPED"]);
-					$array_exportacion[] = $array_encabezados;
-					$array_temp = array();
-					$array_temp = array($valor["CODIGO"].' - '.$valor["PRODUCTO"]
-										, $valor["CANTIDAD"]
-										, $valor["PORDES"] . '%');
-					$array_exportacion[] = $array_temp;
-				} else {
-					if (in_array($cliente_id, $cliente_ids) AND !in_array($numpedido, $pedidos)) {
+				foreach ($datos_reporte as $clave=>$valor) {
+					$cliente_id = $valor["CLIID"];
+					$numpedido = $valor["NUMPED"];
+					if (!in_array($numpedido, $array_pedidos)) {
+						$array_pedidos[] = $valor["NUMPED"];
+					}
+
+					if (!in_array($cliente_id, $cliente_ids) AND !in_array($numpedido, $pedidos)) {
+						$cliente_ids[] = $cliente_id;
 						$pedidos[] = $numpedido;
 						$array_encabezados = array($valor["CLIENTE"], $valor["NOMENCLATURA"], 'P'. $valor["NUMPED"]);
 						$array_exportacion[] = $array_encabezados;
@@ -579,17 +564,69 @@ class PedidoVendedorController {
 											, $valor["PORDES"] . '%');
 						$array_exportacion[] = $array_temp;
 					} else {
-						$array_temp = array();
-						$array_temp = array($valor["CODIGO"].' - '.$valor["PRODUCTO"]
-											, $valor["CANTIDAD"]
-											, $valor["PORDES"] . '%');
-						$array_exportacion[] = $array_temp;
+						if (in_array($cliente_id, $cliente_ids) AND !in_array($numpedido, $pedidos)) {
+							$pedidos[] = $numpedido;
+							$array_encabezados = array($valor["CLIENTE"], $valor["NOMENCLATURA"], 'P'. $valor["NUMPED"]);
+							$array_exportacion[] = $array_encabezados;
+							$array_temp = array();
+							$array_temp = array($valor["CODIGO"].' - '.$valor["PRODUCTO"]
+												, $valor["CANTIDAD"]
+												, $valor["PORDES"] . '%');
+							$array_exportacion[] = $array_temp;
+						} else {
+							$array_temp = array();
+							$array_temp = array($valor["CODIGO"].' - '.$valor["PRODUCTO"]
+												, $valor["CANTIDAD"]
+												, $valor["PORDES"] . '%');
+							$array_exportacion[] = $array_temp;
+						}
 					}
 				}
 			}
+
+			if (!empty($array_exportacion)) {
+				$temp_array = array();
+				$temp_array['VENDEDOR'] = $vendedor_denominacion;
+				$temp_array['PEDIDOS'] = $array_exportacion;
+
+				$array_final[] = $temp_array;
+			}
 		}
 
-		ExcelReport()->extraer_informe_conjunto($subtitulo, $array_exportacion);
+		$pedido_ids = implode(',', $array_pedidos);
+		$array_productos = array();
+		foreach ($array_pedidos as $pedidovendedor_id) {
+			$select = 'pvd.codigo_producto AS COD, pvd.descripcion_producto AS PRODUCTO, pvd.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD';
+			$from = 'pedidovendedordetalle pvd INNER JOIN producto pr ON pvd.producto_id = pr.producto_id INNER JOIN productounidad pu ON pr.productounidad = pu.productounidad_id';
+			$where = "pvd.pedidovendedor_id = {$pedidovendedor_id}";
+			$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
+
+			foreach ($pedidovendedordetalle_collection as $clave => $producto) {
+				$key = array_search($producto['COD'], array_column($array_productos, 'COD'));
+				if (false !== $key OR !empty($key)) {
+					$array_productos[$key]['CANTIDAD'] = $array_productos[$key]['CANTIDAD'] + $producto['CANTIDAD'];
+ 				} else {
+					array_push($array_productos, $producto);
+				}
+			}
+		}
+		
+		$array_encabezados2 = array('CODIGO', 'PRODUCTO', 'CANTIDAD', 'UNIDAD', '', '', '');
+		$array_exportacion2[] = $array_encabezados2;
+		foreach ($array_productos as $producto) {
+			$array_temp = array(
+							$producto['COD']
+							, $producto['PRODUCTO']
+							, $producto['CANTIDAD']
+							, $producto['UNIDAD']
+							, ''
+							, ''
+							, '');
+			$array_exportacion2[] = $array_temp;
+		}
+			
+		$subtitulo = "Pedidos desde {$desde} hasta {$hasta}";
+		ExcelReport()->extraer_informe_conjunto($subtitulo, $array_final, $array_exportacion2);
 		exit;
 	}
 
