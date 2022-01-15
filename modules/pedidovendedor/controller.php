@@ -556,7 +556,7 @@ class PedidoVendedorController {
 					if (!in_array($cliente_id, $cliente_ids) AND !in_array($numpedido, $pedidos)) {
 						$cliente_ids[] = $cliente_id;
 						$pedidos[] = $numpedido;
-						$array_encabezados = array($valor["CLIENTE"], $valor["NOMENCLATURA"], 'P'. $valor["NUMPED"]);
+						$array_encabezados = array("Pedido N°: " . $valor["NUMPED"] . " - Tipo Factura: " . $valor["NOMENCLATURA"] . " - " . $valor["CLIENTE"], "Cantidad", "Descuento");
 						$array_exportacion[] = $array_encabezados;
 						$array_temp = array();
 						$array_temp = array($valor["CODIGO"].' - '.$valor["PRODUCTO"]
@@ -566,7 +566,7 @@ class PedidoVendedorController {
 					} else {
 						if (in_array($cliente_id, $cliente_ids) AND !in_array($numpedido, $pedidos)) {
 							$pedidos[] = $numpedido;
-							$array_encabezados = array($valor["CLIENTE"], $valor["NOMENCLATURA"], 'P'. $valor["NUMPED"]);
+							$array_encabezados = array("Pedido N°: " . $valor["NUMPED"] . " - Tipo Factura: " . $valor["NOMENCLATURA"] . " - " . $valor["CLIENTE"], "Cantidad", "Descuento");
 							$array_exportacion[] = $array_encabezados;
 							$array_temp = array();
 							$array_temp = array($valor["CODIGO"].' - '.$valor["PRODUCTO"]

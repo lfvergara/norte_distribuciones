@@ -23,7 +23,7 @@ class ExcelReport extends View {
                                  ->setCategory("infDHTordo");
     
     $f = 0;
-    $tituloReporte = "RR Distribuciones";
+    $tituloReporte = "Norte Distribuciones";
     $fechaReporte = date("d-m-Y");
     $softReporte = "dhTordo";
     foreach ($array_datos as $c=>$v) {
@@ -106,7 +106,7 @@ class ExcelReport extends View {
       $f = $f + 1;
     }
     
-    $tituloReporte = "RR Distribuciones";
+    $tituloReporte = "Norte Distribuciones";
     $fechaReporte = date("d-m-Y");
     $softReporte = "dhTordo";
     $tituloWeb = $tituloReporte;
