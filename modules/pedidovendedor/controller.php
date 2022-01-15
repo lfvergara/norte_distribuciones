@@ -890,5 +890,14 @@ class PedidoVendedorController {
 
 		header("Location: " . URL_APP . "/egreso/consultar/{$egreso_id}");
 	}
+
+	function proceso_lote($arg) {
+		$pedidovendedor_id = $arg;
+		$pvm = new PedidoVendedor();
+		$pvm->pedidovendedor_id = $pedidovendedor_id;
+		$pvm->get();
+		$pvm->estadopedido = 2;
+		$pvm->save();
+	}
 }
 ?>
