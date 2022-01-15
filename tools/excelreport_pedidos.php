@@ -59,7 +59,7 @@ class ExcelReport extends View {
       $array_pedidos = array();
       foreach ($array_exportacion as $registro) {
         $pedido = $registro[0];
-        $flag = substr($pedido, 0, 5);
+        $flag = substr($pedido, 0, 6);
 
         if ($flag == 'Pedido') {
           $array_pedidos[] = $pedido;
