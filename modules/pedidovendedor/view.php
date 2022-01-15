@@ -5,7 +5,7 @@ class PedidoVendedorView extends View {
 	function panel($pedidovendedor_collection, $vendedor_collection) {
 		$gui = file_get_contents("static/modules/pedidovendedor/panel.html");
 		$gui_tbl_vendedor = file_get_contents("static/modules/pedidovendedor/tbl_vendedor_array.html");
-		$gui_tbl_vendedor = $this->render_regex_dict('SLT_VENDEDOR', $gui_slt_vendedor, $vendedor_collection);
+		$gui_tbl_vendedor = $this->render_regex_dict('TBL_VENDEDOR', $gui_slt_vendedor, $vendedor_collection);
 
 		$user_rol = $_SESSION["data-login-" . APP_ABREV]["usuario-configuracionmenu"];
 		switch ($user_rol) {
