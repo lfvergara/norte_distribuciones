@@ -4,8 +4,8 @@
 class PedidoVendedorView extends View {
 	function panel($pedidovendedor_collection, $vendedor_collection) {
 		$gui = file_get_contents("static/modules/pedidovendedor/panel.html");
-		$gui_slt_vendedor = file_get_contents("static/common/slt_vendedor_array.html");
-		$gui_slt_vendedor = $this->render_regex_dict('SLT_VENDEDOR', $gui_slt_vendedor, $vendedor_collection);
+		$gui_tbl_vendedor = file_get_contents("static/modules/pedidovendedor/tbl_vendedor_array.html");
+		$gui_tbl_vendedor = $this->render_regex_dict('SLT_VENDEDOR', $gui_slt_vendedor, $vendedor_collection);
 
 		$user_rol = $_SESSION["data-login-" . APP_ABREV]["usuario-configuracionmenu"];
 		switch ($user_rol) {
@@ -32,7 +32,7 @@ class PedidoVendedorView extends View {
 
 		$tbl_pedidovendedor_array = $this->render_regex_dict('TBL_PEDIDOVENDEDOR', $tbl_pedidovendedor_array, $pedidovendedor_collection);	
 		$render = str_replace('{tbl_pedidovendedor}', $tbl_pedidovendedor_array, $gui);
-		$render = str_replace('{slt_vendedor}', $gui_slt_vendedor, $render);
+		$render = str_replace('{slt_vendedor}', $gui_tbl_vendedor, $render);
 		$render = str_replace('{usuario-display_descargar_pedidos}', $display_descargar, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
