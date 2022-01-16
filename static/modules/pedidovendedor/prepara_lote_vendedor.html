@@ -33,10 +33,7 @@
         </div>
     </div>
 </div>
-<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
-    
-    
-</div>
+<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" id="div_visor_pedidovendedor"></div>
 <!-- Datatables -->
 <script src="{url_static}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{url_static}vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -50,74 +47,14 @@
         } );
     });
 
-    $(document).ready(function() {
-        $('#tbl_vendedor').dataTable( {
-            "aaSorting": [[ 0, "desc" ]]
-          , "iDisplayLength":5
-        } );
-    });
+    function traerPedido(pedidovendedor_id) {
+        var traerPedido = $.ajax({
+            url: '{url_app}/pedidovendedor/traer_pedidovendedor_procesolote_ajax/' + pedidovendedor_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
 
-    array_ids = new Array();
-    
-    function cargarVendedorReporte(vendedor_id) {
-        var flag = array_ids.indexOf(vendedor_id);
-        var descripcion = document.getElementById('tbl_den_' + vendedor_id).innerHTML;
-        if(parseInt(flag) === -1) {
-            if (array_ids.length <= 1) {
-                var bodyTblVendedor = document.getElementById('bodyTblVendedor');
-
-                /* FILA */
-                var trTblVendedor = document.createElement("tr");
-                trTblVendedor.setAttribute("id", "idTrTbl_" + vendedor_id);
-
-                var tdTblBtnQuitar = document.createElement("td");
-                var tdTblDescripcion = document.createElement("td");
-
-                var btnQuitar = document.createElement("a");
-                btnQuitar.setAttribute("href", "#");
-                btnQuitar.setAttribute("id", "btnQuitar_" + vendedor_id);
-                btnQuitar.setAttribute("class", "btn btn-danger btn-xs");
-                btnQuitar.setAttribute("onClick", "quitarVendedor(" + vendedor_id + ");");
-                var iconQuitar = document.createElement("i");
-                iconQuitar.setAttribute("class", "fa fa-trash-o");
-                btnQuitar.appendChild(iconQuitar);
-
-                var txtDescripcion = document.createTextNode(descripcion);
-                tdTblDescripcion.appendChild(txtDescripcion);
-                tdTblBtnQuitar.appendChild(btnQuitar);
-
-                trTblVendedor.appendChild(tdTblDescripcion);
-                trTblVendedor.appendChild(tdTblBtnQuitar);
-
-                bodyTblVendedor.appendChild(trTblVendedor);
-
-                /* ARRAY */
-                var div_array_reporte_pedido_vendedor_fecha = document.getElementById('div_array_reporte_pedido_vendedor_fecha');
-                var inputVendedorId = document.createElement("input");
-                inputVendedorId.setAttribute("type", "hidden");
-                inputVendedorId.setAttribute("name", "vendedor_id[]");
-                inputVendedorId.setAttribute("id", "vendedor_id_" + vendedor_id);
-                inputVendedorId.setAttribute("value", vendedor_id);
-                div_array_reporte_pedido_vendedor_fecha.appendChild(inputVendedorId);
-                array_ids.push(vendedor_id);
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        document.getElementById('div_visor_pedidovendedor').innerHTML = traerPedido;
     }
 
-    function quitarVendedor(vendedor_id) {
-        var bodyTblVendedor = document.getElementById('bodyTblVendedor');
-        var trTblVendedor = document.getElementById("idTrTbl_" + vendedor_id);
-
-        var div_array_reporte_pedido_vendedor_fecha = document.getElementById('div_array_reporte_pedido_vendedor_fecha');
-        var input_vendedor_id = document.getElementById('vendedor_id_' + vendedor_id);
-
-        bodyTblVendedor.removeChild(trTblVendedor);
-        div_array_reporte_pedido_vendedor_fecha.removeChild(input_vendedor_id);
-        var index = array_ids.indexOf(vendedor_id);
-        array_ids.splice(index, 1);
-    }
 </script>

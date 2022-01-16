@@ -232,5 +232,43 @@ class PedidoVendedorView extends View {
 		$template = $this->render_template($render);
 		print $template;
 	}
+
+	function traer_pedidovendedor_procesolote_ajax($producto_collection, $pedidovendedordetalle_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection, $obj_pedidovendedor, $obj_cliente) {
+		$gui = file_get_contents("static/modules/pedidovendedor/procesolote_pedidovendedor_ajax.html");
+		$tbl_pedidovendedordetalle = file_get_contents("static/modules/pedidovendedor/tbl_procesolote_pedidovendedordetalle.html");
+		
+		if (!empty($pedidovendedordetalle_collection) OR is_array($pedidovendedordetalle_collection)) {
+			$array_producto_ids = array();
+			foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
+				$costo_flete = $valor['COSTO'] + (($valor['COSTO'] * $valor['FLETE']) / 100);
+				$costo_iva = (($costo_flete * $valor['IVA']) / 100) + $costo_flete;
+				$valor_ganancia = $costo_iva * $valor['VALGAN'] / 100;
+				$valor_venta = $costo_iva + $valor_ganancia;
+				$pedidovendedordetalle_collection[$clave]['COSTO'] = round($valor_venta, 2);
+				$array_producto_ids[] = '"' . $valor['PRODUCTO'] . '"';
+			}
+			
+			$array_producto_ids = implode(',', $array_producto_ids);
+			$obj_pedidovendedor->array_producto_ids = $array_producto_ids;
+
+			$tbl_pedidovendedordetalle = $this->render_regex_dict('TBL_PEDIDOVENDEDORDETALLE', $tbl_pedidovendedordetalle, $pedidovendedordetalle_collection);
+			$tbl_pedidovendedordetalle = str_replace('<!--TBL_PEDIDOVENDEDORDETALLE-->', '', $tbl_pedidovendedordetalle);
+			
+			/*
+			$hidden_editar_pedidovendedordetalle_array = $this->render_regex_dict('HDN_PEDIDOVENDEDORDETALLE', $hidden_editar_pedidovendedordetalle_array, $pedidovendedordetalle_collection);
+			$hidden_editar_pedidovendedordetalle_array = str_replace('<!--HDN_PEDIDOVENDEDORDETALLE-->', '', $hidden_editar_pedidovendedordetalle_array);
+			*/
+			$costo_base = 0;
+			foreach ($pedidovendedordetalle_collection as $clave=>$valor) $costo_base = $costo_base + $valor['IMPORTE'];
+			$obj_pedidovendedor->costo_base = $costo_base;
+		} else {
+			$costo_base = 0;
+			$tbl_pedidovendedordetalle = ''; 
+			$hidden_editar_pedidovendedordetalle_array = '';
+		}
+
+		$render = str_replace('{tbl_pedidovendedordetalle}', $tbl_pedidovendedordetalle, $gui);
+		print $render;
+	}
 }
 ?>
