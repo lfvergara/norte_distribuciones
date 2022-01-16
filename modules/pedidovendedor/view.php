@@ -186,12 +186,10 @@ class PedidoVendedorView extends View {
 			$array_producto_ids = implode(',', $array_producto_ids);
 			$obj_pedidovendedor->array_producto_ids = $array_producto_ids;
 
-			$tbl_editar_pedidovendedordetalle_array = $this->render_regex_dict('TBL_PEDIDOVENDEDORDETALLE', $tbl_editar_pedidovendedordetalle_array, 
-																			   $pedidovendedordetalle_collection);
+			$tbl_editar_pedidovendedordetalle_array = $this->render_regex_dict('TBL_PEDIDOVENDEDORDETALLE', $tbl_editar_pedidovendedordetalle_array, $pedidovendedordetalle_collection);
 			$tbl_editar_pedidovendedordetalle_array = str_replace('<!--TBL_PEDIDOVENDEDORDETALLE-->', '', $tbl_editar_pedidovendedordetalle_array);
 			
-			$hidden_editar_pedidovendedordetalle_array = $this->render_regex_dict('HDN_PEDIDOVENDEDORDETALLE', $hidden_editar_pedidovendedordetalle_array, 
-																		   		  $pedidovendedordetalle_collection);
+			$hidden_editar_pedidovendedordetalle_array = $this->render_regex_dict('HDN_PEDIDOVENDEDORDETALLE', $hidden_editar_pedidovendedordetalle_array, $pedidovendedordetalle_collection);
 			$hidden_editar_pedidovendedordetalle_array = str_replace('<!--HDN_PEDIDOVENDEDORDETALLE-->', '', $hidden_editar_pedidovendedordetalle_array);
 			$costo_base = 0;
 			foreach ($pedidovendedordetalle_collection as $clave=>$valor) $costo_base = $costo_base + $valor['IMPORTE'];
@@ -224,7 +222,8 @@ class PedidoVendedorView extends View {
 	function prepara_lote_vendedor($pedidovendedor_collection, $obj_vendedor) {
 		$gui = file_get_contents("static/modules/pedidovendedor/prepara_lote_vendedor.html");
 		$tbl_pedidovendedor = file_get_contents("static/modules/pedidovendedor/tbl_prepara_lote_pedidovendedor_array.html");
-
+		$tbl_pedidovendedor = $this->render_regex_dict('TBL_PEDIDOVENDEDOR', $tbl_pedidovendedor, $pedidovendedor_collection);
+		
 		unset($obj_vendedor->infocontacto_collection, $obj_vendedor);
 		$obj_vendedor = $this->set_dict($obj_vendedor);
 		$render = str_replace('{tbl_pedidovendedor}', $tbl_pedidovendedor, $gui);
