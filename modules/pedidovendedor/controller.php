@@ -971,6 +971,22 @@ class PedidoVendedorController {
 		header("Location: " . URL_APP . "/egreso/consultar/{$egreso_id}");
 	}
 
+	function prepara_lote_vendedor($arg) {
+		SessionHandler()->check_session();
+		$vendedor_id = $arg;
+
+		$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, CASE pv.estadopedido WHEN 1 THEN 'inline-block' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 4 THEN 'A PROCESAR' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 4 THEN 'warning' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED, cl.cliente_id AS CLIID";
+		$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id";
+		$where = "pv.vendedor_id = {$vendedor_id} AND pv.estadopedido IN (1,4) ORDER BY cl.razon_social ASC";
+		$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
+		
+		$vm = new Vendedor();
+		$vm->vendedor_id = $vendedor_id;
+		$vm->get();
+
+		$this->view->prepara_lote_vendedor($pedidovendedor_collection, $vm);
+	}
+
 	function proceso_lote($arg) {
 		$pedidovendedor_id = $arg;
 		
