@@ -1016,7 +1016,7 @@ class PedidoVendedorController {
 			if ($valor->tipofactura_id > 3) unset($tipofactura_collection[$clave]);
 		}
 
-		$this->view->traer_pedidovendedor_procesolote_ajax($producto_collection, $pedidovendedordetalle_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection, $this->model, $cm)
+		$this->view->traer_pedidovendedor_procesolote_ajax($producto_collection, $pedidovendedordetalle_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection, $this->model, $cm);
 	}
 
 	function proceso_lote($arg) {
