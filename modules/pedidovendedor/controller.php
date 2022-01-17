@@ -1024,8 +1024,18 @@ class PedidoVendedorController {
 	function guardar_linea_lote() {
 		SessionHandler()->check_session();
 
+		$pedidovendedor_id = filter_input(INPUT_POST, 'pedidovendedor_id');
+		$importe_total = filter_input(INPUT_POST, 'importe_total');
+
+		$this->model->pedidovendedor_id = $pedidovendedor_id;
+		$this->model->get();
+		$vendedor_id = $this->model->vendedor_id;
+
+		$this->model->subtotal = $importe_total;
+		$this->model->importe_total = $importe_total;
+		$this->model->save();
+
 		$pedidovendedor_array = $_POST['pedidovendedordetalle'];
-		print_r($pedidovendedor_array);exit;
 		foreach ($pedidovendedor_array as $clave=>$valor) {
 			$pedidovendedordetalle_id = $clave;
 			$cantidad = $valor['cantidad'];
@@ -1045,6 +1055,8 @@ class PedidoVendedorController {
 			$pvdm->importe = $importe;
 			$pvdm->save();
 		}
+
+		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/{$vendedor_id}");
 	}
 
 	function proceso_lote($arg) {
