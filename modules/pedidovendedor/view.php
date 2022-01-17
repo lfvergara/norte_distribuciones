@@ -254,10 +254,6 @@ class PedidoVendedorView extends View {
 			$tbl_pedidovendedordetalle = $this->render_regex_dict('TBL_PEDIDOVENDEDORDETALLE', $tbl_pedidovendedordetalle, $pedidovendedordetalle_collection);
 			$tbl_pedidovendedordetalle = str_replace('<!--TBL_PEDIDOVENDEDORDETALLE-->', '', $tbl_pedidovendedordetalle);
 			
-			/*
-			$hidden_editar_pedidovendedordetalle_array = $this->render_regex_dict('HDN_PEDIDOVENDEDORDETALLE', $hidden_editar_pedidovendedordetalle_array, $pedidovendedordetalle_collection);
-			$hidden_editar_pedidovendedordetalle_array = str_replace('<!--HDN_PEDIDOVENDEDORDETALLE-->', '', $hidden_editar_pedidovendedordetalle_array);
-			*/
 			$costo_base = 0;
 			foreach ($pedidovendedordetalle_collection as $clave=>$valor) $costo_base = $costo_base + $valor['IMPORTE'];
 			$obj_pedidovendedor->costo_base = $costo_base;
