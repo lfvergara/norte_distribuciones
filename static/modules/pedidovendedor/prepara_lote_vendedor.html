@@ -65,10 +65,8 @@
 
         var subtotal = parseFloat(cantidad) * parseFloat(costo);
         var valor_descuento = (parseFloat(descuento) * parseFloat(subtotal)) / 100;
-        var importe_total = parseFloat(importe) - parseFloat(valor_descuento);
-        console.log(importe_total);
-
-
+        var importe_total = parseFloat(subtotal) - parseFloat(valor_descuento);
+        
         document.getElementById('importe_' + pedidovendedordetalle_id).value = importe_total;
     }
 
