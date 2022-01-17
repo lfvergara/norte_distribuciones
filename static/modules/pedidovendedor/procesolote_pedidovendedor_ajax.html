@@ -35,6 +35,19 @@
         </div>
     </div>
 </div>
+<script>
+    function calculaMontoTotal() {
+        var cantidad = document.getElementById('cantidad').value;
+        var costo = document.getElementById('costo').value;
+        var descuento = document.getElementById('descuento').value;
+        var importe = document.getElementById('importe').value;
 
+        var subtotal = parseFloat(cantidad) * parseFloat(costo);
+        var valor_descuento = (parseFloat(descuento) * parseFloat(subtotal)) / 100;
+        var importe_total = parseFloat(importe) - parseFloat(valor_descuento);
+
+        document.getElementById('importe').value = importe_total;
+    }
+</script>
 
 
