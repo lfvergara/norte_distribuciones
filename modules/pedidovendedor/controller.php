@@ -1026,40 +1026,24 @@ class PedidoVendedorController {
 
 		$pedidovendedor_array = $_POST['pedidovendedordetalle'];
 		print_r($pedidovendedor_array);exit;
-		foreach ($pedidosvendedor_array as $pedidovendedor) {
-			$producto_id = $pedidovendedor['producto_id'];
-			$cantidad = $pedidovendedor['cantidad'];
-			$costo_producto = $pedidovendedor['costo'];
-			$valor_descuento = $pedidovendedor['importe_descuento'];
-			$importe = $pedidovendedor['costo_total'];
+		foreach ($pedidovendedor_array as $clave=>$valor) {
+			$pedidovendedordetalle_id = $clave;
+			$cantidad = $valor['cantidad'];
+			$descuento = $valor['descuento'];
+			$costo_producto = $valor['costo'];
+			$importe = $valor['importe'];
+			$valor_descuento = ($descuento * $importe) / 100;
 
-			$pm = new Producto();
-			$pm->producto_id = $producto_id;
-			$pm->get();
+			$pvdm = new PedidoVendedorDetalle();
+			$pvdm->pedidovendedordetalle_id = $pedidovendedordetalle_id;
+			$pvdm->get();
 
-			$neto = $pm->costo;
-			$flete = $pm->flete;
-			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			$valor_neto = $neto + ($flete * $neto / 100);
-			$total_neto = $valor_neto * $cantidad;
-
-			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
-			$ganancia = round(($ganancia_temp - $total_neto),2);
-
-			$edm = new PedidoVendedorDetalle();
-			$edm->codigo_producto = $pedidovendedor['codigo'];
-			$edm->descripcion_producto = $pedidovendedor['descripcion'];
-			$edm->cantidad = $cantidad;
-			$edm->descuento = $pedidovendedor['descuento'];
-			$edm->valor_descuento = $valor_descuento;
-			$edm->costo_producto = $costo_producto;
-			$edm->iva = $pedidovendedor['iva'];
-			$edm->importe = $importe;
-			$edm->valor_ganancia = $ganancia;
-			$edm->producto_id = $pedidovendedor['producto_id'];
-			$edm->pedidovendedor_id = $pedidovendedor_id;
-			$edm->save();
-			$pedidovendedordetalle_ids[] = $edm->pedidovendedordetalle_id;
+			$pvdm->cantidad = $cantidad;
+			$pvdm->descuento = $descuento;
+			$pvdm->valor_descuento = $valor_descuento;
+			$pvdm->costo_producto = $costo_producto;
+			$pvdm->importe = $importe;
+			$pvdm->save();
 		}
 	}
 
