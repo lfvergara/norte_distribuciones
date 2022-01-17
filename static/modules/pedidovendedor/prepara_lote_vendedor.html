@@ -57,17 +57,17 @@
         document.getElementById('div_visor_pedidovendedor').innerHTML = traerPedido;
     }
 
-    function calculaMontoTotal() {
-        var cantidad = document.getElementById('cantidad').value;
-        var costo = document.getElementById('costo').value;
-        var descuento = document.getElementById('descuento').value;
-        var importe = document.getElementById('importe').value;
+    function calculaMontoTotal(pedidovendedordetalle_id) {
+        var cantidad = document.getElementById('cantidad_' + pedidovendedordetalle_id).value;
+        var costo = document.getElementById('costo_' + pedidovendedordetalle_id).value;
+        var descuento = document.getElementById('descuento_' + pedidovendedordetalle_id).value;
+        var importe = document.getElementById('importe_' + pedidovendedordetalle_id).value;
 
         var subtotal = parseFloat(cantidad) * parseFloat(costo);
         var valor_descuento = (parseFloat(descuento) * parseFloat(subtotal)) / 100;
         var importe_total = parseFloat(importe) - parseFloat(valor_descuento);
 
-        document.getElementById('importe').value = importe_total;
+        document.getElementById('importe_' + pedidovendedordetalle_id).value = importe_total;
     }
 
 </script>
