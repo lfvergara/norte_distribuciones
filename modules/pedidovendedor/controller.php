@@ -1021,6 +1021,11 @@ class PedidoVendedorController {
 		$this->view->traer_pedidovendedor_procesolote_ajax($producto_collection, $pedidovendedordetalle_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection, $this->model, $cm);
 	}
 
+	function guardar_linea_lote() {
+		SessionHandler()->check_session();
+		print_r($_POST);exit;
+	}
+
 	function proceso_lote($arg) {
 		$pedidovendedor_id = $arg;
 		
