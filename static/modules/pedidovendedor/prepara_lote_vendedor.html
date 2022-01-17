@@ -64,9 +64,9 @@
         var importe = document.getElementById('importe_' + pedidovendedordetalle_id).value;
 
         var subtotal = parseFloat(cantidad) * parseFloat(costo);
-        console.log(subtotal);
         var valor_descuento = (parseFloat(descuento) * parseFloat(subtotal)) / 100;
         var importe_total = parseFloat(importe) - parseFloat(valor_descuento);
+        console.log(importe_total);
 
 
         document.getElementById('importe_' + pedidovendedordetalle_id).value = importe_total;
