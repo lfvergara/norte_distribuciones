@@ -276,6 +276,7 @@ class PedidoVendedorView extends View {
 		$render = str_replace('{tbl_pedidovendedordetalle}', $tbl_pedidovendedordetalle, $gui);
 		$render = $this->render($obj_cliente, $render);
 		$render = $this->render($obj_pedidovendedor, $render);
+		$render = str_replace('{url_app}', URL_APP, $render);
 		print $render;
 	}
 }
