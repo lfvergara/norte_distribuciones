@@ -271,7 +271,7 @@ class PedidoVendedorView extends View {
 		$obj_cliente = $this->set_dict($obj_cliente);
 
 		$render = str_replace('{tbl_pedidovendedordetalle}', $tbl_pedidovendedordetalle, $gui);
-		$render = $this->render($obj_vendedor, $render);
+		$render = $this->render($obj_cliente, $render);
 		print $render;
 	}
 }
