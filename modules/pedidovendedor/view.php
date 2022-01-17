@@ -267,7 +267,11 @@ class PedidoVendedorView extends View {
 			$hidden_editar_pedidovendedordetalle_array = '';
 		}
 
+		unset($obj_cliente->infocontacto_collection, $obj_cliente->flete, $obj_cliente->vendedor, $obj_cliente->condicioniva, $obj_cliente->condicionfiscal, $obj_cliente->tipofactura);
+		$obj_cliente = $this->set_dict($obj_cliente);
+
 		$render = str_replace('{tbl_pedidovendedordetalle}', $tbl_pedidovendedordetalle, $gui);
+		$render = $this->render($obj_vendedor, $render);
 		print $render;
 	}
 }
