@@ -1026,6 +1026,7 @@ class PedidoVendedorController {
 
 		$pedidovendedor_id = filter_input(INPUT_POST, 'pedidovendedor_id');
 		$importe_total = filter_input(INPUT_POST, 'importe_total');
+		print_r($_POST);exit;
 
 		$this->model->pedidovendedor_id = $pedidovendedor_id;
 		$this->model->get();
