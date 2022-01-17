@@ -269,6 +269,8 @@ class PedidoVendedorView extends View {
 
 		unset($obj_cliente->infocontacto_collection, $obj_cliente->flete, $obj_cliente->vendedor, $obj_cliente->condicioniva, $obj_cliente->condicionfiscal, $obj_cliente->tipofactura);
 		$obj_cliente = $this->set_dict($obj_cliente);
+
+		$obj_pedidovendedor->numero_pedido = str_pad($obj_pedidovendedor->pedidovendedor_id, 8, '0', STR_PAD_LEFT);
 		$obj_pedidovendedor = $this->set_dict($obj_pedidovendedor);
 
 		$render = str_replace('{tbl_pedidovendedordetalle}', $tbl_pedidovendedordetalle, $gui);
