@@ -1033,6 +1033,7 @@ class PedidoVendedorController {
 
 		$this->model->subtotal = $importe_total;
 		$this->model->importe_total = $importe_total;
+		$this->model->estadopedido = 4;
 		$this->model->save();
 
 		$pedidovendedor_array = $_POST['pedidovendedordetalle'];
