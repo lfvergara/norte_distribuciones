@@ -1024,7 +1024,7 @@ class PedidoVendedorController {
 	function guardar_linea_lote() {
 		SessionHandler()->check_session();
 
-		print_r($_POST);exit;
+		print_r($_POST['pedidovendedordetalle']);exit;
 		$pedidovendedor_array = $_POST['pedidovendedordetalle'];
 		foreach ($pedidosvendedor_array as $pedidovendedor) {
 			$producto_id = $pedidovendedor['producto_id'];
