@@ -1023,7 +1023,44 @@ class PedidoVendedorController {
 
 	function guardar_linea_lote() {
 		SessionHandler()->check_session();
-		print_r($_POST);exit;
+
+		$pedidovendedor_array = $_POST['pedidovendedordetalle'];
+		print_r($pedidosvendedor_array);exit;
+		foreach ($pedidosvendedor_array as $pedidovendedor) {
+			$producto_id = $pedidovendedor['producto_id'];
+			$cantidad = $pedidovendedor['cantidad'];
+			$costo_producto = $pedidovendedor['costo'];
+			$valor_descuento = $pedidovendedor['importe_descuento'];
+			$importe = $pedidovendedor['costo_total'];
+
+			$pm = new Producto();
+			$pm->producto_id = $producto_id;
+			$pm->get();
+
+			$neto = $pm->costo;
+			$flete = $pm->flete;
+			$porcentaje_ganancia = $pm->porcentaje_ganancia;
+			$valor_neto = $neto + ($flete * $neto / 100);
+			$total_neto = $valor_neto * $cantidad;
+
+			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
+			$ganancia = round(($ganancia_temp - $total_neto),2);
+
+			$edm = new PedidoVendedorDetalle();
+			$edm->codigo_producto = $pedidovendedor['codigo'];
+			$edm->descripcion_producto = $pedidovendedor['descripcion'];
+			$edm->cantidad = $cantidad;
+			$edm->descuento = $pedidovendedor['descuento'];
+			$edm->valor_descuento = $valor_descuento;
+			$edm->costo_producto = $costo_producto;
+			$edm->iva = $pedidovendedor['iva'];
+			$edm->importe = $importe;
+			$edm->valor_ganancia = $ganancia;
+			$edm->producto_id = $pedidovendedor['producto_id'];
+			$edm->pedidovendedor_id = $pedidovendedor_id;
+			$edm->save();
+			$pedidovendedordetalle_ids[] = $edm->pedidovendedordetalle_id;
+		}
 	}
 
 	function proceso_lote($arg) {
