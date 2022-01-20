@@ -1061,6 +1061,7 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
+		$out = shell_exec("cd modules/scripting");
 		$out = shell_exec("ls");
 		print_r($out);
 		exit;
