@@ -1061,8 +1061,8 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
-		shell_exec("modules/scripting/prueba.sh");
-		//print_r($out);exit;
+		$out=shell_exec("modules/scripting/prueba.sh");
+		print_r($out);exit;
 		//shell_exec("cd /srv/websites/norte_distribuciones/modules/scripting/");
 		//shell_exec("sh ./prueba.sh");
 		//header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
@@ -1080,7 +1080,7 @@ class PedidoVendedorController {
 		$cm = new Cliente();
 		$cm->cliente_id = $cliente_id;
 		$cm->get();
-		//print_r($cm);exit;
+
 		$condicionpago = $pvm->condicionpago->condicionpago_id;
 		$subtotal = $pvm->subtotal;
 		$importe_total = $pvm->importe_total;
@@ -1106,6 +1106,7 @@ class PedidoVendedorController {
 		$where = "e.numero_factura = {$num_factura}";
 		$groupby = "e.tipofactura";
 		$verificar_remito = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
+		print_r($verificar_remito);exit;
 
 		if (is_array($verificar_remito)) $num_factura = $this->siguiente_remito();
 		$fecha = filter_input(INPUT_POST, 'fecha');
