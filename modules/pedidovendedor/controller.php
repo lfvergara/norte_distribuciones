@@ -1335,7 +1335,7 @@ class PedidoVendedorController {
 			
 			$this->model->pedidovendedor_id = $pedidovendedor_id;
 			$this->model->get();
-			$this->model->estadopedido = 2;
+			$this->model->estadopedido = 8;
 			$this->model->egreso_id = $egreso_id;
 			$this->model->save();
 		} else {
