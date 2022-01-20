@@ -1099,9 +1099,9 @@ class PedidoVendedorController {
 		$ccm->get();
 		$dias_alerta_comision = $ccm->dias_alerta_comision;
 		$dias_vencimiento = $ccm->dias_vencimiento;
-		print_r($ccm);exit;
 
 		$num_factura = $this->siguiente_remito();
+		print_r($numero_factura);exit;
 		$select = "e.numero_factura AS NUMERO_FACTURA";
 		$from = "egreso e";
 		$where = "e.numero_factura = {$num_factura}";
