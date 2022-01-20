@@ -70,7 +70,7 @@ class CuentaCorrienteClienteView extends View {
 		$gui = file_get_contents("static/modules/cuentacorrientecliente/buscar.html");
 		$tbl_cuentacorriente_array = file_get_contents("static/modules/cuentacorrientecliente/tbl_buscar_cuentacorriente_array.html");
 		$gui_slt_vendedor = file_get_contents("static/common/slt_vendedor.html");
-
+		
 		$cant_total = 0;
 		foreach ($vendedor_collection as $vendedor) unset($vendedor->infocontacto_collection);
 		foreach ($cuentacorriente_collection as $clave=>$valor) {

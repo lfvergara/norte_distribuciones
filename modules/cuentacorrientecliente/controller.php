@@ -322,7 +322,7 @@ class CuentaCorrienteClienteController {
 					  FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id)) < -0.5 {$prewhere}";
 		$groupby = "ccc.egreso_id ORDER BY e.fecha ASC";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $groupby);
-
+		print_r($cuentacorrientecliente_collection);exit;
 		$vendedor_collection = Collector()->get('Vendedor');
 		$this->view->buscar($cuentacorriente_collection, $vendedor_collection, $argumento);
 	}
