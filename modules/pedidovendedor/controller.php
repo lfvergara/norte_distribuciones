@@ -1093,13 +1093,13 @@ class PedidoVendedorController {
 		$com->configuracion_id = 1;
 		$com->get();
 		$punto_venta = $com->punto_venta;
-		print_r($com);exit;
 
 		$ccm = new ConfiguracionComprobante();
 		$ccm->configuracioncomprobante_id = 1;
 		$ccm->get();
 		$dias_alerta_comision = $ccm->dias_alerta_comision;
 		$dias_vencimiento = $ccm->dias_vencimiento;
+		print_r($ccm);exit;
 
 		$num_factura = $this->siguiente_remito();
 		$select = "e.numero_factura AS NUMERO_FACTURA";
