@@ -1074,15 +1074,20 @@ class PedidoVendedorController {
 		$pvm = new PedidoVendedor();
 		$pvm->pedidovendedor_id = $pedidovendedor_id;
 		$pvm->get();
-		print_r($pvm);exit;
+
+		$cm = new Cliente();
+		$cm->cliente_id = $cliente_id;
+		$cm->get();
+
 		$vendedor_id = $pvm->vendedor_id;
 		$cliente_id = $pvm->cliente_id;
 		$condicionpago = $pvm->condicionpago->condicionpago_id;
 		$subtotal = $pvm->subtotal;
 		$importe_total = $pvm->importe_total;
-		$tipofactura = $pvm->tipofactura_id;
-		$condicioniva = $pvm->condicioniva_id;
-		$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
+		$tipofactura = $cm->tipofactura->tipofactura_id;
+		$condicioniva = $cm->condicioniva_id->condicioniva_id;
+		$usuario_id = 2;
+		$flete_id = $cm->flete->flete_id;
 		
 		$com = new Configuracion();
 		$com->configuracion_id = 1;
@@ -1134,11 +1139,6 @@ class PedidoVendedorController {
 		$ecm->estadocomision = 1;
 		$ecm->save();
 		$egresocomision_id = $ecm->egresocomision_id;
-
-		$cm = new Cliente();
-		$cm->cliente_id = $cliente_id;
-		$cm->get();
-		$flete_id = $cm->flete->flete_id;
 
 		$fecha_entrega = strtotime('+1 day', strtotime($fecha));
 		$fecha_entrega = date('Y-m-d', $fecha_entrega);
