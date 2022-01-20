@@ -1101,14 +1101,29 @@ class PedidoVendedorController {
 		$dias_vencimiento = $ccm->dias_vencimiento;
 
 		//$num_factura = $this->siguiente_remito();
+		$select = "(MAX(e.numero_factura) + 1 ) AS SIGUIENTE_NUMERO ";
+		$from = "egreso e";
+		$where = "e.tipofactura = 2";
+		$groupby = "e.tipofactura";
+		$num_factura = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
+		$num_factura = (!is_array($num_factura)) ? 1 : $num_factura[0]['SIGUIENTE_NUMERO'];
+
 		$select = "e.numero_factura AS NUMERO_FACTURA";
 		$from = "egreso e";
 		$where = "e.numero_factura = {$num_factura}";
 		$groupby = "e.tipofactura";
 		$verificar_remito = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
-		print_r($verificar_remito);exit;
 
-		if (is_array($verificar_remito)) $num_factura = $this->siguiente_remito();
+		if (is_array($verificar_remito)) {
+			$select = "(MAX(e.numero_factura) + 1 ) AS SIGUIENTE_NUMERO ";
+			$from = "egreso e";
+			$where = "e.tipofactura = 2";
+			$groupby = "e.tipofactura";
+			$num_factura = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
+			$num_factura = (!is_array($num_factura)) ? 1 : $num_factura[0]['SIGUIENTE_NUMERO'];
+		}
+			
+		print_r($num_factura);exit;
 		$fecha = filter_input(INPUT_POST, 'fecha');
 		$hora = date('H:i:s');
 		$comprobante = str_pad($punto_venta, 4, '0', STR_PAD_LEFT) . "-";
