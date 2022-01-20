@@ -1074,13 +1074,13 @@ class PedidoVendedorController {
 		$pvm = new PedidoVendedor();
 		$pvm->pedidovendedor_id = $pedidovendedor_id;
 		$pvm->get();
+		$vendedor_id = $pvm->vendedor_id;
+		$cliente_id = $pvm->cliente_id;
 
 		$cm = new Cliente();
 		$cm->cliente_id = $cliente_id;
 		$cm->get();
-		print_r($cm);exit;
-		$vendedor_id = $pvm->vendedor_id;
-		$cliente_id = $pvm->cliente_id;
+		
 		$condicionpago = $pvm->condicionpago->condicionpago_id;
 		$subtotal = $pvm->subtotal;
 		$importe_total = $pvm->importe_total;
