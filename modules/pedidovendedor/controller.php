@@ -1080,7 +1080,7 @@ class PedidoVendedorController {
 		$cm = new Cliente();
 		$cm->cliente_id = $cliente_id;
 		$cm->get();
-		
+		print_r($cm);exit;
 		$condicionpago = $pvm->condicionpago->condicionpago_id;
 		$subtotal = $pvm->subtotal;
 		$importe_total = $pvm->importe_total;
