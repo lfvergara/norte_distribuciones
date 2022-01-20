@@ -1074,6 +1074,7 @@ class PedidoVendedorController {
 		$pvm = new PedidoVendedor();
 		$pvm->pedidovendedor_id = $pedidovendedor_id;
 		$pvm->get();
+		print_r($pvm);exit;
 		$vendedor_id = $pvm->vendedor_id;
 		$cliente_id = $pvm->cliente_id;
 		$condicionpago = $pvm->condicionpago->condicionpago_id;
