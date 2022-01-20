@@ -1062,8 +1062,8 @@ class PedidoVendedorController {
 
 	function ejecuta_proceso_lote() {
 		SessionHandler()->check_session();
-		exec(cd);
-		echo exec('ls -l');
+		shell_exec('cd /srv/websites/norte_distribuciones/modules/scripting/');
+		echo shell_exec('ls -l');
 		exit;
 		exec('/srv/websites/norte_distribuciones/modules/scripting/prueba.sh');
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
