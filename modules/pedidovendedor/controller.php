@@ -1093,6 +1093,7 @@ class PedidoVendedorController {
 		$com->configuracion_id = 1;
 		$com->get();
 		$punto_venta = $com->punto_venta;
+		print_r($com);exit;
 
 		$ccm = new ConfiguracionComprobante();
 		$ccm->configuracioncomprobante_id = 1;
@@ -1106,7 +1107,6 @@ class PedidoVendedorController {
 		$where = "e.numero_factura = {$num_factura}";
 		$groupby = "e.tipofactura";
 		$verificar_remito = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
-		print_r($verificar_remito);exit;
 
 		if (is_array($verificar_remito)) $num_factura = $this->siguiente_remito();
 		$fecha = filter_input(INPUT_POST, 'fecha');
