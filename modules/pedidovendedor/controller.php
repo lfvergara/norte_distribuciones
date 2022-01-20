@@ -1061,7 +1061,8 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
-		shell_exec("ls");
+		$out = shell_exec("ls");
+		print_r($out);
 		exit;
 		shell_exec("cd /srv/websites/norte_distribuciones/modules/scripting/");
 		shell_exec("sh ./prueba.sh");
