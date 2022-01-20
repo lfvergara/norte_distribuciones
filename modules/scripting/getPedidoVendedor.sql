@@ -4,4 +4,5 @@ SELECT
 FROM
 	pedidovendedor pv
 WHERE
-	pv.estadopedido = 4
+	pv.estadopedido IN (1,4) AND
+	pv.vendedor_id = 2

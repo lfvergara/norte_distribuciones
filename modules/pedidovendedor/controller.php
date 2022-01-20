@@ -1026,7 +1026,7 @@ class PedidoVendedorController {
 
 		$pedidovendedor_id = filter_input(INPUT_POST, 'pedidovendedor_id');
 		$importe_total = filter_input(INPUT_POST, 'importe_total');
-		
+
 		$this->model->pedidovendedor_id = $pedidovendedor_id;
 		$this->model->get();
 		$vendedor_id = $this->model->vendedor_id;
@@ -1060,7 +1060,14 @@ class PedidoVendedorController {
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/{$vendedor_id}");
 	}
 
+	function ejecuta_proceso_lote() {
+		SessionHandler()->check_session();
+		shell_exec('/srv/websites/norte_distribuciones/modules/scripting/prueba.sh');
+		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
+	}
+
 	function proceso_lote($arg) {
+		SessionHandler()->check_session();
 		$pedidovendedor_id = $arg;
 		
 		$pvm = new PedidoVendedor();
@@ -1269,7 +1276,6 @@ class PedidoVendedorController {
 				$sm = new Stock();
 				$sm->stock_id = $stock_id;
 				$sm->delete();
-				print_r($e->getMessage());exit;
 				switch ($e->getCode()) {
 					case 4:
 						$flag_error = 3;
@@ -1331,10 +1337,12 @@ class PedidoVendedorController {
 			$this->model->estadopedido = 2;
 			$this->model->egreso_id = $egreso_id;
 			$this->model->save();
-
-			header("Location: " . URL_APP . "/egreso/consultar/{$egreso_id}");
 		} else {
-			header("Location: " . URL_APP . "/egreso/listar/{$flag_error}");
+			$this->model->pedidovendedor_id = $pedidovendedor_id;
+			$this->model->get();
+			$this->model->estadopedido = 9;
+			$this->model->egreso_id = 0;
+			$this->model->save();
 		}
 	}
 }
