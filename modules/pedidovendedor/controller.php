@@ -1062,7 +1062,7 @@ class PedidoVendedorController {
 
 	function ejecuta_proceso_lote() {
 		shell_exec("cd /srv/websites/norte_distribuciones/modules/scripting/prueba.sh");
-		shell_exec("./prueba.sh");
+		shell_exec("sh ./prueba.sh");
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
 	}
 
