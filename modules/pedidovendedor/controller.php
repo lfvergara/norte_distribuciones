@@ -1061,7 +1061,6 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
-		SessionHandler()->check_session();
 		$page = shell_exec("/srv/websites/norte_distribuciones/modules/scripting/");
 		
 		exit;
