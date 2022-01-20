@@ -1066,7 +1066,6 @@ class PedidoVendedorController {
 	}
 
 	function proceso_lote($arg) {
-		SessionHandler()->check_session();
 		$pedidovendedor_id = $arg;
 		
 		$pvm = new PedidoVendedor();
