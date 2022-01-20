@@ -1100,13 +1100,13 @@ class PedidoVendedorController {
 		$dias_alerta_comision = $ccm->dias_alerta_comision;
 		$dias_vencimiento = $ccm->dias_vencimiento;
 
-		$num_factura = $this->siguiente_remito();
-		print_r($numero_factura);exit;
+		//$num_factura = $this->siguiente_remito();
 		$select = "e.numero_factura AS NUMERO_FACTURA";
 		$from = "egreso e";
 		$where = "e.numero_factura = {$num_factura}";
 		$groupby = "e.tipofactura";
 		$verificar_remito = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
+		print_r($verificar_remito);exit;
 
 		if (is_array($verificar_remito)) $num_factura = $this->siguiente_remito();
 		$fecha = filter_input(INPUT_POST, 'fecha');
