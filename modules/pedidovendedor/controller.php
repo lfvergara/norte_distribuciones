@@ -1062,7 +1062,7 @@ class PedidoVendedorController {
 
 	function ejecuta_proceso_lote() {
 		SessionHandler()->check_session();
-		echo exec('cd /srv/websites/norte_distribuciones/modules/scripting');
+		exec('cd /srv/websites/norte_distribuciones/modules/scripting');
 		echo exec('ls -l');
 		exit;
 		exec('/srv/websites/norte_distribuciones/modules/scripting/prueba.sh');
