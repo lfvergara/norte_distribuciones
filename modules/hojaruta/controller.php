@@ -329,7 +329,7 @@ class HojaRutaController {
 					case 1:
 						$chk_abonado_check = '';
 						$chk_abonado_display = 'block';
-						$chk_abonado_msj = 'Debe';
+						$chk_abonado_msj = 'Paga';
 						$txt_abonado_msj = '';
 						$txt_abonado_display = 'none';
 						break;
@@ -352,9 +352,9 @@ class HojaRutaController {
 				$txt_tipopago_msj = 'Cuenta Corriente';
 			} else {
 				$chk_abonado_check = '';
-				$chk_abonado_display = 'none';
-				$chk_abonado_msj = '';
-				$txt_abonado_msj = 'Comprobante contado.';
+				$chk_abonado_display = 'block';
+				$chk_abonado_msj = 'Paga';
+				$txt_abonado_msj = '';
 				$txt_tipopago_msj = 'Contado';
 				$txt_abonado_display = 'block';
 			}
