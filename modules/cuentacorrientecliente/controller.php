@@ -104,7 +104,7 @@ class CuentaCorrienteClienteController {
 			$cuentacorriente_collection[$clave]['BTNCONEGR'] = 'none';
 			if ($_SESSION["data-login-" . APP_ABREV]["usuario-nivel"] == 1) $cuentacorriente_collection[$clave]['BTN_DISPLAY'] = 'none';
 			if ($egreso_id != 0) {
-				$cuentacorriente_collection[$clave]['BTNCONEGR'] = 'block';
+				$cuentacorriente_collection[$clave]['BTNCONEGR'] = 'inline-block';
 				$select = "CONCAT(tf.nomenclatura, ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) AS REFERENCIA";
 				$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
 				$where = "eafip.egreso_id = {$egreso_id}";
