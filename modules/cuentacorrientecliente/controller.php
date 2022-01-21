@@ -67,10 +67,7 @@ class CuentaCorrienteClienteController {
 	function consultar($arg) {
     	SessionHandler()->check_session();
 		
-    	$select = "ccc.cliente_id AS CID, c.razon_social AS CLIENTE, (SELECT ROUND(SUM(dccc.importe),2) FROM
-    			   cuentacorrientecliente dccc WHERE dccc.tipomovimientocuenta = 1 AND dccc.cliente_id = ccc.cliente_id) AS DEUDA,
-				   (SELECT ROUND(SUM(dccc.importe),2) FROM cuentacorrientecliente dccc WHERE dccc.tipomovimientocuenta = 2 AND
-				   dccc.cliente_id = ccc.cliente_id) AS INGRESO";
+    	$select = "ccc.cliente_id AS CID, c.razon_social AS CLIENTE, (SELECT ROUND(SUM(dccc.importe),2) FROM cuentacorrientecliente dccc WHERE dccc.tipomovimientocuenta = 1 AND dccc.cliente_id = ccc.cliente_id) AS DEUDA, (SELECT ROUND(SUM(dccc.importe),2) FROM cuentacorrientecliente dccc WHERE dccc.tipomovimientocuenta = 2 AND dccc.cliente_id = ccc.cliente_id) AS INGRESO";
 		$from = "cuentacorrientecliente ccc INNER JOIN cliente c ON ccc.cliente_id = c.cliente_id";
 		$groupby = "ccc.cliente_id";
 		$cuentascorrientes_collection = CollectorCondition()->get('CuentaCorrienteCliente', NULL, 4, $from, $select, $groupby);
@@ -79,9 +76,7 @@ class CuentaCorrienteClienteController {
     	$cm->cliente_id = $arg;
     	$cm->get();
     	
-		$select = "date_format(ccc.fecha, '%d/%m/%Y') AS FECHA, ccc.importe AS IMPORTE, ccc.ingreso AS INGRESO, tmc.denominacion AS MOVIMIENTO, ccc.egreso_id AS EID,
-				   ccc.referencia AS REFERENCIA, CASE ccc.tipomovimientocuenta WHEN 1 THEN 'danger' WHEN 2 THEN 'success' END AS CLASS,
-				   ccc.cuentacorrientecliente_id CCCID";
+		$select = "date_format(ccc.fecha, '%d/%m/%Y') AS FECHA, ccc.importe AS IMPORTE, ccc.ingreso AS INGRESO, tmc.denominacion AS MOVIMIENTO, ccc.egreso_id AS EID, ccc.referencia AS REFERENCIA, CASE ccc.tipomovimientocuenta WHEN 1 THEN 'danger' WHEN 2 THEN 'success' END AS CLASS, ccc.cuentacorrientecliente_id CCCID";
 		$from = "cuentacorrientecliente ccc INNER JOIN tipomovimientocuenta tmc ON ccc.tipomovimientocuenta = tmc.tipomovimientocuenta_id";
 		$where = "ccc.cliente_id = {$arg} AND ccc.estadomovimientocuenta != 4 AND ccc.importe != 0";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
@@ -107,21 +102,22 @@ class CuentaCorrienteClienteController {
 			$cuentacorriente_collection[$clave]['BCOLOR'] = $balance_class;
 			$cuentacorriente_collection[$clave]['BTN_DISPLAY'] = $array_temp[0]['BTN_DISPLAY'];
 			if ($_SESSION["data-login-" . APP_ABREV]["usuario-nivel"] == 1) $cuentacorriente_collection[$clave]['BTN_DISPLAY'] = 'none';
-			
-			$select = "CONCAT(tf.nomenclatura, ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) AS REFERENCIA";
-			$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
-			$where = "eafip.egreso_id = {$egreso_id}";
-			$eafip = CollectorCondition()->get('EgrasoAFIP', $where, 4, $from, $select);
-			if (is_array($eafip)) {
-				$cuentacorriente_collection[$clave]['REFERENCIA'] = $eafip[0]['REFERENCIA'];
-			} else {
-				$em = new Egreso();
-				$em->egreso_id = $egreso_id;
-				$em->get();
-				$tipofactura_nomenclatura = $em->tipofactura->nomenclatura;
-				$punto_venta = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
-				$numero_factura = str_pad($em->numero_factura, 8, '0', STR_PAD_LEFT);
-				$cuentacorriente_collection[$clave]['REFERENCIA'] = "{$tipofactura_nomenclatura} {$punto_venta}-{$numero_factura}";
+			if ($egreso_id != 0) {
+				$select = "CONCAT(tf.nomenclatura, ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) AS REFERENCIA";
+				$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
+				$where = "eafip.egreso_id = {$egreso_id}";
+				$eafip = CollectorCondition()->get('EgrasoAFIP', $where, 4, $from, $select);
+				if (is_array($eafip)) {
+					$cuentacorriente_collection[$clave]['REFERENCIA'] = $eafip[0]['REFERENCIA'];
+				} else {
+					$em = new Egreso();
+					$em->egreso_id = $egreso_id;
+					$em->get();
+					$tipofactura_nomenclatura = $em->tipofactura->nomenclatura;
+					$punto_venta = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
+					$numero_factura = str_pad($em->numero_factura, 8, '0', STR_PAD_LEFT);
+					$cuentacorriente_collection[$clave]['REFERENCIA'] = "{$tipofactura_nomenclatura} {$punto_venta}-{$numero_factura}";
+				}				
 			}
 		}
 
