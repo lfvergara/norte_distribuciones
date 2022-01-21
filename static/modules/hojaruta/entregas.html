@@ -196,7 +196,7 @@
     for (i=0;i<document.f1.elements.length;i++)
       if(document.f1.elements[i].type == "checkbox")
         document.f1.elements[i].checked=1
-        $(".checkboxtext").text("Abonar");
+        $(".checkboxtext").text("Paga");
   }
 
   function deseleccionar_todo() {
@@ -206,16 +206,16 @@
     for (i=0;i<document.f1.elements.length;i++)
       if(document.f1.elements[i].type == "checkbox")
         document.f1.elements[i].checked=0
-        $(".checkboxtext").text("Debe");
+        $(".checkboxtext").text("Paga");
   }
 
   $('input[type=checkbox]').on('change', function() {
     var classname = $(this).prop("name").replace("[", '');
     classname = classname.replace("]", '');
     if ($(this).is(':checked') ) {
-      $("p.checkboxtext."+classname).text("Abonar");
+      $("p.checkboxtext."+classname).text("Paga");
     } else {
-      $("p.checkboxtext."+classname).text("Debe");
+      $("p.checkboxtext."+classname).text("Paga");
     }
   });
 </script>
