@@ -290,5 +290,14 @@ class CuentaCorrienteClienteView extends View {
 		$gui = str_replace('{url_app}', URL_APP, $gui);
 		print $gui;
 	}
+
+	function migrar_cta_cte($cliente_collection) {
+		$gui = file_get_contents("static/modules/cuentacorrientecliente/migrar_cta_cte.html");		
+		$gui_tbl_cliente = file_get_contents("static/modules/cuentacorrientecliente/tbl_migrar_cliente.html");
+		$gui_tbl_cliente = $this->render_regex_dict('TBL_CLIENTE', $gui_tbl_cliente, $cliente_collection);
+		$gui = str_replace('{tbl_cliente}', $gui_tbl_cliente, $gui);
+		$gui = str_replace('{url_app}', URL_APP, $gui);
+		print $gui;
+	}
 }
 ?>

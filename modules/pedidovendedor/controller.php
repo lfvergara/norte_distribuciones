@@ -1123,7 +1123,6 @@ class PedidoVendedorController {
 			$num_factura = (!is_array($num_factura)) ? 1 : $num_factura[0]['SIGUIENTE_NUMERO'];
 		}
 			
-		print_r($num_factura);exit;
 		$fecha = filter_input(INPUT_POST, 'fecha');
 		$hora = date('H:i:s');
 		$comprobante = str_pad($punto_venta, 4, '0', STR_PAD_LEFT) . "-";
@@ -1261,11 +1260,61 @@ class PedidoVendedorController {
 			$edm->save();
 			$egresodetalle_ids[] = $edm->egresodetalle_id;
 		}
+		print_r($num_factura);exit;
 
 		$flag_error = 0;
 		if ($tipofactura == 1 OR $tipofactura == 3) {
 			try {
 			    $this->facturar_afip_argumento($egreso_id);
+
+			    /*
+			    $cm = new Configuracion();
+				$cm->configuracion_id = 1;
+				$cm->get();
+				*/
+
+				$egreso_id = $arg;
+				$em = new Egreso();
+				$em->egreso_id = $egreso_id;
+				$em->get();
+				$tipofactura_id = $em->tipofactura->tipofactura_id;
+
+				$tfm = new TipoFactura();
+				$tfm->tipofactura_id = $tipofactura_id;
+				$tfm->get();
+
+				$select_egresos = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.valor_descuento AS VD, p.no_gravado AS NOGRAVADO, ed.costo_producto AS COSTO, ROUND(ed.importe, 2) AS IMPORTE, ed.iva AS IVA, p.exento AS EXENTO";
+				$from_egresos = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
+				$where_egresos = "ed.egreso_id = {$egreso_id}";
+				$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where_egresos, 4, $from_egresos, $select_egresos);
+
+				$resultadoAFIP = FacturaAFIPTool()->facturarAFIP($cm, $tfm, $em, $egresodetalle_collection);
+				if (is_array($resultadoAFIP)) {
+					$eam = new EgresoAFIP();
+					$eam->cae = $resultadoAFIP['CAE'];
+					$eam->fecha = date('Y-m-d');
+					$eam->punto_venta = $cm->punto_venta;
+					$eam->numero_factura = $resultadoAFIP['NUMFACTURA'];
+					$eam->vencimiento = $resultadoAFIP['CAEFchVto'];
+					$eam->tipofactura = $tipofactura_id;
+					$eam->egreso_id = $egreso_id;
+					$eam->save();
+
+					$amem = new Egreso();
+					$amem->egreso_id = $egreso_id;
+					$amem->get();
+					$amem->emitido = 1;
+					$amem->save();
+				}
+
+
+
+
+
+
+
+
+
 			} catch (Exception $e) {
 				$ecm = new EgresoComision();
 				$ecm->egresocomision_id = $egresocomision_id;
