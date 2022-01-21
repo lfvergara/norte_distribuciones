@@ -700,5 +700,24 @@ class CuentaCorrienteClienteController {
 		$this->view->migrar_cta_cte($cliente_collection);
 
 	}
+
+	function guardar_migrar_cta_cte() {
+		SessionHandler()->check_session();
+		$cliente_id = filter_input(INPUT_POST, 'cliente_id');
+		$monto = filter_input(INPUT_POST, 'monto');
+		$this->model->fecha = date('Y-m-d');
+		$this->model->hora = date('H:i:s');
+		$this->model->referencia = 'Migración de cuenta del sistema anterior';
+		$this->model->importe = $monto;
+		$this->model->ingreso = 0.00;
+		$this->model->cliente_id = $cliente_id;
+		$this->model->egreso_id = 0;
+        $this->model->tipomovimientocuenta = 1;
+        $this->model->estadomovimientocuenta = 1;
+        $this->model->cobrador = 0;
+        $this->model->save();
+
+        header("Location: " . URL_APP . "/cuentacorrientecliente/listar_cuentas/{$cliente_id}");
+	}
 }
 ?>
