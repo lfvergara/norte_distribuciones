@@ -1154,7 +1154,7 @@ class PedidoVendedorController {
 		$ecm->estadocomision = 1;
 		$ecm->save();
 		$egresocomision_id = $ecm->egresocomision_id;
-
+		print_r($egresocomision_id);exit;
 		$fecha_entrega = strtotime('+1 day', strtotime($fecha));
 		$fecha_entrega = date('Y-m-d', $fecha_entrega);
 
