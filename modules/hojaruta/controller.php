@@ -27,12 +27,13 @@ class HojaRutaController {
     	if (!is_array($hojaruta_collection)) {
     		$hojaruta_collection = array();
     	} else {
+    		$perfil_id_array = array(1,2);
     		foreach ($hojaruta_collection as $clave=>$valor) {
     			$hojaruta_id = $valor['HRID'];
     			$egreso_ids = $valor['EIDS'];
     			$temp_estadoentrega_id = $valor['EEID'];
     			$array_egreso_ids = explode(',', $egreso_ids);
-    			$hojaruta_collection[$clave]['BTN_CERRAR_HR'] = ($perfil_id != 1 OR $perfil_id != 2) ? 'none' : $hojaruta_collection[$clave]['BTN_CERRAR_HR'];
+    			$hojaruta_collection[$clave]['BTN_CERRAR_HR'] = (!in_array($perfil_id, $perfil_id_array)) ? 'none' : $hojaruta_collection[$clave]['BTN_CERRAR_HR'];
 
     			if (!is_array($array_egreso_ids)) $array_egreso_ids = array();
     			$array_nums_facturas = array();
