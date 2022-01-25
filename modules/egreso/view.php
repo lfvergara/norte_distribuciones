@@ -332,6 +332,7 @@ class EgresoView extends View {
 		
 		if($obj_egreso->egresoentrega->estadoentrega->estadoentrega_id != 4) {
 			$obj_egreso->btn_generar_nc = 'none';
+			$obj_egreso->btn_consultar_nc = ($notacredito_id == 0) ? 'none' : 'block';
 		} else {
 			if (!empty($cuentacorrientecliente_collection)) {
 				$obj_egreso->btn_generar_nc = 'none';
