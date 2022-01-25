@@ -330,16 +330,20 @@ class EgresoView extends View {
 		$btn_entrega_display = ($estadoentrega_id == 1 OR $estadoentrega_id == 2) ? 'block' : 'none';
 		$obj_egreso->egresoentrega->btn_entrega_display = $btn_entrega_display;
 		
-		if (!empty($cuentacorrientecliente_collection)) {
+		if($obj_egreso->egresoentrega->estadoentrega->estadoentrega_id != 4) {
 			$obj_egreso->btn_generar_nc = 'none';
-			$obj_egreso->btn_consultar_nc = ($notacredito_id == 0) ? 'none' : 'block';
 		} else {
-			if ($obj_egreso->egresocomision->estadocomision->estadocomision_id != 1) {
+			if (!empty($cuentacorrientecliente_collection)) {
 				$obj_egreso->btn_generar_nc = 'none';
 				$obj_egreso->btn_consultar_nc = ($notacredito_id == 0) ? 'none' : 'block';
 			} else {
-				$obj_egreso->btn_generar_nc = ($notacredito_id == 0) ? 'block' : 'none';
-				$obj_egreso->btn_consultar_nc = ($notacredito_id == 0) ? 'none' : 'block';
+				if ($obj_egreso->egresocomision->estadocomision->estadocomision_id != 1) {
+					$obj_egreso->btn_generar_nc = 'none';
+					$obj_egreso->btn_consultar_nc = ($notacredito_id == 0) ? 'none' : 'block';
+				} else {
+					$obj_egreso->btn_generar_nc = ($notacredito_id == 0) ? 'block' : 'none';
+					$obj_egreso->btn_consultar_nc = ($notacredito_id == 0) ? 'none' : 'block';
+				}
 			}
 		}
 
