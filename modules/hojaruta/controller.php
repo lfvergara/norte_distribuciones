@@ -17,8 +17,9 @@ class HojaRutaController {
 
 	function panel() {
     	SessionHandler()->check_session();
+    	$perfil_id = $_SESSION["data-login-" . APP_ABREV]["usuario-configuracionmenu"];
     	$periodo_actual = date('Ym');
-    	$select = "hr.hojaruta_id AS HRID, hr.fecha AS FECHA, f.denominacion AS FLETE, ee.denominacion AS ESTENTREGA, hr.egreso_ids AS EIDS, CASE WHEN hr.estadoentrega = 7 THEN 'none' ELSE 'inline-block' END AS BTN_CERRAR_HR, CASE WHEN hr.estadoentrega = 7 THEN 'final_hoja_ruta_flete'  ELSE 'reimprimir_hoja_ruta_flete'  END AS BTN_PRINT, hr.estadoentrega AS EEID";
+    	$select = "hr.hojaruta_id AS HRID, hr.fecha AS FECHA, f.denominacion AS FLETE, ee.denominacion AS ESTENTREGA, hr.egreso_ids AS EIDS, CASE WHEN hr.estadoentrega = 7 THEN 'none' ELSE 'inline-block' END AS BTN_CERRAR_HR, CASE WHEN hr.estadoentrega = 7 THEN 'final_hoja_ruta_flete'  ELSE 'reimprimir_hoja_ruta_flete' END AS BTN_PRINT, hr.estadoentrega AS EEID";
     	$from = "hojaruta hr INNER JOIN flete f ON hr.flete_id = f.flete_id INNER JOIN estadoentrega ee ON hr.estadoentrega = ee.estadoentrega_id";
     	$where = "date_format(hr.fecha, '%Y%m') = {$periodo_actual}";
     	$hojaruta_collection = CollectorCondition()->get('HojaRuta', $where, 4, $from, $select);
@@ -31,6 +32,8 @@ class HojaRutaController {
     			$egreso_ids = $valor['EIDS'];
     			$temp_estadoentrega_id = $valor['EEID'];
     			$array_egreso_ids = explode(',', $egreso_ids);
+    			$hojaruta_collection[$clave]['BTN_CERRAR_HR'] = ($perfil_id == 2) ? 'inline-block' : 'none';
+
 
     			if (!is_array($array_egreso_ids)) $array_egreso_ids = array();
     			$array_nums_facturas = array();
