@@ -257,6 +257,21 @@ class EntregaClienteDetalleController {
 	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $entregacliente_collection = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 
+	    if (!empty($entregacliente_collection)) {
+	    	
+	    	foreach ($entregacliente_collection as $clave=>$valor) {
+	    		$egreso_id = $valor['EGRESO'];
+		    	$select = "ROUND(((ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - 
+					  (ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE";
+				$from = "cuentacorrientecliente ccc";
+				$where = "ccc.egreso_id = {$egreso_id}";
+				$balance = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
+	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;
+				
+				$entregacliente_collection[$clave]['BALANCE'] = $balance;
+	    	}
+	    }
+
 	    $select = "CONCAT('$ ',ROUND(SUM(ec.monto), 2)) AS TOTAL";
 	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id";
 	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
