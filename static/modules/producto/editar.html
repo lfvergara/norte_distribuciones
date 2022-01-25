@@ -78,7 +78,11 @@
                         <label>Ubicación</label>
                         <input type="text" class="form-control" id="ubicacion" name="ubicacion" value="{producto-ubicacion}" required>
                     </div>
-                    <div class="form-group col-lg-4">
+                     <div class="form-group col-lg-3">
+                        <label>Flete (%)</label>
+                        <input type="number" class="form-control" id="flete" name="flete" value="{producto-flete}" step="0.001" onchange="calculaPrecioVenta();" required>
+                    </div>
+                    <div class="form-group col-lg-3">
                         <label>IVA</label>
                         <select class="form-control m-bot15" name="iva" id="iva" required>
                             <option value="{producto-iva}" selected>{producto-iva}%</option>
@@ -90,7 +94,7 @@
                             <option value="0">0%</option>
                         </select>
                     </div>
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
                         <label>Exento?</label>
                         <select class="form-control m-bot15" name="exento" id="exento" required>
                             <option value="{producto-exento}" selected>{producto-txt_exento}</option>
@@ -98,7 +102,7 @@
                             <option value="1">SI</option>
                         </select>
                     </div>
-                    <div class="form-group col-lg-4">
+                    <div class="form-group col-lg-3">
                         <label>No gravado?</label>
                         <select class="form-control m-bot15" name="no_gravado" id="no_gravado" required>
                             <option value="{producto-no_gravado}" selected>{producto-txt_no_gravado}</option>
@@ -116,7 +120,7 @@
                     </div>
                     <div class="form-group col-lg-4">
                         <label>Precio Venta</label>
-                        <input type="number" class="form-control" id="precio_venta" name="precio_venta" step="0.001" value="{producto-precio_venta}" required>
+                        <input type="number" class="form-control" id="precio_venta" name="precio_venta" step="0.001" value="{producto-precio_venta}" onchange="calculaGanancia();" required>
                     </div>
                     <!--
                     <div class="form-group col-lg-12">
@@ -131,7 +135,6 @@
                     <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
                         <input type="hidden" id="barcode" name="barcode" value="{producto-barcode}" required>
                         <input type="hidden" id="peso" name="peso" value="{producto-peso}" required>
-                        <input type="hidden" id="flete" name="flete" value="{producto-flete}" required>
                         <input type="hidden" name="producto_id" value="{producto-producto_id}">
                         <a href="#" class="btn btn-app" onclick="verificarProducto();"> <i class="fa fa-edit"></i> Editar </a>
                     </div>
@@ -225,9 +228,27 @@
         </div>
     </div>
 </div>
-<script>
+<!-- Datatables -->
+<script src="{url_static}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="{url_static}vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="{url_static}vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="{url_static}vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#tbl_proveedor_producto').dataTable( {
+            "aaSorting": [[ 0, "asc" ]]
+          , "iDisplayLength":10
+        } );
+
+        $('#tbl_proveedor').dataTable( {
+            "aaSorting": [[ 0, "asc" ]]
+          , "iDisplayLength":10
+        } );
+    } );
+
     function calculaPrecioVenta() {
         var costo = document.getElementById('costo').value;
+        var flete = document.getElementById('flete').value;
         var porcentaje_ganancia = document.getElementById('porcentaje_ganancia').value;
         var slt_iva = document.getElementById("iva");
         var iva = slt_iva.options[slt_iva.selectedIndex].value;
@@ -235,12 +256,54 @@
         if (costo == 0) {
             document.getElementById('precio_venta').value = 0;
         } else {
-            var monto_iva = (iva * costo) / 100;
-            var costo_iva = parseFloat(costo) + parseFloat(monto_iva);
+            var monto_flete = (flete * costo) / 100;
+            var costo_mas_flete = parseFloat(costo) + parseFloat(monto_flete);
+
+            var monto_iva = (iva * costo_mas_flete) / 100;
+            var costo_iva = parseFloat(costo_mas_flete) + parseFloat(monto_iva);
+
             var monto_ganancia = (porcentaje_ganancia * costo_iva) / 100;
             var valor_venta = parseFloat(costo_iva) + parseFloat(monto_ganancia);
             document.getElementById('precio_venta').value = valor_venta.toFixed(2);
+
+            calculaGanancia();
         }
+    }
+
+    function calculaGanancia() {
+        var costo = document.getElementById('costo').value;
+        var flete = document.getElementById('flete').value;
+        var slt_iva = document.getElementById("iva");
+        var iva = slt_iva.options[slt_iva.selectedIndex].value;
+        var precio_venta = document.getElementById('precio_venta').value;
+
+        if (costo == 0) {
+            document.getElementById('precio_venta').value = 0;
+            document.getElementById('porcentaje_ganancia').value = 0;
+        } else {
+            
+                var monto_flete = (flete * costo) / 100;
+                var costo_mas_flete = parseFloat(costo) + parseFloat(monto_flete);
+
+                var monto_iva = (iva * costo_mas_flete) / 100;
+                var costo_iva = parseFloat(costo_mas_flete) + parseFloat(monto_iva);
+
+                var ganancia = parseFloat(precio_venta) / parseFloat(costo_iva);
+                var porcentaje_ganancia = (parseFloat(ganancia) - 1) * 100;
+            
+
+            document.getElementById('porcentaje_ganancia').value = porcentaje_ganancia.toFixed(2);
+        }
+    }
+
+    function agregarProveedor() {
+        document.getElementById('div_proveedor_producto').style.display = 'none';
+        document.getElementById('div_proveedor').style.display = 'block';
+    }
+
+    function cancelarAgregar() {
+        document.getElementById('div_proveedor_producto').style.display = 'block';
+        document.getElementById('div_proveedor').style.display = 'none';
     }
 
     function verificarProducto() {
@@ -274,13 +337,22 @@
             array.push("<strong>[ERROR]</strong> Por favor seleccione la UNIDAD DEL PRODUCTO.");
         }
 
-        var stock_minimo = document.getElementById("stock_minimo").value;
-        if (stock_minimo == null || stock_minimo.length == 0 || stock_minimo == "") {
-            flag_array = 1;
-            array.push("<strong>[ERROR]</strong> Por favor complete el STOCK MÍNIMO DEL PRODUCTO.");
-        }
-
         if (flag_array == 0) {
+            /*
+            var flag = $.ajax({
+                url: '{url_app}/producto/verifica_existencia_codigo/' + codigo,
+                    dataType: 'text',
+                    async: false
+            }).responseText;
+            console.log(flag);
+            if (flag > 0) {
+                $('#sistema_alertas').modal('show');
+                document.getElementById("msj_alerta_modal").innerHTML = "<strong>[ERROR]</strong> El CÓDIGO del producto ya se encuentra cargado en el sistema.";
+            } else {
+                document.getElementById("formulario_guardar").submit();
+            }
+            */
+            
             document.getElementById("formulario_guardar").submit();
         } else {
             var mensaje = array.join("<br><br>");
@@ -288,32 +360,4 @@
             document.getElementById("msj_alerta_modal").innerHTML = mensaje;
         }
     }
-
-    function agregarProveedor() {
-        document.getElementById('div_proveedor_producto').style.display = 'none';
-        document.getElementById('div_proveedor').style.display = 'block';
-    }
-
-    function cancelarAgregar() {
-        document.getElementById('div_proveedor_producto').style.display = 'block';
-        document.getElementById('div_proveedor').style.display = 'none';
-    }
-</script>
-<!-- Datatables -->
-<script src="{url_static}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-<script src="{url_static}vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-<script src="{url_static}vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-<script src="{url_static}vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-<script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-        $('#tbl_proveedor_producto').dataTable( {
-            "aaSorting": [[ 0, "asc" ]]
-          , "iDisplayLength":10
-        } );
-
-        $('#tbl_proveedor').dataTable( {
-            "aaSorting": [[ 0, "asc" ]]
-          , "iDisplayLength":10
-        } );
-    } );
 </script>
