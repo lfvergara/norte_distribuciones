@@ -1260,19 +1260,11 @@ class PedidoVendedorController {
 			$edm->save();
 			$egresodetalle_ids[] = $edm->egresodetalle_id;
 		}
-		print_r($num_factura);exit;
-
+		
 		$flag_error = 0;
 		if ($tipofactura == 1 OR $tipofactura == 3) {
 			try {
-			    $this->facturar_afip_argumento($egreso_id);
-
-			    /*
-			    $cm = new Configuracion();
-				$cm->configuracion_id = 1;
-				$cm->get();
-				*/
-
+			    //$this->facturar_afip_argumento($egreso_id);			    
 				$egreso_id = $arg;
 				$em = new Egreso();
 				$em->egreso_id = $egreso_id;
@@ -1283,10 +1275,10 @@ class PedidoVendedorController {
 				$tfm->tipofactura_id = $tipofactura_id;
 				$tfm->get();
 
-				$select_egresos = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.valor_descuento AS VD, p.no_gravado AS NOGRAVADO, ed.costo_producto AS COSTO, ROUND(ed.importe, 2) AS IMPORTE, ed.iva AS IVA, p.exento AS EXENTO";
-				$from_egresos = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
-				$where_egresos = "ed.egreso_id = {$egreso_id}";
-				$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where_egresos, 4, $from_egresos, $select_egresos);
+				$select = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.valor_descuento AS VD, p.no_gravado AS NOGRAVADO, ed.costo_producto AS COSTO, ROUND(ed.importe, 2) AS IMPORTE, ed.iva AS IVA, p.exento AS EXENTO";
+				$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
+				$where = "ed.egreso_id = {$egreso_id}";
+				$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
 				$resultadoAFIP = FacturaAFIPTool()->facturarAFIP($cm, $tfm, $em, $egresodetalle_collection);
 				if (is_array($resultadoAFIP)) {
@@ -1306,14 +1298,6 @@ class PedidoVendedorController {
 					$amem->emitido = 1;
 					$amem->save();
 				}
-
-
-
-
-
-
-
-
 
 			} catch (Exception $e) {
 				$ecm = new EgresoComision();
@@ -1397,7 +1381,6 @@ class PedidoVendedorController {
 					$sm->save();
 				}
 			}
-
 			
 			$this->model->pedidovendedor_id = $pedidovendedor_id;
 			$this->model->get();
