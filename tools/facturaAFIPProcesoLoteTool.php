@@ -252,8 +252,8 @@ class FacturaAFIPProcesoLoteTool {
         //$data = $this->generaArrayData($array_final1);
         /* **************************************************************************************************************** */
         $res = $afip->ElectronicBilling->CreateVoucher($data);
-        print_r($res);exit;
         $res['NUMFACTURA'] = $nueva_factura['nueva_factura'];
+        print_r($res);exit;
         return $res;
     }
 
