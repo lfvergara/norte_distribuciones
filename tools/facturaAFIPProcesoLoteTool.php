@@ -7,7 +7,7 @@ require_once "common/libs/desa_afip.php-master/src/Afip.php";
 
 class FacturaAFIPProcesoLoteTool {
     
-    public function facturarProcesoLoteAFIP($obj_configuracion, $obj_tipofactura, $obj_egreso, $egresodetalle_collection) { 
+    function facturarProcesoLoteAFIP($obj_configuracion, $obj_tipofactura, $obj_egreso, $egresodetalle_collection) { 
         $CUIT = $obj_configuracion->cuit;
         $PTO_VENTA = $obj_configuracion->punto_venta;       
         
@@ -564,6 +564,4 @@ class FacturaAFIPProcesoLoteTool {
 
     }
 }
-
-function FacturaAFIPProcesoLoteTool() { return new FacturaAFIPProcesoLoteTool(); }
 ?>
