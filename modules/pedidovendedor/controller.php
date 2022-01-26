@@ -1076,6 +1076,7 @@ class PedidoVendedorController {
 		$pvm->get();
 		$vendedor_id = $pvm->vendedor_id;
 		$cliente_id = $pvm->cliente_id;
+		$fecha = $pvm->fecha;
 
 		$cm = new Cliente();
 		$cm->cliente_id = $cliente_id;
@@ -1123,8 +1124,6 @@ class PedidoVendedorController {
 			$num_factura = (!is_array($num_factura)) ? 1 : $num_factura[0]['SIGUIENTE_NUMERO'];
 		}
 			
-		$fecha = filter_input(INPUT_POST, 'fecha');
-		$hora = date('H:i:s');
 		$comprobante = str_pad($punto_venta, 4, '0', STR_PAD_LEFT) . "-";
 		$comprobante .= str_pad($num_factura, 8, '0', STR_PAD_LEFT);
 
@@ -1147,15 +1146,16 @@ class PedidoVendedorController {
 			$almacen_id = 1;
 		}
 
+		$fecha_egreso = date('Y-m-d')
+		$hora_egreso = date('H:i:s')
 		$ecm = new EgresoComision();
-		$ecm->fecha = $fecha;
+		$ecm->fecha = $fecha_egreso;
 		$ecm->valor_comision = round($comision, 2);
 		$ecm->valor_abonado = 0;
 		$ecm->estadocomision = 1;
 		$ecm->save();
 		$egresocomision_id = $ecm->egresocomision_id;
-		print_r($fecha);exit;
-		$fecha_entrega = strtotime('+1 day', strtotime($fecha));
+		$fecha_entrega = strtotime('+1 day', strtotime($fecha_egreso));
 		$fecha_entrega = date('Y-m-d', $fecha_entrega);
 
 		$eem = new EgresoEntrega();
@@ -1170,8 +1170,8 @@ class PedidoVendedorController {
 		$mem = new Egreso();
 		$mem->punto_venta = $punto_venta;
 		$mem->numero_factura = intval($num_factura);
-		$mem->fecha = $fecha;
-		$mem->hora = $hora;
+		$mem->fecha = $fecha_egreso;
+		$mem->hora = $hora_egreso;
 		$mem->descuento = 0;
 		$mem->subtotal = $subtotal;
 		$mem->importe_total = $importe_total;
@@ -1194,8 +1194,8 @@ class PedidoVendedorController {
 		
 		if ($condicionpago == 1) {
 			$cccm = new CuentaCorrienteCliente();
-			$cccm->fecha = date('Y-m-d');
-			$cccm->hora = date('H:i:s');
+			$cccm->fecha = $fecha_egreso;
+			$cccm->hora = $hora_egreso;
 			$cccm->referencia = "Comprobante venta {$comprobante}";
 			$cccm->importe = $importe_total;
 			$cccm->cliente_id = $cliente_id;
@@ -1284,7 +1284,7 @@ class PedidoVendedorController {
 				if (is_array($resultadoAFIP)) {
 					$eam = new EgresoAFIP();
 					$eam->cae = $resultadoAFIP['CAE'];
-					$eam->fecha = date('Y-m-d');
+					$eam->fecha = $fecha_egreso;
 					$eam->punto_venta = $cm->punto_venta;
 					$eam->numero_factura = $resultadoAFIP['NUMFACTURA'];
 					$eam->vencimiento = $resultadoAFIP['CAEFchVto'];
@@ -1352,8 +1352,8 @@ class PedidoVendedorController {
 
 				if ($rst_stock == 0 || empty($rst_stock) || !is_array($rst_stock)) {
 					$sm = new Stock();
-					$sm->fecha = $fecha;
-					$sm->hora = $hora;
+					$sm->fecha = $fecha_egreso;
+					$sm->hora = $hora_egreso;
 					$sm->concepto = "Venta. Comprobante: {$comprobante}";
 					$sm->codigo = $egreso['CODIGO'];
 					$sm->cantidad_actual = $egreso['CANTIDAD'];
@@ -1370,8 +1370,8 @@ class PedidoVendedorController {
 					$nueva_cantidad = $ultima_cantidad - $egreso['CANTIDAD'];
 
 					$sm = new Stock();
-					$sm->fecha = $fecha;
-					$sm->hora = $hora;
+					$sm->fecha = $fecha_egreso;
+					$sm->hora = $hora_egreso;
 					$sm->concepto = "Venta. Comprobante: {$comprobante}";
 					$sm->codigo = $egreso['CODIGO'];
 					$sm->cantidad_actual = $nueva_cantidad;
