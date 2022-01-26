@@ -1280,7 +1280,8 @@ class PedidoVendedorController {
 				$where = "ed.egreso_id = {$egreso_id}";
 				$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
-				$resultadoAFIP = FacturaAFIPTool()->facturarAFIP($cm, $tfm, $em, $egresodetalle_collection);
+				$afip_tool = new FacturaAFIPTool();
+				$resultadoAFIP = $afip_tool->facturarAFIP($cm, $tfm, $em, $egresodetalle_collection);
 				if (is_array($resultadoAFIP)) {
 					$eam = new EgresoAFIP();
 					$eam->cae = $resultadoAFIP['CAE'];
