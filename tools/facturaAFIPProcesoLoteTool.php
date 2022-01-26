@@ -565,5 +565,5 @@ class FacturaAFIPProcesoLoteTool {
     }
 }
 
-function FacturaAFIPTool() { return new FacturaAFIPTool(); }
+function FacturaAFIPProcesoLoteTool() { return new FacturaAFIPProcesoLoteTool(); }
 ?>
