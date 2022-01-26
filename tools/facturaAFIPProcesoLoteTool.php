@@ -9,10 +9,10 @@ class FacturaAFIPProcesoLoteTool {
     
     function facturarProcesoLoteAFIP($obj_configuracion, $obj_tipofactura, $obj_egreso, $egresodetalle_collection) { 
         $CUIT = $obj_configuracion->cuit;
+        print_r($CUIT);exit;
         $PTO_VENTA = $obj_configuracion->punto_venta;       
         
         $fecha_factura = $obj_egreso->fecha;
-        print_r($fecha_factura);exit;
         $tipofactura_afip_id = $obj_egreso->tipofactura->afip_id;
         $documentotipo_cliente = $obj_egreso->cliente->documentotipo->afip_id;
         $documento_cliente = $obj_egreso->cliente->documento;
