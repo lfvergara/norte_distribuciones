@@ -39,16 +39,16 @@ class PedidoVendedorController {
 		$usuariovendedor_id = CollectorCondition()->get('UsuarioVendedor', $where, 4, $from, $select);
 
     	$dia_actual = date('Y-m-d');
-    	$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, UPPER(cl.nombre_fantasia) AS FANTASIA, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, UPPER(CONCAT(ve.APELLIDO, ' ', ve.nombre)) AS VENDEDOR, CASE pv.estadopedido WHEN 1 THEN 'inline-block' WHEN 2 THEN 'none' WHEN 3 THEN 'none' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 2 THEN 'PROCESADO' WHEN 3 THEN 'CANCELADO' WHEN 4 THEN 'A PROCESAR' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 2 THEN 'success' WHEN 3 THEN 'danger' WHEN 4 THEN 'warning' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED, cl.cliente_id AS CLIID, pv.egreso_id AS EGRID";
+    	$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, UPPER(cl.nombre_fantasia) AS FANTASIA, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, UPPER(CONCAT(ve.APELLIDO, ' ', ve.nombre)) AS VENDEDOR, CASE pv.estadopedido WHEN 1 THEN 'inline-block' WHEN 2 THEN 'none' WHEN 3 THEN 'none' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 2 THEN 'PROCESADO' WHEN 3 THEN 'CANCELADO' WHEN 4 THEN 'A PROCESAR' WHEN 5 THEN 'ERROR AFIP' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 2 THEN 'success' WHEN 3 THEN 'danger' WHEN 4 THEN 'warning' WHEN 5 THEN 'danger' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED, cl.cliente_id AS CLIID, pv.egreso_id AS EGRID";
 
 		if ($usuario_rol == 5) {
 			$vendedor_id = $usuariovendedor_id[0]['VENID'];
 			$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id";
-			$where = "pv.vendedor_id = {$vendedor_id} AND pv.estadopedido IN (1,4) ORDER BY cl.razon_social ASC";
+			$where = "pv.vendedor_id = {$vendedor_id} AND pv.estadopedido IN (1,4,5) ORDER BY cl.razon_social ASC";
 			$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
 		} else {
 			$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id";
-			$where = "pv.estadopedido IN (1,4) ORDER BY CONCAT(ve.APELLIDO, ' ', ve.nombre) DESC";
+			$where = "pv.estadopedido IN (1,4,5) ORDER BY CONCAT(ve.APELLIDO, ' ', ve.nombre) DESC";
 			$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
 		}
 
@@ -1388,14 +1388,14 @@ class PedidoVendedorController {
 			$pvm->get();
 			$pvm->estadopedido = 2;
 			$pvm->egreso_id = $egreso_id;
-			//$pvm->save();
+			$pvm->save();
 		} else {
 			$pvm = new PedidoVendedor();
 			$pvm->pedidovendedor_id = $pedidovendedor_id;
 			$pvm->get();
 			$pvm->estadopedido = 5;
 			$pvm->egreso_id = 0;
-			//$pvm->save();
+			$pvm->save();
 		}
 	}
 }
