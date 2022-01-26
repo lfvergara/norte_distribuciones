@@ -1061,10 +1061,9 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
-		$out = shell_exec("modules/scripting/prueba.sh");
-		print_r($out);exit;
-		//shell_exec("cd /srv/websites/norte_distribuciones/modules/scripting/");
-		//shell_exec("sh ./prueba.sh");
+		//$out = shell_exec("modules/scripting/prueba.sh");
+		//print_r($out);exit;
+		shell_exec("modules/scripting/prueba.sh");
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
 	}
 
