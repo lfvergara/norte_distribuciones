@@ -17,10 +17,10 @@ class FacturaAFIPProcesoLoteTool {
             
         $afip = new Afip(array('CUIT' => $CUIT, 'production' => false));
         $ultima_factura = $afip->ElectronicBilling->GetLastVoucher($PTO_VENTA,$tipofactura_afip_id);
-        print_r($tipofactura_afip_id);exit;
         
         $nueva_factura = array('punto_venta'=>$obj_configuracion->punto_venta, 'nueva_factura'=>$ultima_factura + 1, 'tipofactura_afip_id'=>$tipofactura_afip_id,'fecha_factura'=>$fecha_factura, 'documentotipo_cliente'=>$documentotipo_cliente, 'documento_cliente'=>$documento_cliente);
         
+        print_r($nueva_factura);exit;
         /* **************************************************************************************************************** */
         $importe_total = $obj_egreso->importe_total;
         $descuento_factura = $obj_egreso->descuento;
