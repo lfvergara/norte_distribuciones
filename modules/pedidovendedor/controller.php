@@ -1389,14 +1389,14 @@ class PedidoVendedorController {
 			$pvm->get();
 			$pvm->estadopedido = 2;
 			$pvm->egreso_id = $egreso_id;
-			$pvm->save();
+			//$pvm->save();
 		} else {
 			$pvm = new PedidoVendedor();
 			$pvm->pedidovendedor_id = $pedidovendedor_id;
 			$pvm->get();
 			$pvm->estadopedido = 5;
 			$pvm->egreso_id = 0;
-			$pvm->save();
+			//$pvm->save();
 		}
 	}
 }
