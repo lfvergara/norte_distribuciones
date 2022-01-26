@@ -1382,17 +1382,19 @@ class PedidoVendedorController {
 				}
 			}
 			
-			$this->model->pedidovendedor_id = $pedidovendedor_id;
-			$this->model->get();
-			$this->model->estadopedido = 8;
-			$this->model->egreso_id = $egreso_id;
-			$this->model->save();
+			$pvm = new PedidoVendedor();
+			$pvm->pedidovendedor_id = $pedidovendedor_id;
+			$pvm->get();
+			$pvm->estadopedido = 2;
+			$pvm->egreso_id = $egreso_id;
+			$pvm->save();
 		} else {
-			$this->model->pedidovendedor_id = $pedidovendedor_id;
-			$this->model->get();
-			$this->model->estadopedido = 9;
-			$this->model->egreso_id = 0;
-			$this->model->save();
+			$pvm = new PedidoVendedor();
+			$pvm->pedidovendedor_id = $pedidovendedor_id;
+			$pvm->get();
+			$pvm->estadopedido = 5;
+			$pvm->egreso_id = 0;
+			$pvm->save();
 		}
 	}
 }
