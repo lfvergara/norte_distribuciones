@@ -24,7 +24,6 @@ class FacturaAFIPProcesoLoteTool {
         $importe_total = $obj_egreso->importe_total;
         $descuento_factura = $obj_egreso->descuento;
         $valor_descuento_factura = $descuento_factura / 100;
-        print_r($egresodetalle_collection);exit;
         
         // SEPARO EXENTOS Y NO GRAVADOS
         $array_exentos = array();
@@ -213,6 +212,7 @@ class FacturaAFIPProcesoLoteTool {
         //$array_discriminado = $this->prepara_array_discriminado($obj_egreso, $egresodetalle_collection);
         $array_discriminado = $array_final;
         $array_final1 = array_merge($nueva_factura, $array_discriminado);
+        print_r($array_final1);exit;
         /* **************************************************************************************************************** */
 
         /* **************************************************************************************************************** */
