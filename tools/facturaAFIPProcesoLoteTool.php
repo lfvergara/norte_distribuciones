@@ -8,8 +8,8 @@ require_once "common/libs/desa_afip.php-master/src/Afip.php";
 class FacturaAFIPProcesoLoteTool {
     
     function facturarProcesoLoteAFIP($obj_configuracion, $obj_tipofactura, $obj_egreso, $egresodetalle_collection) { 
+        print_r($obj_configuracion->cuit);exit;
         $CUIT = $obj_configuracion->cuit;
-        print_r($CUIT);exit;
         $PTO_VENTA = $obj_configuracion->punto_venta;       
         
         $fecha_factura = $obj_egreso->fecha;
