@@ -8,7 +8,6 @@ require_once "common/libs/desa_afip.php-master/src/Afip.php";
 class FacturaAFIPProcesoLoteTool {
     
     function facturarProcesoLoteAFIP($obj_configuracion, $obj_tipofactura, $obj_egreso, $egresodetalle_collection) { 
-        print_r($obj_configuracion);exit;
         $CUIT = $obj_configuracion->cuit;
         $PTO_VENTA = $obj_configuracion->punto_venta;       
         
@@ -18,6 +17,7 @@ class FacturaAFIPProcesoLoteTool {
         $documento_cliente = $obj_egreso->cliente->documento;
             
         $afip = new Afip(array('CUIT' => $CUIT, 'production' => false));
+        print_r($afip);exit;
         $ultima_factura = $afip->ElectronicBilling->GetLastVoucher($PTO_VENTA,$tipofactura_afip_id);
         
         $nueva_factura = array('punto_venta'=>$obj_configuracion->punto_venta, 'nueva_factura'=>$ultima_factura + 1, 'tipofactura_afip_id'=>$tipofactura_afip_id,'fecha_factura'=>$fecha_factura, 'documentotipo_cliente'=>$documentotipo_cliente, 'documento_cliente'=>$documento_cliente);
