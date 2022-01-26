@@ -1086,7 +1086,7 @@ class PedidoVendedorController {
 		$subtotal = $pvm->subtotal;
 		$importe_total = $pvm->importe_total;
 		$tipofactura = $cm->tipofactura->tipofactura_id;
-		$condicioniva = $cm->condicioniva_id->condicioniva_id;
+		$condicioniva = $cm->condicioniva->condicioniva_id;
 		$usuario_id = 2;
 		$flete_id = $cm->flete->flete_id;
 		
