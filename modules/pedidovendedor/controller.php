@@ -1279,7 +1279,7 @@ class PedidoVendedorController {
 					$eam = new EgresoAFIP();
 					$eam->cae = $resultadoAFIP['CAE'];
 					$eam->fecha = $fecha_egreso;
-					$eam->punto_venta = $cm->punto_venta;
+					$eam->punto_venta = $com->punto_venta;
 					$eam->numero_factura = $resultadoAFIP['NUMFACTURA'];
 					$eam->vencimiento = $resultadoAFIP['CAEFchVto'];
 					$eam->tipofactura = $tipofactura_id;
@@ -1393,9 +1393,9 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
-		//$out = shell_exec("modules/scripting/prueba.sh");
-		//print_r($out);exit;
-		shell_exec("modules/scripting/prueba.sh");
+		$out = shell_exec("modules/scripting/prueba.sh");
+		print_r($out);exit;
+		//shell_exec("modules/scripting/prueba.sh");
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
 	}
 }
