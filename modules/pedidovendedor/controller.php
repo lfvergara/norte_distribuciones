@@ -1146,8 +1146,8 @@ class PedidoVendedorController {
 			$almacen_id = 1;
 		}
 
-		$fecha_egreso = date('Y-m-d')
-		$hora_egreso = date('H:i:s')
+		$fecha_egreso = date('Y-m-d');
+		$hora_egreso = date('H:i:s');
 		$ecm = new EgresoComision();
 		$ecm->fecha = $fecha_egreso;
 		$ecm->valor_comision = round($comision, 2);
