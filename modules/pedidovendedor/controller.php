@@ -1060,13 +1060,6 @@ class PedidoVendedorController {
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/{$vendedor_id}");
 	}
 
-	function ejecuta_proceso_lote() {
-		//$out = shell_exec("modules/scripting/prueba.sh");
-		//print_r($out);exit;
-		shell_exec("modules/scripting/prueba.sh");
-		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
-	}
-
 	function proceso_lote($arg) {
 		$pedidovendedor_id = $arg;
 		
@@ -1397,6 +1390,13 @@ class PedidoVendedorController {
 			$pvm->egreso_id = 0;
 			$pvm->save();
 		}
+	}
+
+	function ejecuta_proceso_lote() {
+		$out = shell_exec("modules/scripting/prueba.sh");
+		print_r($out);exit;
+		//shell_exec("modules/scripting/prueba.sh");
+		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
 	}
 }
 ?>
