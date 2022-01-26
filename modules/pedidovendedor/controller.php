@@ -1275,7 +1275,6 @@ class PedidoVendedorController {
 				require_once "tools/facturaAFIPProcesoLoteTool.php";
 				$afip_tool = new FacturaAFIPProcesoLoteTool();
 				$resultadoAFIP = $afip_tool->facturarProcesoLoteAFIP($com, $tfm, $em, $egresodetalle_collection);
-				print_r($resultadoAFIP);exit;
 				if (is_array($resultadoAFIP)) {
 					$eam = new EgresoAFIP();
 					$eam->cae = $resultadoAFIP['CAE'];
@@ -1394,9 +1393,9 @@ class PedidoVendedorController {
 	}
 
 	function ejecuta_proceso_lote() {
-		$out = shell_exec("modules/scripting/prueba.sh");
-		print_r($out);exit;
-		//shell_exec("modules/scripting/prueba.sh");
+		//$out = shell_exec("modules/scripting/prueba.sh");
+		//print_r($out);exit;
+		shell_exec("modules/scripting/prueba.sh");
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
 	}
 }
