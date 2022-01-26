@@ -212,7 +212,6 @@ class FacturaAFIPProcesoLoteTool {
         //$array_discriminado = $this->prepara_array_discriminado($obj_egreso, $egresodetalle_collection);
         $array_discriminado = $array_final;
         $array_final1 = array_merge($nueva_factura, $array_discriminado);
-        print_r($array_final1);exit;
         /* **************************************************************************************************************** */
 
         /* **************************************************************************************************************** */
@@ -253,6 +252,7 @@ class FacturaAFIPProcesoLoteTool {
         //$data = $this->generaArrayData($array_final1);
         /* **************************************************************************************************************** */
         $res = $afip->ElectronicBilling->CreateVoucher($data);
+        print_r($res);exit;
         $res['NUMFACTURA'] = $nueva_factura['nueva_factura'];
         return $res;
     }
