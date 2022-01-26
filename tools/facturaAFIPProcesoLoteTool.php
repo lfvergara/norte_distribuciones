@@ -253,7 +253,6 @@ class FacturaAFIPProcesoLoteTool {
         /* **************************************************************************************************************** */
         $res = $afip->ElectronicBilling->CreateVoucher($data);
         $res['NUMFACTURA'] = $nueva_factura['nueva_factura'];
-        print_r($res);exit;
         return $res;
     }
 

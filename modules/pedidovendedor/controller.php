@@ -1275,6 +1275,7 @@ class PedidoVendedorController {
 				require_once "tools/facturaAFIPProcesoLoteTool.php";
 				$afip_tool = new FacturaAFIPProcesoLoteTool();
 				$resultadoAFIP = $afip_tool->facturarProcesoLoteAFIP($com, $tfm, $em, $egresodetalle_collection);
+				print_r($resultadoAFIP);exit;
 				if (is_array($resultadoAFIP)) {
 					$eam = new EgresoAFIP();
 					$eam->cae = $resultadoAFIP['CAE'];
