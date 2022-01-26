@@ -20,11 +20,11 @@ class FacturaAFIPProcesoLoteTool {
         
         $nueva_factura = array('punto_venta'=>$obj_configuracion->punto_venta, 'nueva_factura'=>$ultima_factura + 1, 'tipofactura_afip_id'=>$tipofactura_afip_id,'fecha_factura'=>$fecha_factura, 'documentotipo_cliente'=>$documentotipo_cliente, 'documento_cliente'=>$documento_cliente);
         
-        print_r($nueva_factura);exit;
         /* **************************************************************************************************************** */
         $importe_total = $obj_egreso->importe_total;
         $descuento_factura = $obj_egreso->descuento;
         $valor_descuento_factura = $descuento_factura / 100;
+        print_r($egresodetalle_collection);exit;
         
         // SEPARO EXENTOS Y NO GRAVADOS
         $array_exentos = array();
