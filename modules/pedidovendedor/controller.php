@@ -1271,7 +1271,7 @@ class PedidoVendedorController {
 				$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
 				$where = "ed.egreso_id = {$egreso_id}";
 				$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
-
+				print_r($tfm);exit;
 				require_once "tools/facturaAFIPProcesoLoteTool.php";
 				$afip_tool = new FacturaAFIPProcesoLoteTool();
 				$resultadoAFIP = $afip_tool->facturarProcesoLoteAFIP($com, $tfm, $em, $egresodetalle_collection);
