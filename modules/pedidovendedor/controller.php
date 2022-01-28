@@ -1257,7 +1257,6 @@ class PedidoVendedorController {
 		if ($tipofactura == 1 OR $tipofactura == 3) {
 			try {
 			    //$this->facturar_afip_argumento($egreso_id);			    
-				$egreso_id = $egreso_id;
 				$em = new Egreso();
 				$em->egreso_id = $egreso_id;
 				$em->get();
@@ -1332,11 +1331,12 @@ class PedidoVendedorController {
 			}
 		}
 
-		$select = "ed.producto_id AS PRODUCTO_ID, ed.codigo_producto AS CODIGO, ed.cantidad AS CANTIDAD";
-		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id";
-		$where = "ed.egreso_id = {$egreso_id}";
-		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 		if ($flag_error == 0) {
+			$select = "ed.producto_id AS PRODUCTO_ID, ed.codigo_producto AS CODIGO, ed.cantidad AS CANTIDAD";
+			$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id";
+			$where = "ed.egreso_id = {$egreso_id}";
+			$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
+			
 			foreach ($egresodetalle_collection as $egreso) {
 				$temp_producto_id = $egreso['PRODUCTO_ID'];
 				$select = "MAX(s.stock_id) AS STOCK_ID";
@@ -1375,7 +1375,26 @@ class PedidoVendedorController {
 					$sm->save();
 				}
 			}
-			
+
+			$em = new Egreso();
+			$em->egreso_id = $egreso_id;
+			$em->get();
+			$tipofactura_id = $em->tipofactura->tipofactura_id;
+
+			require_once 'tools/facturaPDFPorcesoLoteTool.php';
+			$facturaPDFHelper = new FacturaPDFProcesoLote();			
+			switch ($tipofactura_id) {
+				case 1:
+					$facturaPDFHelper->facturaAPL($egresodetalle_collection, $com, $em);
+					break;
+				case 2:
+					$facturaPDFHelper->remitoRPL($egresodetalle_collection, $com, $em);
+					break;
+				case 3:
+					$facturaPDFHelper->facturaBPL($egresodetalle_collection, $com, $em);
+					break;
+			}
+
 			$pvm = new PedidoVendedor();
 			$pvm->pedidovendedor_id = $pedidovendedor_id;
 			$pvm->get();
@@ -1390,12 +1409,28 @@ class PedidoVendedorController {
 			$pvm->egreso_id = 0;
 			$pvm->save();
 		}
+
+
 	}
 
 	function ejecuta_proceso_lote() {
-		//$out = shell_exec("modules/scripting/prueba.sh");
-		//print_r($out);exit;
-		shell_exec("modules/scripting/prueba.sh");
+		$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
+		$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
+		$prueba = 'FEderico';
+		$out = shell_exec("modules/scripting/prueba.sh $usuario_id $prueba");
+		print_r($out);exit;
+
+		/*
+		$plm = new ProcesoLote();
+		$plm->fecha = date('Y-m-d');
+		$plm->hora = date('H:i:s');
+		$plm->usuario_id = $usuario_id;
+		$plm->almacen_id = $almacen_id;
+		$plm->save();
+		$procesolote_id = $plm->procesolote_id;
+		*/
+
+		//shell_exec("modules/scripting/prueba.sh $usuario_id $prueba");
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/2");
 	}
 }
