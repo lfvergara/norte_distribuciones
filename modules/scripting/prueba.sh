@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "$usuario_id"
-echo "$prueba"
+echo $usuario_id
+echo $prueba
 exit
 
 ##EJECUTO CONSULTA SQL Y LA GUARDO EN VARIABLE
