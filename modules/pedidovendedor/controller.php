@@ -1417,7 +1417,7 @@ class PedidoVendedorController {
 		$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
 		$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
 		$prueba = 'FEderico';
-		$out = shell_exec("modules/scripting/prueba.sh $usuario_id $prueba");
+		$out = shell_exec("modules/scripting/prueba.sh {$usuario_id} {$prueba}");
 		print_r($out);exit;
 
 		/*
