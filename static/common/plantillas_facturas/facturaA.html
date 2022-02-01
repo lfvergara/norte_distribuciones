@@ -7,7 +7,7 @@
                 </tr>
                 <tr style="font-size: 18px; padding:5px 0 8px 0; width: 100% !important;">
                     <td style="width: 48% !important; text-align: center; font-size: 15px;">
-                        <img width="130" height="60" src='static/template/images/dhtordo.png' class="text-align-center"/><br>
+                        {configuracion-razon_social}
                     </td>
                     <td style="width: 4% !important; border-left: 1px #000 solid; border-right: 1px #000 solid; border-bottom: 1px #000 solid; text-align: center; font-size: 20px;"><strong>{tipofactura-nomenclatura}</strong></td>
                     <td style="width: 48% !important; text-align: left; font-size: 15px; padding-left: 15px;"><strong>FACTURA</strong></td>
@@ -16,16 +16,17 @@
                     <td style="width: 45% !important; text-align: center; font-size: 25px; " colspan="3">
                         <table cellspacing="0" style="width: 100% !important;">
                             <tr style=" text-align: center; font-size: 16px; width: 100% !important;">
+                                
                                 <td style="width: 50% !important; text-align: left; font-size: 13px;">
                                     <table cellspacing="0" style="width: 100% !important;">
                                         <tr style="font-size: 16px; width: 100% !important;">
                                             <td style="width: 50% !important; text-align: left; font-size: 15px;">
-                                                Razón Social: {configuracion-razon_social}
+                                                CUIT: {configuracion-cuit}
                                             </td>
                                         </tr>
                                         <tr style="font-size: 16px; width: 100% !important;">
                                             <td style="width: 50% !important; text-align: left; font-size: 15px;">
-                                                CUIT: {configuracion-cuit}
+                                                Dir. Comercial: {configuracion-domicilio_comercial}
                                             </td>
                                         </tr>
                                     </table>
@@ -44,34 +45,31 @@
                                         </tr>
                                     </table>
                                 </td>
+
                             </tr>
+
                             <tr style=" text-align: center; font-size: 16px; width: 100% !important;">
+                                
                                 <td style="width: 50% !important; text-align: left; font-size: 15px;">
-                                    Domicilio Comercial: {configuracion-domicilio_comercial}
+                                    <strong>Cond. IVA: {condicioniva-denominacion}</strong>
                                 </td>
+
                                 <td style="width: 50% !important; text-align: left; font-size: 15px; padding-left: 15px; border-left: 1px #000 solid;">
                                     <table cellspacing="0" style="width: 100% !important;">
-                                        <tr style="font-size: 16px; width: 100% !important;">
-                                            <td style="width: 50% !important; text-align: left; font-size: 15px;">
-                                                CUIT: {configuracion-cuit}
-                                            </td>
-                                        </tr>
                                         <tr style="font-size: 16px; width: 100% !important;">
                                             <td style="width: 50% !important; text-align: left; font-size: 15px;">
                                                 Ingresos Brutos: {configuracion-ingresos_brutos}
                                             </td>
                                         </tr>
+                                        <tr style="font-size: 16px; width: 100% !important;">
+                                            <td style="width: 50% !important; text-align: left; font-size: 15px;">
+                                                Fecha Inicio Actividad: {configuracion-fecha_inicio_actividad}
+                                            </td>
+                                        </tr>
                                     </table>
                                 </td>
                             </tr>
-                            <tr style=" text-align: center; font-size: 16px; width: 100% !important;">
-                                <td style="width: 50% !important; text-align: left; font-size: 15px;">
-                                    <strong>Condición IVA: {condicioniva-denominacion}</strong>
-                                </td>
-                                <td style="border-left: 1px #000 solid; width: 50% !important; text-align: left; font-size: 15px; padding-left: 15px;">
-                                    Fecha Inicio Actividad: {configuracion-fecha_inicio_actividad}
-                                </td>
-                            </tr>
+
                         </table>
                     </td>
                 </tr>
