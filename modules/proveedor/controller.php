@@ -52,16 +52,8 @@ class ProveedorController {
 
 	function consultar($arg) {
 		SessionHandler()->check_session();
-		$select_productodetalle = "p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION,
-				   				   p.costo as COSTO, ROUND((((p.costo * p.iva)/100)+p.costo), 3) AS CMI, p.iva AS IVA, p.producto_id AS PRODUCTO_ID,
-				   				   ROUND((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100), 3) AS VG, p.descuento AS DESCUENTO,
-				   				   p.porcentaje_ganancia AS GANANCIA, CASE WHEN MOD(@rownum:=@rownum+1,2) = 1 THEN 'even' ELSE 'odd' END AS CLASSTR,
-				   				   ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100), 3) AS VD,
-				   				   ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) - (((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100)), 3) AS VENTA";
-		$from_productodetalle = "(SELECT @rownum:=0) r, producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN
-								 productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN
-								 productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN
-								 productodetalle pd ON p.producto_id = pd.producto_id";
+		$select_productodetalle = "p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, p.costo as COSTO, ROUND((((p.costo * p.iva)/100)+p.costo), 3) AS CMI, p.iva AS IVA, p.producto_id AS PRODUCTO_ID, ROUND((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100), 3) AS VG, p.descuento AS DESCUENTO, p.porcentaje_ganancia AS GANANCIA, CASE WHEN MOD(@rownum:=@rownum+1,2) = 1 THEN 'even' ELSE 'odd' END AS CLASSTR, ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100), 3) AS VD, ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) - (((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100)), 3) AS VENTA";
+		$from_productodetalle = "(SELECT @rownum:=0) r, producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN productodetalle pd ON p.producto_id = pd.producto_id";
 		$where_productodetalle = "pd.proveedor_id = {$arg}";
 		$groupby_productodetalle = "pd.producto_id";
 
@@ -93,16 +85,8 @@ class ProveedorController {
 			}
 		}
 
-		$select_productodetalle = "p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION,
-				   				   p.costo as COSTO, ROUND((((p.costo * p.iva)/100)+p.costo), 3) AS CMI, p.iva AS IVA, p.producto_id AS PRODUCTO_ID,
-				   				   ROUND((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100), 3) AS VG, p.descuento AS DESCUENTO,
-				   				   p.porcentaje_ganancia AS GANANCIA, CASE WHEN MOD(@rownum:=@rownum+1,2) = 1 THEN 'even' ELSE 'odd' END AS CLASSTR,
-				   				   ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100), 3) AS VD,
-				   				   ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) - (((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100)), 3) AS VENTA";
-		$from_productodetalle = "(SELECT @rownum:=0) r, producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN
-								 productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN
-								 productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN
-								 productodetalle pd ON p.producto_id = pd.producto_id";
+		$select_productodetalle = "p.codigo AS CODIGO, pc.denominacion AS CATEGORIA, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, p.costo as COSTO, ROUND((((p.costo * p.iva)/100)+p.costo), 3) AS CMI, p.iva AS IVA, p.producto_id AS PRODUCTO_ID, ROUND((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100), 3) AS VG, p.descuento AS DESCUENTO, p.porcentaje_ganancia AS GANANCIA, CASE WHEN MOD(@rownum:=@rownum+1,2) = 1 THEN 'even' ELSE 'odd' END AS CLASSTR, ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100), 3) AS VD, ROUND((((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) - (((((p.costo * p.iva / 100) + p.costo) * p.porcentaje_ganancia / 100) + ((p.costo * p.iva / 100) + p.costo)) * p.descuento / 100)), 3) AS VENTA";
+		$from_productodetalle = "(SELECT @rownum:=0) r, producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN productodetalle pd ON p.producto_id = pd.producto_id";
 		$where_productodetalle = "pd.proveedor_id = {$proveedor_id}";
 		$groupby_productodetalle = "pd.producto_id";
 
@@ -114,7 +98,6 @@ class ProveedorController {
 
 	function editar($arg) {
 		SessionHandler()->check_session();
-
 		$this->model->proveedor_id = $arg;
 		$this->model->get();
 		$provincia_collection = Collector()->get('Provincia');
@@ -125,7 +108,6 @@ class ProveedorController {
 
 	function guardar() {
 		SessionHandler()->check_session();
-
 		$this->model->razon_social = filter_input(INPUT_POST, 'razon_social');
 		$this->model->documento = filter_input(INPUT_POST, 'documento');
 		$this->model->documentotipo = filter_input(INPUT_POST, 'documentotipo');
@@ -283,28 +265,22 @@ class ProveedorController {
 
 	function listar_todos() {
 		SessionHandler()->check_session();
-
 		$select = "cpd.numero AS NUMERO,cpd.importe AS IMPORTE,cpd.fecha AS FECHA,tf.denominacion AS TIPOFACTURA,p.razon_social AS PROVEEDOR,
 		ccp.referencia AS REFERENCIA";
 		$from = "creditoproveedordetalle cpd INNER JOIN tipofactura tf ON tf.tipofactura_id = cpd.tipofactura
 		INNER JOIN cuentacorrienteproveedor ccp ON ccp.cuentacorrienteproveedor_id = cpd.cuentacorrienteproveedor_id
 		 INNER JOIN proveedor p ON p.proveedor_id = ccp.proveedor_id";
 		$notacreditoproveedor = CollectorCondition()->get('CreditoProveeDordetalle', NULL, 4, $from, $select);
-
  		$this->view->listar_todos($notacreditoproveedor);
 	}
 
 	function creditos() {
 		SessionHandler()->check_session();
 		$periodo_actual = date('Ym');
-		$select = "cpd.creditoproveedordetalle_id AS ID,cpd.numero AS NUMERO,cpd.importe AS IMPORTE,cpd.fecha AS FECHA,tf.denominacion AS TIPOFACTURA,p.razon_social AS PROVEEDOR,
-		ccp.referencia AS REFERENCIA";
-		$from = "creditoproveedordetalle cpd INNER JOIN tipofactura tf ON tf.tipofactura_id = cpd.tipofactura
-		INNER JOIN cuentacorrienteproveedor ccp ON ccp.cuentacorrienteproveedor_id = cpd.cuentacorrienteproveedor_id
-		 INNER JOIN proveedor p ON p.proveedor_id = ccp.proveedor_id";
+		$select = "cpd.creditoproveedordetalle_id AS ID,cpd.numero AS NUMERO,cpd.importe AS IMPORTE,cpd.fecha AS FECHA,tf.denominacion AS TIPOFACTURA,p.razon_social AS PROVEEDOR, ccp.referencia AS REFERENCIA";
+		$from = "creditoproveedordetalle cpd INNER JOIN tipofactura tf ON tf.tipofactura_id = cpd.tipofactura INNER JOIN cuentacorrienteproveedor ccp ON ccp.cuentacorrienteproveedor_id = cpd.cuentacorrienteproveedor_id INNER JOIN proveedor p ON p.proveedor_id = ccp.proveedor_id";
 		 $where = "date_format(cpd.fecha, '%Y%m') = {$periodo_actual}";
 		$notacreditoproveedor = CollectorCondition()->get('CreditoProveeDordetalle', $where, 4, $from, $select);
-
  		$this->view->creditos($notacreditoproveedor);
 	}
 
@@ -312,14 +288,12 @@ class ProveedorController {
 	function consultar_notacredito($arg) {
 		SessionHandler()->check_session();
 		$periodo_actual = date('Ym');
-		$select = "cpd.creditoproveedordetalle_id AS ID,cpd.numero AS NUMERO,cpd.importe AS IMPORTE,cpd.fecha AS FECHA,tf.denominacion AS TIPOFACTURA,p.razon_social AS PROVEEDOR,
-		ccp.referencia AS REFERENCIA";
+		$select = "cpd.creditoproveedordetalle_id AS ID,cpd.numero AS NUMERO,cpd.importe AS IMPORTE,cpd.fecha AS FECHA,tf.denominacion AS TIPOFACTURA,p.razon_social AS PROVEEDOR, ccp.referencia AS REFERENCIA";
 		$from = "creditoproveedordetalle cpd INNER JOIN tipofactura tf ON tf.tipofactura_id = cpd.tipofactura
 		INNER JOIN cuentacorrienteproveedor ccp ON ccp.cuentacorrienteproveedor_id = cpd.cuentacorrienteproveedor_id
 		 INNER JOIN proveedor p ON p.proveedor_id = ccp.proveedor_id";
 		 $where = "date_format(cpd.fecha, '%Y%m') = {$periodo_actual}";
 		$notacreditoproveedor = CollectorCondition()->get('CreditoProveeDordetalle', $where, 4, $from, $select);
-
  		$this->view->consultar_notacredito();
 	}
 }
