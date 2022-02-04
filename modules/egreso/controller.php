@@ -555,12 +555,17 @@ class EgresoController {
 		$this->model->egreso_id = $arg;
 		$this->model->get();
 
+		$select = "p.producto_id AS PRODUCTO_ID, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, pc.denominacion AS CATEGORIA, p.codigo AS CODIGO, p.stock_minimo AS STMINIMO, p.stock_ideal AS STIDEAL, p.costo as COSTO, p.iva AS IVA, p.porcentaje_ganancia AS GANANCIA, p.precio_venta AS VENTA";
+		$from = "producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id LEFT JOIN productodetalle pd ON p.producto_id = pd.producto_id LEFT JOIN proveedor prv ON pd.proveedor_id = prv.proveedor_id";
+		$groupby = "p.producto_id";
+		$producto_collection = CollectorCondition()->get('Producto', NULL, 4, $from, $select, $groupby);
+
 		$select = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.costo_producto AS COSTO, ed.importe AS IMPORTE, ed.egresodetalle_id AS EGRESODETALLEID, ed.producto_id AS PRODUCTO, ed.valor_descuento AS VD, ed.iva AS IVA, ed.neto_producto AS NETPRO";
 		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "ed.egreso_id = {$arg}";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
-		$this->view->reingreso($egresodetalle_collection, $this->model);
+		$this->view->reingreso($producto_collection, $egresodetalle_collection, $this->model);
 	}
 
 	function siguiente_remito() {
@@ -1610,6 +1615,7 @@ class EgresoController {
 	}
 
 	function traer_formulario_reingreso_producto_ajax($arg) {
+		$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];		
 		$edm = new EgresoDetalle();
 		$edm->egresodetalle_id = $arg;
 		$edm->get();
@@ -1618,7 +1624,7 @@ class EgresoController {
 		$pm = new Producto();
 		$pm->producto_id = $producto_id;
 		$pm->get();
-		
+
 		$this->view->traer_formulario_reingreso_producto_ajax($pm, $edm);
 	}
 
