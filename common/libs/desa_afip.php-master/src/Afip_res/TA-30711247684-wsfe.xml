@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<loginTicketResponse version="1.0">
+    <header>
+        <source>CN=wsaahomo, O=AFIP, C=AR, SERIALNUMBER=CUIT 33693450239</source>
+        <destination>SERIALNUMBER=CUIT 20325889056, CN=vergarafederico</destination>
+        <uniqueId>407017628</uniqueId>
+        <generationTime>2022-01-27T21:01:35.098-03:00</generationTime>
+        <expirationTime>2022-01-28T09:01:35.098-03:00</expirationTime>
+    </header>
+    <credentials>
+        <token>PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/Pgo8c3NvIHZlcnNpb249IjIuMCI+CiAgICA8aWQgc3JjPSJDTj13c2FhaG9tbywgTz1BRklQLCBDPUFSLCBTRVJJQUxOVU1CRVI9Q1VJVCAzMzY5MzQ1MDIzOSIgZHN0PSJDTj13c2ZlLCBPPUFGSVAsIEM9QVIiIHVuaXF1ZV9pZD0iMjE5Mjg1NTI4MCIgZ2VuX3RpbWU9IjE2NDMzMjgwMzUiIGV4cF90aW1lPSIxNjQzMzcxMjk1Ii8+CiAgICA8b3BlcmF0aW9uIHR5cGU9ImxvZ2luIiB2YWx1ZT0iZ3JhbnRlZCI+CiAgICAgICAgPGxvZ2luIGVudGl0eT0iMzM2OTM0NTAyMzkiIHNlcnZpY2U9IndzZmUiIHVpZD0iU0VSSUFMTlVNQkVSPUNVSVQgMjAzMjU4ODkwNTYsIENOPXZlcmdhcmFmZWRlcmljbyIgYXV0aG1ldGhvZD0iY21zIiByZWdtZXRob2Q9IjIyIj4KICAgICAgICAgICAgPHJlbGF0aW9ucz4KICAgICAgICAgICAgICAgIDxyZWxhdGlvbiBrZXk9IjIwMzI1ODg5MDU2IiByZWx0eXBlPSI0Ii8+CiAgICAgICAgICAgIDwvcmVsYXRpb25zPgogICAgICAgIDwvbG9naW4+CiAgICA8L29wZXJhdGlvbj4KPC9zc28+Cg==</token>
+        <sign>ev+EDKac5HkggUMLh2uCuz8zcnp72vFeG/yVeZk5ob7yrnJhdTbzqIT86d+K84/VvYDJQXlOoNeyf0EGD22wIYNleJphokrZBR8p90RgOl6PtcT0WDJlbflpJBqRPFSdii93X5o02pSjkAm+3bmnwrXlaZ4RzT5HUM/JRoreS1s=</sign>
+    </credentials>
+</loginTicketResponse>
