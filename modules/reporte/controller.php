@@ -103,12 +103,10 @@ class ReporteController {
 		$deuda_cuentacorrienteproveedor = abs($deuda_cuentacorrienteproveedor);
 		$deuda_cuentacorrienteproveedor = ($deuda_cuentacorrienteproveedor > 0.5) ? $deuda_cuentacorrienteproveedor : 0;
 
-		$select_producto_id = "s.producto_id AS PROD_ID";
-		$from_producto_id = "stock s";
-		$where_producto_id = "s.producto_id != 344";
-		$groupby_producto_id = "s.producto_id";
-		$productoid_collection = CollectorCondition()->get('Stock', $where_producto_id, 4, $from_producto_id,
-														   $select_producto_id, $groupby_producto_id);
+		$select = "s.producto_id AS PROD_ID";
+		$from = "stock s";
+		$groupby = "s.producto_id";
+		$productoid_collection = CollectorCondition()->get('Stock', NULL, 4, $from, $select, $groupby);
 		$stock_valorizado = 0;
 		if ($productoid_collection == 0 || empty($productoid_collection) || !is_array($productoid_collection)) {
 			$stock_collection = array();
@@ -657,6 +655,7 @@ class ReporteController {
 		$from = "egresocomision ec  INNER JOIN egreso e ON e.egresocomision = ec.egresocomision_id INNER JOIN vendedor v ON v.vendedor_id = e.vendedor INNER JOIN estadocomision esc ON esc.estadocomision_id = ec.estadocomision";
 		$where = "ec.fecha = '{$fecha_sys}' AND ec.estadocomision IN (2,3) GROUP BY e.vendedor";
 		$detalle_comision = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select);
+		print_r($detalle_comision);exit;
 
 		//GASTO DIARIO
 		$select = "ROUND(SUM(g.importe), 2) AS IMPORTETOTAL";
@@ -1073,12 +1072,10 @@ class ReporteController {
 		$egreso_gasto_per_actual = (is_array($egreso_gasto_per_actual)) ? $egreso_gasto_per_actual[0]['IMPORTETOTAL'] : 0;
 		$egreso_gasto_per_actual = (is_null($egreso_gasto_per_actual)) ? 0 : $egreso_gasto_per_actual;
 
-		$select_producto_id = "s.producto_id AS PROD_ID";
-		$from_producto_id = "stock s";
-		$where_producto_id = "s.producto_id != 344";
-		$groupby_producto_id = "s.producto_id";
-		$productoid_collection = CollectorCondition()->get('Stock', $where_producto_id, 4, $from_producto_id,
-														   $select_producto_id, $groupby_producto_id);
+		$select = "s.producto_id AS PROD_ID";
+		$from = "stock s";
+		$groupby = "s.producto_id";
+		$productoid_collection = CollectorCondition()->get('Stock', NULL, 4, $from, $select, $groupby);
 		$stock_valorizado = 0;
 		if ($productoid_collection == 0 || empty($productoid_collection) || !is_array($productoid_collection)) {
 			$stock_collection = array();
@@ -1374,12 +1371,10 @@ class ReporteController {
 		$egreso_gasto_per_actual = (is_array($egreso_gasto_per_actual)) ? $egreso_gasto_per_actual[0]['IMPORTETOTAL'] : 0;
 		$egreso_gasto_per_actual = (is_null($egreso_gasto_per_actual)) ? 0 : $egreso_gasto_per_actual;
 
-		$select_producto_id = "s.producto_id AS PROD_ID";
-		$from_producto_id = "stock s";
-		$where_producto_id = "s.producto_id != 344";
-		$groupby_producto_id = "s.producto_id";
-		$productoid_collection = CollectorCondition()->get('Stock', $where_producto_id, 4, $from_producto_id,
-														   $select_producto_id, $groupby_producto_id);
+		$select = "s.producto_id AS PROD_ID";
+		$from = "stock s";
+		$groupby = "s.producto_id";
+		$productoid_collection = CollectorCondition()->get('Stock', NULL, 4, $from, $select, $groupby);
 		$stock_valorizado = 0;
 		if ($productoid_collection == 0 || empty($productoid_collection) || !is_array($productoid_collection)) {
 			$stock_collection = array();
@@ -1419,8 +1414,7 @@ class ReporteController {
 			}
 		}
 
-		$select = "ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN ccc.importe ELSE 0 END),2) AS TDEUDA,
-				   ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 OR ccc.tipomovimientocuenta = 3 THEN ccc.importe ELSE 0 END),2) AS TINGRESO";
+		$select = "ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN ccc.importe ELSE 0 END),2) AS TDEUDA, ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 OR ccc.tipomovimientocuenta = 3 THEN ccc.importe ELSE 0 END),2) AS TINGRESO";
 		$from = "cuentacorrientecliente ccc";
 		$estado_cuentacorrientecliente = CollectorCondition()->get('CuentaCorrienteCliente', NULL, 4, $from, $select);
 		if (is_array($estado_cuentacorrientecliente) AND !empty($estado_cuentacorrientecliente)) {
@@ -1429,10 +1423,7 @@ class ReporteController {
 			$estado_cuentacorrientecliente = 0;
 		}
 
-		$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT ROUND(SUM(dccp.importe),2) FROM
-    			   cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 1 AND dccp.proveedor_id = ccp.proveedor_id) AS DEUDA,
-				   (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND
-				   dccp.proveedor_id = ccp.proveedor_id) AS INGRESO";
+		$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 1 AND dccp.proveedor_id = ccp.proveedor_id) AS DEUDA, (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND dccp.proveedor_id = ccp.proveedor_id) AS INGRESO";
 		$from = "cuentacorrienteproveedor ccp INNER JOIN proveedor p ON ccp.proveedor_id = p.proveedor_id";
 		$groupby = "ccp.proveedor_id";
 		$cuentacorrienteproveedor_total = CollectorCondition()->get('CuentaCorrienteProveedor', NULL, 4, $from, $select, $groupby);
