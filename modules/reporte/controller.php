@@ -906,9 +906,9 @@ class ReporteController {
 		$detalle_gasto_diario = CollectorCondition()->get('Gasto', $where, 4, $from, $select);
 
 		//LIQUIDACIONES
-		$select = "ROUND(SUM(monto), 2) AS IMPORTETOTAL";
-		$from = "salario";
-		$where = "fecha = '{$fecha_filtro}'";
+		$select = "ROUND(SUM(s.monto), 2) AS IMPORTETOTAL";
+		$from = "salario s";
+		$where = "s.fecha = '{$fecha_filtro}' AND s.tipo_pago IN ('SALARIO', 'ADELANTO')";
 		$liquidacion = CollectorCondition()->get('Salario', $where, 4, $from, $select);
 		$liquidacion = (is_array($liquidacion)) ? $liquidacion[0]['IMPORTETOTAL'] : 0;
 		$liquidacion = (is_null($liquidacion)) ? 0 : $liquidacion;
@@ -916,7 +916,7 @@ class ReporteController {
 		//DETALLE LIQUIDACIONES
 		$select = "CONCAT(e.apellido, e.nombre) AS EMPLEADO, CONCAT('Desde ', date_format(s.desde, '%d/%m/%Y'), 'hasta el ', date_format(s.hasta, '%d/%m/%Y')) AS DETALLE, ROUND(s.monto, 2) AS IMPORTETOTAL";
 		$from = "salario s INNER JOIN empleado e on e.empleado_id = s.empleado";
-		$where = "s.fecha = '{$fecha_filtro}'";
+		$where = "s.fecha = '{$fecha_filtro}' AND s.tipo_pago IN ('SALARIO', 'ADELANTO')";
 		$detalle_liquidacion = CollectorCondition()->get('Salario', $where, 4, $from, $select);
 
 		//VEHICULOS

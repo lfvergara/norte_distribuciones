@@ -496,11 +496,17 @@ class ApiController {
                         $cuenta = new CuentaCorrienteCliente();
                         $cuenta->cuentacorrientecliente_id = $value['cuentacorrientecliente_id'];
                         $cuenta->get();
-                        $egreso = new Egreso();
-                        $egreso->egreso_id = $cuenta->egreso_id;
-                        $egreso->get();
-                        $egreso__id = $egreso->egreso_id;
-                            if($egreso->tipofactura->tipofactura_id==2){
+
+                        $egreso_id = $cuenta->egreso_id;
+                        if ($egreso_id == 0) {
+                            $comprobante = 'Migración de cuenta corriente';
+                        } else {
+                            $egreso = new Egreso();
+                            $egreso->egreso_id = $cuenta->egreso_id;
+                            $egreso->get();
+                            $egreso__id = $egreso->egreso_id;
+
+                            if ($egreso->tipofactura->tipofactura_id == 2) {
                                 $comprobante = str_pad($egreso->punto_venta, 4, '0', STR_PAD_LEFT) . "-";
                                 $comprobante .= str_pad($egreso->numero_factura, 8, '0', STR_PAD_LEFT);
                             } else {
@@ -510,6 +516,8 @@ class ApiController {
                                 $egresoafip = CollectorCondition()->get('EgresoAfip', $where_egresoafip, 4, $from_egresoafip, $select_egresoafip);
                                 $comprobante = (is_array($egresoafip))?$egresoafip[0]['nro']:0;
                             }
+                        }
+
                         $cuenta->referencia = $comprobante;    
                         array_push($respuesta, $cuenta);
                     }
