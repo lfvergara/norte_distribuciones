@@ -651,11 +651,10 @@ class ReporteController {
 		$egreso_comision_hoy = (is_null($egreso_comision_hoy)) ? 0 : $egreso_comision_hoy;
 
 		//DETALLE COMISIONES
-		$select = "CONCAT(v.apellido,',',v.nombre) AS VENDEDOR,ROUND(SUM(ec.valor_abonado),2) AS VALOR,esc.denominacion AS ESTADO";
-		$from = "egresocomision ec  INNER JOIN egreso e ON e.egresocomision = ec.egresocomision_id INNER JOIN vendedor v ON v.vendedor_id = e.vendedor INNER JOIN estadocomision esc ON esc.estadocomision_id = ec.estadocomision";
+		$select = "CONCAT(v.apellido,',',v.nombre) AS VENDEDOR, ROUND(SUM(ec.valor_abonado),2) AS VALOR";
+		$from = "egresocomision ec INNER JOIN egreso e ON e.egresocomision = ec.egresocomision_id INNER JOIN vendedor v ON v.vendedor_id = e.vendedor INNER JOIN estadocomision esc ON esc.estadocomision_id = ec.estadocomision";
 		$where = "ec.fecha = '{$fecha_sys}' AND ec.estadocomision IN (2,3) GROUP BY e.vendedor";
 		$detalle_comision = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select);
-		print_r($detalle_comision);exit;
 
 		//GASTO DIARIO
 		$select = "ROUND(SUM(g.importe), 2) AS IMPORTETOTAL";
