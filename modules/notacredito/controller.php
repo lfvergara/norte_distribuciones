@@ -180,6 +180,8 @@ class NotaCreditoController {
 			$this->model->get();
 			$this->model->punto_venta = $cm->punto_venta;
 			$this->model->numero_factura = $resultadoAFIP['NUMFACTURA'];
+			$this->model->numero_cae = $resultadoAFIP['NUMFACTURA'];
+			$this->model->vencimiento_cae = $resultadoAFIP['NUMFACTURA'];
 			$this->model->emitido_afip = 1;
 			$this->model->save();
 		}

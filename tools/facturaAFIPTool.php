@@ -46,9 +46,7 @@ class FacturaAFIPTool {
         $afip = new Afip(array('CUIT' => $CUIT, 'production' => false));
         $ultima_factura = $afip->ElectronicBilling->GetLastVoucher($PTO_VENTA,$tipofactura_afip_id);
         
-        $nueva_factura = array('punto_venta'=>$obj_configuracion->punto_venta, 'nueva_factura'=>$ultima_factura + 1, 'tipofactura_afip_id'=>$tipofactura_afip_id,
-                               'fecha_factura'=>$fecha_factura_egreso, 'documentotipo_cliente'=>$documentotipo_cliente, 'documento_cliente'=>$documento_cliente,
-                               'cuit_emisor'=>$CUIT);
+        $nueva_factura = array('punto_venta'=>$obj_configuracion->punto_venta, 'nueva_factura'=>$ultima_factura + 1, 'tipofactura_afip_id'=>$tipofactura_afip_id, 'fecha_factura'=>$fecha_factura_egreso, 'documentotipo_cliente'=>$documentotipo_cliente, 'documento_cliente'=>$documento_cliente, 'cuit_emisor'=>$CUIT);
         
         $array_discriminado = $this->prepara_array_discriminado_nc($obj_notacredito, $notacreditodetalle_collection);
         $array_final = array_merge($nueva_factura, $array_discriminado);
