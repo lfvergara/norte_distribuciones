@@ -15,6 +15,9 @@ class NotaCreditoPDF extends View {
         $notacredito_id = $obj_notacredito->notacredito_id;
         $condicioniva = $obj_cliente->condicioniva->denominacion;
         $obj_cliente->condicioniva = $condicioniva;
+        $emitido_afip = $obj_notacredito->emitido_afip;
+        $numero_cae = $obj_notacredito->numero_cae;
+        $vencimiento_cae = $obj_notacredito->vencimiento_cae;
         
         $obj_egreso->punto_venta = str_pad($obj_egreso->punto_venta, 4, '0', STR_PAD_LEFT);
         $obj_egreso->numero_factura = str_pad($obj_egreso->numero_factura, 8, '0', STR_PAD_LEFT);
@@ -43,6 +46,20 @@ class NotaCreditoPDF extends View {
 
             $contenido .= $gui_notacreditoNC;
         }
+
+        if ($emitido_afip == 1) {
+            if($numero_cae != 0 AND !is_null($vencimiento_cae)) {
+                $gui_autorizacion_afip = file_get_contents("static/common/plantillas_facturas/autorizacion_afip.html");
+                $gui_autorizacion_afip = str_replace('{numero_cae}', $numero_cae, $gui_autorizacion_afip)
+                $gui_autorizacion_afip = str_replace('{vencimiento_cae}', $vencimiento_cae, $gui_autorizacion_afip)
+                $contenido = str_replace('{autorizacion_afip}', $gui_autorizacion_afip, $contenido);
+            } else {
+                $contenido = str_replace('{autorizacion_afip}', '', $contenido);
+            }
+        } else {
+            $contenido = str_replace('{autorizacion_afip}', '', $contenido);
+        }
+
 
         $nombre_PDF = "NotaCredito-{$notacredito_id}";
         $directorio = URL_PRIVATE . "facturas/notascreditos/";
