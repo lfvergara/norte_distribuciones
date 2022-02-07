@@ -173,15 +173,14 @@ class NotaCreditoController {
 		$notacreditodetalle_collection = CollectorCondition()->get('NotaCreditoDetalle', $where, 4, $from, $select);
 
 		$resultadoAFIP = FacturaAFIPTool()->notaCreditoAFIP($cm, $tfm, $this->model, $em, $notacreditodetalle_collection);
-		print_r($resultadoAFIP);exit;
 		if (is_array($resultadoAFIP)) {
 			$this->model = new NotaCredito();
 			$this->model->notacredito_id = $notacredito_id;
 			$this->model->get();
 			$this->model->punto_venta = $cm->punto_venta;
 			$this->model->numero_factura = $resultadoAFIP['NUMFACTURA'];
-			$this->model->numero_cae = $resultadoAFIP['NUMFACTURA'];
-			$this->model->vencimiento_cae = $resultadoAFIP['NUMFACTURA'];
+			$this->model->numero_cae = $resultadoAFIP['CAE'];
+			$this->model->vencimiento_cae = $resultadoAFIP['CAEFchVto'];
 			$this->model->emitido_afip = 1;
 			$this->model->save();
 		}
