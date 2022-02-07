@@ -50,8 +50,8 @@ class NotaCreditoPDF extends View {
         if ($emitido_afip == 1) {
             if($numero_cae != 0 AND !is_null($vencimiento_cae)) {
                 $gui_autorizacion_afip = file_get_contents("static/common/plantillas_facturas/autorizacion_afip.html");
-                $gui_autorizacion_afip = str_replace('{numero_cae}', $numero_cae, $gui_autorizacion_afip)
-                $gui_autorizacion_afip = str_replace('{vencimiento_cae}', $vencimiento_cae, $gui_autorizacion_afip)
+                $gui_autorizacion_afip = str_replace('{numero_cae}', $numero_cae, $gui_autorizacion_afip);
+                $gui_autorizacion_afip = str_replace('{vencimiento_cae}', $vencimiento_cae, $gui_autorizacion_afip);
                 $contenido = str_replace('{autorizacion_afip}', $gui_autorizacion_afip, $contenido);
             } else {
                 $contenido = str_replace('{autorizacion_afip}', '', $contenido);
