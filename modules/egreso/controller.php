@@ -1097,6 +1097,8 @@ class EgresoController {
 		$ncm->hora = $hora;
 		$ncm->subtotal = filter_input(INPUT_POST, 'subtotal');
 		$ncm->importe_total = $importe_total;
+		$ncm->numero_cae = 0;
+		$ncm->vencimiento_cae = NULL;
 		$ncm->egreso_id = $egreso_id;
 		$ncm->tipofactura = $tipofactura_nc;
 
@@ -1240,7 +1242,7 @@ class EgresoController {
 			$cccm->save();
 		}
 
-		header("Location: " . URL_APP . "/egreso/consultar/{$egreso_id}");
+		header("Location: " . URL_APP . "/notacredito/consultar/{$notacredito_id}");
 	}
 
 	function entregas_pendientes($arg) {

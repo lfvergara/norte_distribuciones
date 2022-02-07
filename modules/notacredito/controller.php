@@ -185,7 +185,7 @@ class NotaCreditoController {
 			$this->model->save();
 		}
 
-		header("Location: " . URL_APP . "/egreso/consultar/{$egreso_id}");
+		header("Location: " . URL_APP . "/notacredito/consultar/{$notacredito_id}");
 	}
 
 	function anular($arg) {
