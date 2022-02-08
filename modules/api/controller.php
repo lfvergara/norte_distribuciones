@@ -288,7 +288,7 @@ class ApiController {
         }
     }
 
-    function bk_cliente() {
+    function cliente() {
         if (isset($_POST['token']) && !empty($_POST['token'])) {
             $token = $_POST['token'];
             $vendedor_id = $_POST['vendedor_id'];
@@ -441,7 +441,7 @@ class ApiController {
         }
     }
 
-    function cliente() {
+    function newcliente() {
         if (isset($_POST['token']) && !empty($_POST['token'])) {
             $token = $_POST['token'];
             $vendedor_id = $_POST['vendedor_id'];
