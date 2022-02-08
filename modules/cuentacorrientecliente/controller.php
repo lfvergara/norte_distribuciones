@@ -539,7 +539,9 @@ class CuentaCorrienteClienteController {
 	}
 
 	function traer_listado_movimientos_cuentacorriente_ajax($arg) {
-		$egreso_id = $arg;
+		$ids = explode('@', $arg);
+		$egreso_id = $ids[0];
+		$cliente_id = $ids[1];
 		$select = "date_format(ccc.fecha, '%d/%m/%Y') AS FECHA, ccc.importe AS IMPORTE, ccc.ingreso AS INGRESO, tmc.denominacion AS MOVIMIENTO, ccc.egreso_id AS EID, ccc.referencia AS REFERENCIA, CASE ccc.tipomovimientocuenta WHEN 1 THEN 'danger' WHEN 2 THEN 'success' END AS CLASS, ccc.cuentacorrientecliente_id CCCID";
 		$from = "cuentacorrientecliente ccc INNER JOIN tipomovimientocuenta tmc ON ccc.tipomovimientocuenta = tmc.tipomovimientocuenta_id";
 		$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id}";

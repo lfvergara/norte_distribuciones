@@ -91,7 +91,7 @@
 
     function cargarMovimientosCuentas(egreso_id) {
         var tbl_movimientos_cuentacorrientecliente = $.ajax({
-            url: '{url_app}/cuentacorrientecliente/traer_listado_movimientos_cuentacorriente_ajax/' + egreso_id,
+            url: '{url_app}/cuentacorrientecliente/traer_listado_movimientos_cuentacorriente_ajax/' + egreso_id + '@' + {cliente-cliente_id},
                 dataType: 'text',
                 async: false
         }).responseText;
