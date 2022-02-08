@@ -7,6 +7,7 @@ require_once "modules/entregacliente/model.php";
 require_once "modules/cuentacorrientecliente/model.php";
 require_once "tools/cobrosPDFTool.php";
 
+
 class EntregaClienteDetalleController {
 
 	function __construct() {
@@ -33,16 +34,9 @@ class EntregaClienteDetalleController {
   	function vendedor_cobranza($arg) {
 	    SessionHandler()->check_session();
 
-	    $select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO,
-	    		   CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE,ec.cliente_id AS CLINT, ec.estado AS ESTADO,
-	    		   ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL,
-	    		   (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL,
-	    		   CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0))
-    			   ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
-	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id
-	             INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id
-	             LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
-	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
+	    $select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
+	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado = 1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $entregacliente_collection = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 	    $entregacliente_collection = (is_array($entregacliente_collection) AND !empty($entregacliente_collection)) ? $entregacliente_collection : array();
 
@@ -50,13 +44,13 @@ class EntregaClienteDetalleController {
 	    	
 	    	foreach ($entregacliente_collection as $clave=>$valor) {
 	    		$egreso_id = $valor['EGRESO'];
+	    		$cliente_id = $valor['CLINT'];
 		    	$select = "ROUND(((ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - 
 					  (ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE";
 				$from = "cuentacorrientecliente ccc";
-				$where = "ccc.egreso_id = {$egreso_id}";
+				$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id}";
 				$balance = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
-	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;
-				
+	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;				
 				$entregacliente_collection[$clave]['BALANCE'] = $balance;
 	    	}
 	    }
@@ -66,10 +60,9 @@ class EntregaClienteDetalleController {
 
   	function vendedor_cobranza_total($arg) {
 	    SessionHandler()->check_session();
-
 	    $select = "CONCAT('$ ',ROUND(SUM(ec.monto), 2)) AS TOTAL";
 	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id";
-	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
+	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado = 1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $cobranza = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 	    $total = (is_array($cobranza)) ? $cobranza[0]["TOTAL"] : 0 ;
 	    print_r($total);
@@ -88,7 +81,6 @@ class EntregaClienteDetalleController {
 		$cobros_array = $_POST['cobro'];
 
 		if (is_array($cobros_array)) {
-
 			$fecha_actual = date('Y-m-d');
 			$hora = date('H:i:s');
 
@@ -105,6 +97,7 @@ class EntregaClienteDetalleController {
 				$ecdm = new EntregaCliente();
 				$ecdm->entregacliente_id  = $entregacliente_id;
 				$ecdm->get();
+				$cliente_id = $ecdm->cliente_id;
 
 				$ecdm->estado = 2;
 				$ecdm->save();
@@ -113,7 +106,7 @@ class EntregaClienteDetalleController {
 					$select = "ROUND(((ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) -
 							  (ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE";
 					$from = "cuentacorrientecliente ccc";
-					$where = "ccc.egreso_id = {$egreso_id}";
+					$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id}";
 					$balance = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 					$deuda = abs($balance[0]['BALANCE']) - $importe;
 					if ($deuda > 0) {
@@ -121,7 +114,7 @@ class EntregaClienteDetalleController {
 					} else {
 						$select = "ccc.cuentacorrientecliente_id AS ID";
 						$from = "cuentacorrientecliente ccc";
-						$where = "ccc.egreso_id = {$egreso_id} AND ccc.estadomovimientocuenta IN (1,2,3)";
+						$where = "ccc.egreso_id = {$egreso_id} AND ccc.estadomovimientocuenta IN (1,2,3) AND ccc.cliente_id = {$cliente_id}";
 						$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 						$estadomovimientocuenta = 4;
 
@@ -135,7 +128,6 @@ class EntregaClienteDetalleController {
 						}
 					}
 
-
 					$cccm = new CuentaCorrienteCliente();
 					$cccm->fecha = date('Y-m-d');
 					$cccm->hora = date('H:i:s');
@@ -148,17 +140,16 @@ class EntregaClienteDetalleController {
 					$cccm->estadomovimientocuenta = $estadomovimientocuenta;
 					$cccm->cobrador = $cobrador_id;
 					$cccm->save();
-				}else {
-					$select = "cuentacorrientecliente_id AS ID ";
-					$from = "cuentacorrientecliente";
-					$where = "egreso_id = {$egreso_id} ORDER BY cuentacorrientecliente_id ASC";
+				} else {
+					$select = "ccc.cuentacorrientecliente_id AS ID ";
+					$from = "cuentacorrientecliente ccc";
+					$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id} ORDER BY ccc.cuentacorrientecliente_id ASC";
 					$cuentacorrientecliente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 
 					foreach ($cuentacorrientecliente_collection as $key => $cuentacorrientecliente) {
 						$cccm = new CuentaCorrienteCliente();
 						$cccm->cuentacorrientecliente_id = $cuentacorrientecliente['ID'];
 						$cccm->get();
-
 						$cccm->estadomovimientocuenta = 4;
 						$cccm->save();
 					}
@@ -245,15 +236,8 @@ class EntregaClienteDetalleController {
 		}
 
 		$vendedor_id = $arg;
-		$select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO,
-	    		   CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO,
-	    		   ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL,
-	    		   (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL,
-	    		   CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0))
-    			   ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
-	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id
-	             INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id
-	             LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+		$select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
+	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
 	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $entregacliente_collection = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 
@@ -261,20 +245,20 @@ class EntregaClienteDetalleController {
 	    	
 	    	foreach ($entregacliente_collection as $clave=>$valor) {
 	    		$egreso_id = $valor['EGRESO'];
+	    		$cliente_id = $valor['CLINT'];
 		    	$select = "ROUND(((ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - 
 					  (ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE";
 				$from = "cuentacorrientecliente ccc";
-				$where = "ccc.egreso_id = {$egreso_id}";
+				$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id}";
 				$balance = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
-	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;
-				
+	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;				
 				$entregacliente_collection[$clave]['BALANCE'] = $balance;
 	    	}
 	    }
 
 	    $select = "CONCAT('$ ',ROUND(SUM(ec.monto), 2)) AS TOTAL";
 	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id";
-	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
+	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado = 1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $cobranza = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 	    $total_cobranza = (is_array($cobranza)) ? $cobranza[0]["TOTAL"] : 0 ;
 
@@ -290,7 +274,7 @@ class EntregaClienteDetalleController {
 
   		$select = "CONCAT('$',ROUND(SUM(ec.monto), 2)) AS TOTAL";
 	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id";
-	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
+	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado = 1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $cobranza = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 	    $total = (is_array($cobranza)) ? $cobranza[0]["TOTAL"] : 0 ;
 
@@ -299,16 +283,9 @@ class EntregaClienteDetalleController {
 	    $cm->get();
 	    $cobrador_denominacion = $cm->denominacion;
 
-	    $select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO,
-	    		   CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO,
-	    		   e.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL,
-	    		   (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL,
-	    		   CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0))
-    			   ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
-	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id
-	             INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id
-	             LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
-	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
+	    $select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, e.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
+	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+	    $where = "ec.vendedor_id  = {$vendedor_id} AND ec.anulada = 0 and ec.estado = 1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $entregacliente_collection = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
 
     	/*GENERACION DE PDF*/
