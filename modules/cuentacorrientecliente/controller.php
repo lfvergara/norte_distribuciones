@@ -547,8 +547,7 @@ class CuentaCorrienteClienteController {
 		$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id}";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 		
-		foreach ($cuentacorriente_collection as $clave=>$valor) {
-		
+		foreach ($cuentacorriente_collection as $clave=>$valor) {		
 			$select = "ROUND(((ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - 
 				  	  (ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE, 'inline-block' AS BTN_DISPLAY";
 			$from = "cuentacorrientecliente ccc";
