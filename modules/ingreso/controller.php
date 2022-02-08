@@ -178,6 +178,15 @@ class IngresoController {
 		$opcion_actualiza_producto = filter_input(INPUT_POST, 'opcion_producto');
 		$opcion_actualiza_producto_proveedor = filter_input(INPUT_POST, 'opcion_producto_proveedor');
 		
+		$iva = filter_input(INPUT_POST, 'iva');
+		$iva = (is_null($iva) OR empty($iva)) ? 0 : $iva;
+		$percepcion_iva = filter_input(INPUT_POST, 'percepcion_iva');
+		$percepcion_iva = (is_null($percepcion_iva) OR empty($percepcion_iva)) ? 0 : $percepcion_iva;
+		$impuesto_interno = filter_input(INPUT_POST, 'impuesto_interno');
+		$impuesto_interno = (is_null($impuesto_interno) OR empty($impuesto_interno)) ? 0 : $impuesto_interno;
+		$ingresos_brutos = filter_input(INPUT_POST, 'ingresos_brutos');
+		$ingresos_brutos = (is_null($ingresos_brutos) OR empty($ingresos_brutos)) ? 0 : $ingresos_brutos;
+		
 		$tipofactura = filter_input(INPUT_POST, 'tipofactura');
 		$this->model->punto_venta = $punto_venta;
 		$this->model->numero_factura = $numero_factura;
@@ -186,10 +195,10 @@ class IngresoController {
 		$this->model->vencimiento = filter_input(INPUT_POST, 'vencimiento');
 		$this->model->fecha_vencimiento = $fecha_vencimiento;
 		$this->model->hora = $hora;
-		$this->model->iva = filter_input(INPUT_POST, 'iva');
-		$this->model->percepcion_iva = filter_input(INPUT_POST, 'percepcion_iva');
-		$this->model->impuesto_interno = filter_input(INPUT_POST, 'impuesto_interno');
-		$this->model->ingresos_brutos = filter_input(INPUT_POST, 'ingresos_brutos');
+		$this->model->iva = $iva;
+		$this->model->percepcion_iva = $percepcion_iva;
+		$this->model->impuesto_interno = $impuesto_interno;
+		$this->model->ingresos_brutos = $ingresos_brutos;
 		$this->model->costo_distribucion = $costo_distribucion;
 		$this->model->costo_total = filter_input(INPUT_POST, 'suma_total');
 		$this->model->costo_total_iva = $costo_final;
