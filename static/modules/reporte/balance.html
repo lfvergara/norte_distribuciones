@@ -71,6 +71,10 @@
                             <th class="red">${egreso_comision_per_actual}</th>
                         </tr>
                         <tr style="font-size: 12px;">
+                            <th><i class="fa fa-arrow-circle-down red"></i> Salarios</th>
+                            <th class="red">${egreso_salario}</th>
+                        </tr>
+                        <tr style="font-size: 12px;">
                             <th><i class="fa fa-arrow-circle-down red"></i> Pagos CC Proveedores</th>
                             <th class="red">${egreso_cuentacorrienteproveedor_per_actual}</th>
                         </tr>
@@ -78,19 +82,11 @@
                             <th><i class="fa fa-arrow-circle-down red"></i> Gastos Varios</th>
                             <th class="red">${egreso_gasto_per_actual}</th>
                         </tr>
-                    </thead>
-                </table>
-                <h2><i class="fa fa-money"></i>&nbsp;&nbsp; Liquidaciones</h2>
-                <table id="tbl_liquidaciones" class="table table-striped table-bordered">
-                    <thead>
                         <tr style="font-size: 12px;">
-                            <th>Denominación</th>
-                            <th>Monto</th>
+                            <th><i class="fa fa-arrow-circle-down red"></i> Gastos Combustible</th>
+                            <th class="red">${egreso_combustible}</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {tbl_liquidaciones}
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -514,13 +510,6 @@
 <script src="{url_static}vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
 <script src="{url_static}vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
 <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-        $('#tbl_liquidaciones').dataTable( {
-            "aaSorting": [[ 0, "asc" ]]
-          , "iDisplayLength":10
-        } );
-    } );
-
     $(document).ready(function() {
         $('#tbl_vehiculocombustible').dataTable( {
             "aaSorting": [[ 0, "asc" ]]
