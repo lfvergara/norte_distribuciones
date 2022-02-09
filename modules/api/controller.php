@@ -469,7 +469,7 @@ class ApiController {
                     /*Obtengo Egresos del Cliente*/
                     $select = "egreso_id";
                     $from = "egreso";
-                    $where = "cliente = {$arrayClientes[$index]->cliente_id}  ORDER BY fecha DESC LIMIT 10";
+                    $where = "cliente = {$arrayClientes[$index]->cliente_id} ORDER BY fecha DESC LIMIT 10";
                     $egresos = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
                     /*--------------------*/
                     if(is_array($egresos)){
@@ -581,7 +581,7 @@ class ApiController {
                     /*--------------------*/
                     $select = "ccc.importe AS IMPORTE, ccc.fecha AS FECHA";
                     $from = "cuentacorrientecliente ccc";
-                    $where = "cliente_id = {$arrayClientes[$index]->cliente_id} AND egreso_id = 0";
+                    $where = "ccc.cliente_id = {$arrayClientes[$index]->cliente_id} AND ccc.egreso_id = 0";
                     $ctacte_migracion = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
                     if (is_array($ctacte_migracion) AND !empty($ctacte_migracion)) {
                         $facturaAux = new stdClass();
@@ -595,12 +595,6 @@ class ApiController {
                         array_push($clienteAux->facturas, $facturaAux);
                     }
                     /*--------------------*/
-
-
-
-
-
-
                     array_push($clientes, $clienteAux);
                 }
                 

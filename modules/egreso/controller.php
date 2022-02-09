@@ -1354,49 +1354,20 @@ class EgresoController {
 			$egreso_ids = $_POST['objeto'];
 			$egreso_in_ids =  implode('@3,', $egreso_ids);
 			$egreso_in_ids =  "{$egreso_in_ids}@3";
-			$array_exportacion = array();
-
+			
 			$flete_id = filter_input(INPUT_POST, 'flete_id');
 			$fm = new Flete();
 			$fm->flete_id = $flete_id;
 			$fm->get();
 			$denominacion = $fm->denominacion;
 
-			$cant_cuentacorriente = 0;
-			$cant_contado = 0;
-
-			$array_encabezados = array('FECHA', 'COMPROBANTE', 'CLIENTE', 'COND PAGO', 'IMPORTE TOTAL');
-			$array_exportacion[] = $array_encabezados;
-			$total = 0;
+			$array_clientes = array();
 			foreach ($egreso_ids as $egreso_id) {
 				$em = new Egreso();
 				$em->egreso_id = $egreso_id;
 				$em->get();
-
-				$select = "CONCAT(tf.nomenclatura, ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) AS REFERENCIA";
-				$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
-				$where = "eafip.egreso_id = {$egreso_id}";
-				$eafip = CollectorCondition()->get('EgrasoAFIP', $where, 4, $from, $select);
-
-				if (is_array($eafip)) {
-					$factura = $eafip[0]['REFERENCIA'];
-				} else {
-					$tipofactura_nomenclatura = $em->tipofactura->nomenclatura;
-					$punto_venta = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
-					$numero_factura = str_pad($em->numero_factura, 8, '0', STR_PAD_LEFT);
-					$factura = "{$tipofactura_nomenclatura} {$punto_venta}-{$numero_factura}";
-				}
-
-				$total = $total + $em->importe_total;
-				$condicionpago_id = $em->condicionpago->condicionpago_id;
-				switch ($condicionpago_id) {
-				 	case 1:
-				 		$cant_cuentacorriente = $cant_cuentacorriente + $em->importe_total;
-				 		break;
-			 		case 2:
-				 		$cant_contado = $cant_contado + $em->importe_total;
-				 		break;
-				}
+				$cliente_id = $em->cliente->cliente_id;
+				if (!in_array($cliente_id, $array_clientes)) $array_clientes[] = $cliente_id;
 
 				$egresoentrega_id = $em->egresoentrega->egresoentrega_id;
 				$eem = new EgresoEntrega();
@@ -1406,30 +1377,7 @@ class EgresoController {
 				$eem->estadoentrega = 3;
 				$eem->flete = $flete_id;
 				$eem->save();
-
-				$punto_venta = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
-				$numero_factura = str_pad($em->numero_factura, 4, '0', STR_PAD_LEFT);
-				$array_temp = array(
-								$em->fecha
-								, $factura
-								, $em->cliente->razon_social
-								, $em->condicionpago->denominacion
-								, $em->importe_total);
-				$array_exportacion[] = $array_temp;
 			}
-
-			$array_exportacion[] = array('','','','','');
-			$array_exportacion[] = array('','','','','');
-			$array_exportacion[] = array('','','','Cuenta Corriente',$cant_cuentacorriente);
-			$array_exportacion[] = array('','','','Contado',$cant_contado);
-			$array_exportacion[] = array('','','','Total',$total);
-			$array_exportacion[] = array('','','','','');
-			$array_exportacion[] = array('','','','Combustible','$.......................');
-			$array_exportacion[] = array('','','','Sencillo','$.......................');
-			$array_exportacion[] = array('','','','Descuentos','$.......................');
-			$array_exportacion[] = array('','','','Cta. Cte.','$.......................');
-			$array_exportacion[] = array('','','','Efectivo','$.......................');
-			$array_exportacion[] = array('','','','Totales','$.......................');
 
 			$fecha_actual = date('Y-m-d');
 			$hrm = new HojaRuta();
@@ -1440,11 +1388,7 @@ class EgresoController {
 			$hrm->save();
 			$hrm->get();
 
-			$array_cantidades = array('{cant_cuentacorriente}'=>$cant_cuentacorriente,
-									  '{cant_contado}'=>$cant_contado);
-			$subtitulo = "{$fecha_actual} - HOJA DE RUTA: {$denominacion} - Nº{$hrm->hojaruta_id}";
-
-			ExcelReport()->extraer_informe_conjunto($subtitulo, $array_exportacion);
+			header("Location: " . URL_APP . "/hojaruta/panel");
 		} else {
 			header("Location: " . URL_APP . "/egreso/entregas_pendientes/3");
 		}
@@ -1473,7 +1417,7 @@ class EgresoController {
 		$cant_contado = 0;
 		$array_productos = array();
 		foreach ($egreso_ids as $egreso_id) {
-			$select = 'ed.codigo_producto AS COD,ed.descripcion_producto AS PRODUCTO,cantidad AS CANTIDAD,pu.denominacion AS UNIDAD';
+			$select = 'ed.codigo_producto AS COD,ed.descripcion_producto AS PRODUCTO,cantidad AS CANTIDAD,pu.denominacion AS UNIDAD, pr.unidad_bulto AS UNPOBU';
 			$from = 'egresodetalle ed INNER JOIN producto pr ON pr.producto_id = ed.producto_id INNER JOIN productounidad pu ON pu.productounidad_id = pr.productounidad';
 			$where = "ed.egreso_id = {$egreso_id}";
 			$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
@@ -1488,14 +1432,39 @@ class EgresoController {
 			}
 		}
 		
-		$array_encabezados2 = array('CODIGO', 'PRODUCTO', 'CANTIDAD', 'UNIDAD', '', '', '');
+		$array_encabezados2 = array('CODIGO', 'PRODUCTO', 'CANTIDAD', 'BULTOS', 'UNIDADES', '', '');
 		$array_exportacion2[] = $array_encabezados2;
 		foreach ($array_productos as $producto) {
+			$cantidad = $producto['CANTIDAD'];
+			$unidad_x_bulto = $producto['UNPOBU'];
+			if ($unidad_x_bulto > 0) {
+				if ($cantidad < $unidad_x_bulto) {
+					$bultos = 0;
+					$unidades = $cantidad;
+				} else {
+					if ($cantidad == $unidad_x_bulto) {
+						$bultos = 1;
+						$unidades = '-';
+					} else {
+						if (($cantidad%$unidad_x_bulto) == 0) {
+							$bultos = $cantidad / $unidad_x_bulto;
+							$unidades = '-';
+						} else {
+							$bultos = intdiv($cantidad, $unidad_x_bulto);
+							$unidades = $cantidad - ($bultos * $unidad_x_bulto);
+						}
+					}
+				}
+			} else {
+				$bultos = '-';
+				$unidades = '-';
+			}
+			
 			$array_temp = array($producto['COD']
 								, $producto['PRODUCTO']
-								, $producto['CANTIDAD']
-								, $producto['UNIDAD']
-								, ''
+								, $producto['CANTIDAD'] . $producto['UNIDAD']
+								, $bultos
+								, $unidades
 								, ''
 								, '');
 			$array_exportacion2[] = $array_temp;
