@@ -538,6 +538,7 @@ class CuentaCorrienteProveedorController {
 		$from = "proveedor p INNER JOIN documentotipo dt ON p.documentotipo = dt.documentotipo_id";
 		$where = "p.oculto = 0";
 		$proveedor_collection = CollectorCondition()->get('Proveedor', $where, 4, $from, $select);
+		print_r($proveedor_collection);exit;
 
 		$this->view->migrar_cta_cte($proveedor_collection);
 	}
