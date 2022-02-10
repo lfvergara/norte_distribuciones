@@ -1436,6 +1436,7 @@ class EgresoController {
 		foreach ($array_productos as $clave=>$valor) {
             $array_temp[] = $valor['UBICACION'];
         }
+        print_r($array_temp);exit;
         
         $array_productos = array_multisort($array_temp, SORT_ASC, $array_productos);
 		
