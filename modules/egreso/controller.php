@@ -1419,7 +1419,7 @@ class EgresoController {
 		foreach ($egreso_ids as $egreso_id) {
 			$select = 'ed.codigo_producto AS COD,ed.descripcion_producto AS PRODUCTO,cantidad AS CANTIDAD,pu.denominacion AS UNIDAD, pr.unidad_bulto AS UNPOBU, pr.ubicacion AS UBICACION';
 			$from = 'egresodetalle ed INNER JOIN producto pr ON pr.producto_id = ed.producto_id INNER JOIN productounidad pu ON pu.productounidad_id = pr.productounidad';
-			$where = "ed.egreso_id = {$egreso_id}";
+			$where = "ed.egreso_id = {$egreso_id} ORDER BY pr.ubicacion ASC";
 			$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
 			foreach ($egresodetalle_collection as $clave => $producto) {
