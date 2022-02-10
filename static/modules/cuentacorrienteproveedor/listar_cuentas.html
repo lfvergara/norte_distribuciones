@@ -77,7 +77,7 @@
 
     function cargarMovimientosCuentas(ingreso_id) {
         var tbl_movimientos_cuentacorrienteproveedor = $.ajax({
-            url: '{url_app}/cuentacorrienteproveedor/traer_listado_movimientos_cuentacorriente_ajax/' + ingreso_id,
+            url: '{url_app}/cuentacorrienteproveedor/traer_listado_movimientos_cuentacorriente_ajax/' + ingreso_id + '@' + {proveedor-proveedor_id},
                 dataType: 'text',
                 async: false
         }).responseText;
