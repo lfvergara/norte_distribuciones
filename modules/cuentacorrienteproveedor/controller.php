@@ -374,8 +374,8 @@ class CuentaCorrienteProveedorController {
 		switch ($ingresotipopago_id) {
 			case 1:
 				$cpdm = new ChequeProveedorDetalle();
-				$cpdm->numero = filter_input(INPUT_POST, 'numero_cheque');
-				$cpdm->fecha_vencimiento = filter_input(INPUT_POST, 'fecha_vencimiento');
+				$cpdm->numero = 0;
+				$cpdm->fecha_vencimiento = null;
 				$cpdm->fecha_pago = null;
 				$cpdm->estado = 1;
 				$cpdm->cuentacorrienteproveedor_id = $cuentacorrienteproveedor_id;
@@ -383,17 +383,17 @@ class CuentaCorrienteProveedorController {
 				break;
 			case 2:
 				$tpdm = new TransferenciaProveedorDetalle();
-				$tpdm->numero = filter_input(INPUT_POST, 'numero_transferencia');
+				$tpdm->numero = 0;
 				$tpdm->cuentacorrienteproveedor_id = $cuentacorrienteproveedor_id;
 				$tpdm->save();
 				break;
 			case 4:
 				$cpdm = new CreditoProveedorDetalle();
-				$cpdm->numero = filter_input(INPUT_POST, 'numero_nc');
+				$cpdm->numero = 0;
 				$cpdm->importe = $importe;
-				$cpdm->fecha = filter_input(INPUT_POST, 'fecha_nc');
+				$cpdm->fecha = null;
 				$cpdm->cuentacorrienteproveedor_id = $cuentacorrienteproveedor_id;
-				$cpdm->tipofactura = filter_input(INPUT_POST, 'tipofactura_nc');
+				$cpdm->tipofactura = 1;
 				$cpdm->save();
 				break;
 		}
