@@ -535,7 +535,7 @@ class CuentaCorrienteProveedorController {
 	function migrar_cta_cte() {
 		SessionHandler()->check_session();
 		$select = "p.proveedor_id AS PROID, c.razon_social AS RAZON_SOCIAL, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO";
-		$from = "proveedor p INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id";
+		$from = "proveedor p INNER JOIN documentotipo dt ON p.documentotipo = dt.documentotipo_id";
 		$where = "p.oculto = 0";
 		$proveedor_collection = CollectorCondition()->get('Proveedor', $where, 4, $from, $select);
 
