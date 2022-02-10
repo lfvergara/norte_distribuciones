@@ -77,6 +77,13 @@ class CuentaCorrienteProveedorController {
 			$cuentacorriente_collection[$clave]['BCOLOR'] = $balance_class;
 			$cuentacorriente_collection[$clave]['BTN_DISPLAY'] = $array_temp[0]['BTN_DISPLAY'];
 
+			if ($ingreso_id == 0) {
+				$cuentacorriente_collection[$clave]['REFERENCIA'] = 'Migración CTA CTE';
+				$cuentacorriente_collection[$clave]['BTNCONING'] = 'none';
+			} else {
+				$cuentacorriente_collection[$clave]['BTNCONING'] = 'inline-block';
+			}
+
 			switch ($ingresotipopago_id) {
 				case 1:
 					$select = "cpd.chequeproveedordetalle_id AS ID";
@@ -142,6 +149,7 @@ class CuentaCorrienteProveedorController {
 		$where = "ccp.proveedor_id = {$arg}";
 		$groupby = "ccp.proveedor_id";
 		$montos_cuentacorriente = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select, $groupby);
+
 		$this->view->consultar($cuentascorrientes_collection, $cuentacorriente_collection, $montos_cuentacorriente, $pm);
 	}
 
@@ -556,7 +564,7 @@ class CuentaCorrienteProveedorController {
         $this->model->tipomovimientocuenta = 1;
         $this->model->estadomovimientocuenta = 1;
         $this->model->save();
-        header("Location: " . URL_APP . "/cuentacorrientecliente/consultar/{$proveedor_id}");
+        header("Location: " . URL_APP . "/cuentacorrienteproveedor/consultar/{$proveedor_id}");
 	}
 }
 ?>
