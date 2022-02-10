@@ -227,5 +227,15 @@ class CuentaCorrienteProveedorView extends View {
 		$gui = $this->render($obj_transferenciaproveedordetalle, $gui);
 		print $gui;
 	}
+
+	function migrar_cta_cte($proveedor_collection) {
+		$gui = file_get_contents("static/modules/cuentacorrienteproveedor/migrar_cta_cte.html");		
+		$gui_tbl_proveedor = file_get_contents("static/modules/cuentacorrienteproveedor/tbl_migrar_proveedor.html");
+		$gui_tbl_proveedor = $this->render_regex_dict('TBL_PROVEEDOR', $gui_tbl_proveedor, $proveedor_collection);
+		$render = str_replace('{tbl_proveedor}', $gui_tbl_proveedor, $gui);
+		$render = $this->render_breadcrumb($render);
+		$template = $this->render_template($render);
+		print $template;
+	}
 }
 ?>

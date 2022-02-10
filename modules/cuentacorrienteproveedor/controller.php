@@ -531,5 +531,34 @@ class CuentaCorrienteProveedorController {
 
 		header("Location: " . URL_APP . "/cuentacorrienteproveedor/consultar/{$proveedor_id}");
 	}
+
+	function migrar_cta_cte() {
+		SessionHandler()->check_session();
+		$select = "p.proveedor_id AS PROID, c.razon_social AS RAZON_SOCIAL, CONCAT(dt.denominacion, ' ', c.documento) AS DOCUMENTO";
+		$from = "proveedor p INNER JOIN documentotipo dt ON c.documentotipo = dt.documentotipo_id";
+		$where = "p.oculto = 0";
+		$proveedor_collection = CollectorCondition()->get('Proveedor', $where, 4, $from, $select);
+
+		$this->view->migrar_cta_cte($proveedor_collection);
+	}
+
+	function guardar_migrar_cta_cte() {
+		SessionHandler()->check_session();
+		$proveedor_id = filter_input(INPUT_POST, 'proveedor_id');
+		$monto = filter_input(INPUT_POST, 'monto');
+		$this->model->fecha = date('Y-m-d');
+		$this->model->hora = date('H:i:s');
+		$this->model->referencia = 'Migración de CTA CTE';
+		$this->model->importe = $monto;
+		$this->model->ingreso = 0.00;
+		$this->model->proveedor_id = $proveedor_id;
+		$this->model->ingreso_id = 0;
+        $this->model->tipomovimientocuenta = 1;
+        $this->model->estadomovimientocuenta = 1;
+        $this->model->cobrador = 0;
+        $this->model->save();
+
+        header("Location: " . URL_APP . "/cuentacorrientecliente/consultar/{$proveedor_id}");
+	}
 }
 ?>
