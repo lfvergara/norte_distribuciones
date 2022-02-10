@@ -1431,6 +1431,13 @@ class EgresoController {
 				}
 			}
 		}
+
+		$array_temp = array();
+		foreach ($array_productos as $clave=>$valor) {
+            $array_temp[] = $valor['UBICACION'];
+        }
+        
+        $array_productos = array_multisort($array_temp, SORT_ASC, $array_productos);
 		
 		$array_encabezados2 = array('CODIGO', 'PRODUCTO', 'CANTIDAD', 'BULTOS', 'UNIDADES', 'UBICACION', '');
 		$array_exportacion2[] = $array_encabezados2;
