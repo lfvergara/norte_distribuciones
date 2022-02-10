@@ -552,11 +552,10 @@ class CuentaCorrienteProveedorController {
 		$this->model->ingreso = 0.00;
 		$this->model->proveedor_id = $proveedor_id;
 		$this->model->ingreso_id = 0;
+        $this->model->ingresotipopago = NULL;
         $this->model->tipomovimientocuenta = 1;
         $this->model->estadomovimientocuenta = 1;
-        $this->model->cobrador = 0;
         $this->model->save();
-
         header("Location: " . URL_APP . "/cuentacorrientecliente/consultar/{$proveedor_id}");
 	}
 }
