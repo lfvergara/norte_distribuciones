@@ -1019,10 +1019,7 @@ class ReporteController {
 
 		$periodo_actual = date('Ym');
 		$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL";
-		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN vendedor ve ON e.vendedor = ve.vendedor_id INNER JOIN
-				 condicionpago cp ON e.condicionpago = cp.condicionpago_id INNER JOIN condicioniva ci ON e.condicioniva = ci.condicioniva_id INNER JOIN
-				 egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega ese ON ee.estadoentrega = ese.estadoentrega_id LEFT JOIN
-				 egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN vendedor ve ON e.vendedor = ve.vendedor_id INNER JOIN condicionpago cp ON e.condicionpago = cp.condicionpago_id INNER JOIN condicioniva ci ON e.condicioniva = ci.condicioniva_id INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega ese ON ee.estadoentrega = ese.estadoentrega_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
 		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}'";
 		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
@@ -1114,8 +1111,7 @@ class ReporteController {
 			}
 		}
 
-		$select = "ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN ccc.importe ELSE 0 END),2) AS TDEUDA,
-				   ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 OR ccc.tipomovimientocuenta = 3 THEN ccc.importe ELSE 0 END),2) AS TINGRESO";
+		$select = "ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN ccc.importe ELSE 0 END),2) AS TDEUDA, ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 OR ccc.tipomovimientocuenta = 3 THEN ccc.importe ELSE 0 END),2) AS TINGRESO";
 		$from = "cuentacorrientecliente ccc";
 		$estado_cuentacorrientecliente = CollectorCondition()->get('CuentaCorrienteCliente', NULL, 4, $from, $select);
 		if (is_array($estado_cuentacorrientecliente) AND !empty($estado_cuentacorrientecliente)) {
@@ -1124,10 +1120,7 @@ class ReporteController {
 			$estado_cuentacorrientecliente = 0;
 		}
 
-		$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT ROUND(SUM(dccp.importe),2) FROM
-    			   cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 1 AND dccp.proveedor_id = ccp.proveedor_id) AS DEUDA,
-				   (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND
-				   dccp.proveedor_id = ccp.proveedor_id) AS INGRESO";
+		$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 1 AND dccp.proveedor_id = ccp.proveedor_id) AS DEUDA, (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND dccp.proveedor_id = ccp.proveedor_id) AS INGRESO";
 		$from = "cuentacorrienteproveedor ccp INNER JOIN proveedor p ON ccp.proveedor_id = p.proveedor_id";
 		$groupby = "ccp.proveedor_id";
 		$cuentacorrienteproveedor_total = CollectorCondition()->get('CuentaCorrienteProveedor', NULL, 4, $from, $select, $groupby);
