@@ -154,7 +154,7 @@ class ExcelReport extends View {
         //$color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
             $bandera_cta_cte = ($registro[3] == 'CONTADO') ? 1 : 0; 
-            print_r($registro[3]);
+            //print_r($registro[3]);
             foreach ($registro as $clave=>$valor) {
                 //$color = $registro[1];
                 //$breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
@@ -170,7 +170,7 @@ class ExcelReport extends View {
 
             $l++;
         }
-        exit;
+        
 
         $celdas_titulos = "B3:{$ultimaLetraPosicion}3";
         $celdas_informacion = "B4:{$ultimaLetraPosicion}".($l-1);
