@@ -2342,7 +2342,7 @@ class ReporteController {
 					foreach ($array_vendedores as $c=>$v) {
 						$temp_vendedor_id = $v["VENDEDOR_ID"];
 						if ($vendedor_id == $temp_vendedor_id) {
-							$array_vendedores[$c]['IMPORTE'] = $array_vendedores[$c]['IMPORTE'] + $importe_total
+							$array_vendedores[$c]['IMPORTE'] = $array_vendedores[$c]['IMPORTE'] + $importe_total;
 						}
 					}
 				}
