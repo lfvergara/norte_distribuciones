@@ -153,7 +153,7 @@ class ExcelReport extends View {
         $breack_row_ant = '';
         //$color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
-            $bandera_cta_cte = ($registro[3] == 'CONTADO') ? 1 : 0; 
+            $bandera_cta_cte = ($registro[3] == 'CONTADO') ? 0 : 1; 
             //print_r($registro[3]);
             foreach ($registro as $clave=>$valor) {
                 //$color = $registro[1];
@@ -161,7 +161,7 @@ class ExcelReport extends View {
                 $posicion = $this->abecedario[$clave].$l;
                 $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue($posicion, $registro[$clave]);
-                if ($bandera_cta_cte == 1) {
+                if ($bandera_cta_cte == 0) {
                     $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
                 } else {
                     $objPHPExcel->getActiveSheet()->setSharedStyle($this->second_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
