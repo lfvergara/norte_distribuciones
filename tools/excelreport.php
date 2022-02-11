@@ -151,12 +151,12 @@ class ExcelReport extends View {
         $l = 4;
         $breack_row_temp = '';
         $breack_row_ant = '';
-        $color_temp = 'second_info_style';
+        //$color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
           foreach ($registro as $clave=>$valor) {
             if ($registo[3] == 'CONTADO') {
                 //$color = $registro[1];
-                $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
+                //$breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
                 $posicion = $this->abecedario[$clave].$l;
                 $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue($posicion, $registro[$clave]);
@@ -164,7 +164,7 @@ class ExcelReport extends View {
                
             } else {
                 //$color = $registro[1];
-                $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
+                //$breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
                 $posicion = $this->abecedario[$clave].$l;
                 $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue($posicion, $registro[$clave]);
