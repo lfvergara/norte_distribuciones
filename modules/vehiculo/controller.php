@@ -19,6 +19,15 @@ class VehiculoController {
 		$vehiculo_collection = Collector()->get('Vehiculo');
 		$vehiculomodelo_collection = Collector()->get('VehiculoModelo');
 		$combustible_collection = Collector()->get('Combustible');
+
+		foreach ($vehiculo_collection as $clave=>$valor) {
+			if($valor->oculto == 1) unset($vehiculo_collection[$clave]);
+		}
+
+		foreach ($vehiculomodelo_collection as $clave=>$valor) {
+			if($valor->oculto == 1) unset($vehiculomodelo_collection[$clave]);
+		}
+
 		$this->view->panel($vehiculo_collection, $vehiculomodelo_collection, $combustible_collection);
 	}
 
@@ -39,6 +48,15 @@ class VehiculoController {
 		$vehiculo_collection = Collector()->get('Vehiculo');
 		$vehiculomodelo_collection = Collector()->get('VehiculoModelo');
 		$combustible_collection = Collector()->get('Combustible');
+
+		foreach ($vehiculo_collection as $clave=>$valor) {
+			if($valor->oculto == 1) unset($vehiculo_collection[$clave]);
+		}
+
+		foreach ($vehiculomodelo_collection as $clave=>$valor) {
+			if($valor->oculto == 1) unset($vehiculomodelo_collection[$clave]);
+		}
+		
 		$this->view->editar($vehiculo_collection, $vehiculomodelo_collection, $combustible_collection, $this->model);
 	}
 
