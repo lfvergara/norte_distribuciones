@@ -15,7 +15,6 @@ class VehiculoController {
 
 	function panel() {
     	SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$vehiculo_collection = Collector()->get('Vehiculo');
 		$vehiculomodelo_collection = Collector()->get('VehiculoModelo');
 		$combustible_collection = Collector()->get('Combustible');
@@ -33,7 +32,6 @@ class VehiculoController {
 
 	function guardar() {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();		
 		foreach ($_POST as $key=>$value) $this->model->$key = $value;
 		$this->model->oculto = 0;
 		$this->model->save();
@@ -42,7 +40,6 @@ class VehiculoController {
 	
 	function editar($arg) {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$this->model->vehiculo_id = $arg;
 		$this->model->get();
 		$vehiculo_collection = Collector()->get('Vehiculo');
@@ -56,13 +53,12 @@ class VehiculoController {
 		foreach ($vehiculomodelo_collection as $clave=>$valor) {
 			if($valor->oculto == 1) unset($vehiculomodelo_collection[$clave]);
 		}
-		
+
 		$this->view->editar($vehiculo_collection, $vehiculomodelo_collection, $combustible_collection, $this->model);
 	}
 
 	function combustible($arg) {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$this->model->vehiculo_id = $arg;
 		$this->model->get();
 
@@ -76,7 +72,6 @@ class VehiculoController {
 
 	function editar_combustible($arg) {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$vcm = new VehiculoCombustible();
 		$vcm->vehiculocombustible_id = $arg;
 		$vcm->get();
@@ -92,7 +87,6 @@ class VehiculoController {
 
 	function guardar_combustible() {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$vehiculo_id = filter_input(INPUT_POST, 'vehiculo_id');
 		$vcm = new VehiculoCombustible();
 		$vcm->cantidad = filter_input(INPUT_POST, 'cantidad');
@@ -105,7 +99,6 @@ class VehiculoController {
 
 	function actualizar_combustible() {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$vehiculo_id = filter_input(INPUT_POST, 'vehiculo_id');
 		$vcm = new VehiculoCombustible();
 		$vcm->vehiculocombustible_id = filter_input(INPUT_POST, 'vehiculocombustible_id');
@@ -119,7 +112,6 @@ class VehiculoController {
 
 	function eliminar_combustible($arg) {
 		SessionHandler()->check_session();
-		//SessionHandler()->check_admin_level();
 		$vehiculocombustible_id = $arg;
 		$vcm = new VehiculoCombustible();
 		$vcm->vehiculocombustible_id = $vehiculocombustible_id;
