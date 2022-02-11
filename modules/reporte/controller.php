@@ -2316,8 +2316,8 @@ class ReporteController {
 
 				break;
 			case 7:
-				$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL, e.vendedor AS VENID";
-				$from = "egreso e";
+				$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL, e.vendedor AS VENID, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
+				$from = "egreso e INNER JOIN vendedor v ON e.vendedor = v.vendedor_id";
 				$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' ORDER BY e.vendedor ASC";
 				$datos_reporte = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
