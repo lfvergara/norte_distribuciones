@@ -2336,8 +2336,6 @@ class ReporteController {
 					}
 				}
 
-				print_r($array_vendedores);exit;
-
 				foreach ($datos_reporte as $clave=>$valor) {
 					$vendedor_id = $valor['VENID'];
 					$importe_total = $valor['IMPORTETOTAL'];
