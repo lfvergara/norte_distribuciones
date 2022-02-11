@@ -2348,27 +2348,6 @@ class ReporteController {
 					}
 				}
 
-
-
-
-				/*
-				$array_final = array();
-				foreach ($datos_reporte as $clave=>$valor) {
-					$key = array_search($valor['VENID'], array_column($array_final, 'VENID'));
-					if (false !== $key OR !empty($key)) {
-						$array_final[$key]['IMPORTE_FINAL'] = $array_final[$key]['IMPORTE_FINAL']+$valor['IMPORTETOTAL'];
-	 				}else {
-						array_push($array_final, $valor);
-					}
-				}
-
-				$datos_reporte = array();
-				foreach ($array_final as $clave=>$valor) {
-		            $datos_reporte[] = $valor['VENDEDOR'];
-		        }
-
-		        array_multisort($datos_reporte, SORT_ASC, $array_final);
-		        */
 				$subtitulo = "VENTAS POR VENDEDOR - DESDE: {$desde}   HASTA {$hasta}";
 				$array_encabezados = array('VENDEDOR', 'IMPORTE', '', '', '');
 				$array_exportacion = array();
@@ -2386,7 +2365,7 @@ class ReporteController {
 				}
 
 				$array_exportacion[] = array('', '', '', '', '');
-				$array_exportacion[] = array('', '', '', 'TOTAL', $sum_importe);
+				$array_exportacion[] = array('TOTAL', $sum_importe, '', '', '');
 
 				break;
 		}
