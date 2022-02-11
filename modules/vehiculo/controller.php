@@ -26,6 +26,7 @@ class VehiculoController {
 		SessionHandler()->check_session();
 		//SessionHandler()->check_admin_level();		
 		foreach ($_POST as $key=>$value) $this->model->$key = $value;
+		$this->model->oculto = 0;
 		$this->model->save();
 		header("Location: " . URL_APP . "/vehiculo/panel");
 	}
