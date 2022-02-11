@@ -154,13 +154,23 @@ class ExcelReport extends View {
         $color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
           foreach ($registro as $clave=>$valor) {
-            print_r($registro[3]);exit;
-            $color = $registro[1];
-            $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
-            $posicion = $this->abecedario[$clave].$l;
-            $objPHPExcel->setActiveSheetIndex(0)
-                        ->setCellValue($posicion, $registro[$clave]);
-            $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
+            if ($registo[3] == 'CONTADO') {
+                //$color = $registro[1];
+                $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
+                $posicion = $this->abecedario[$clave].$l;
+                $objPHPExcel->setActiveSheetIndex(0)
+                            ->setCellValue($posicion, $registro[$clave]);
+                $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
+               
+            } else {
+                //$color = $registro[1];
+                $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
+                $posicion = $this->abecedario[$clave].$l;
+                $objPHPExcel->setActiveSheetIndex(0)
+                            ->setCellValue($posicion, $registro[$clave]);
+                $objPHPExcel->getActiveSheet()->setSharedStyle($this->second_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
+            }
+            //print_r($registro[3]);exit;
           }
 
           $l++;
