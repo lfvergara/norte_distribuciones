@@ -153,28 +153,22 @@ class ExcelReport extends View {
         $breack_row_ant = '';
         //$color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
+            $bandera_cta_cte = ($registro[3] == 'CONTADO') ? 1 : 0; 
             print_r($registro[3]);
-          foreach ($registro as $clave=>$valor) {
-            if ($registo[$clave][3] == 'CONTADO') {
+            foreach ($registro as $clave=>$valor) {
                 //$color = $registro[1];
                 //$breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
                 $posicion = $this->abecedario[$clave].$l;
                 $objPHPExcel->setActiveSheetIndex(0)
                             ->setCellValue($posicion, $registro[$clave]);
-                $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
-               
-            } else {
-                //$color = $registro[1];
-                //$breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
-                $posicion = $this->abecedario[$clave].$l;
-                $objPHPExcel->setActiveSheetIndex(0)
-                            ->setCellValue($posicion, $registro[$clave]);
-                $objPHPExcel->getActiveSheet()->setSharedStyle($this->second_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
+                if ($bandera_cta_cte == 1) {
+                    $objPHPExcel->getActiveSheet()->setSharedStyle($this->first_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
+                } else {
+                    $objPHPExcel->getActiveSheet()->setSharedStyle($this->second_info_style, "B{$l}:{$ultimaLetraPosicion}{$l}");
+                }
             }
-            //print_r($registro[3]);exit;
-          }
 
-          $l++;
+            $l++;
         }
         exit;
 
