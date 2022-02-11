@@ -39,6 +39,7 @@ class VehiculoMarcaController {
 		
 		$this->view->editar($vehiculomarca_collection, $this->model);
 	}
+	
 	function eliminar($arg) {
 		SessionHandler()->check_session();
 		$vehiculomarca_id = $arg;

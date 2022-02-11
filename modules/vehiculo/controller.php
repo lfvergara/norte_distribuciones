@@ -120,5 +120,15 @@ class VehiculoController {
 		$vcm->delete();		
 		header("Location: " . URL_APP . "/vehiculo/combustible/{$vehiculo_id}");
 	}
+
+	function eliminar($arg) {
+		SessionHandler()->check_session();
+		$vehiculo_id = $arg;
+		$this->model->vehiculo_id = $vehiculo_id;
+		$this->model->get();
+		$this->model->oculto = 1;
+		$this->model->save();
+		header("Location: " . URL_APP . "/vehiculo/listar");
+	}
 }
 ?>
