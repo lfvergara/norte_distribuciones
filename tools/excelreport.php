@@ -153,8 +153,8 @@ class ExcelReport extends View {
         $breack_row_ant = '';
         //$color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
-          foreach ($registro as $clave=>$valor) {
             print_r($registro);
+          foreach ($registro as $clave=>$valor) {
             if ($registo[$clave][3] == 'CONTADO') {
                 //$color = $registro[1];
                 //$breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
