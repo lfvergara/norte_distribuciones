@@ -154,7 +154,7 @@ class ExcelReport extends View {
         $color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
           foreach ($registro as $clave=>$valor) {
-            print_r($valor);exit;
+            print_r($registro);exit;
             $color = $registro[1];
             $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
             $posicion = $this->abecedario[$clave].$l;
