@@ -2344,65 +2344,32 @@ class ReporteController {
 					}
 				}
 
-				print_r($array_final);exit;
+				$datos_reporte = array();
+				foreach ($array_final as $clave=>$valor) {
+		            $datos_reporte[] = $valor['VENDEDOR'];
+		        }
+
+		        array_multisort($datos_reporte, SORT_ASC, $array_final);
 
 				if ($tipo_reporte == 1) {
 					$subtitulo = "VENTAS POR VENDEDOR - DESDE: {$desde}   HASTA {$hasta}";
-					$array_encabezados = array('VENDEDOR', 'IMPORTE');
+					$array_encabezados = array('VENDEDOR', 'IMPORTE', '', '', '');
 					$array_exportacion = array();
 					$array_exportacion[] = $array_encabezados;
 					$sum_importe = 0;
 					foreach ($datos_reporte as $clave=>$valor) {
 						$sum_importe = $sum_importe + $valor["IMPORTETOTAL"];
 						$array_temp = array();
-						$array_temp = array($valor["FECHA"]
-											, $valor["FACTURA"]
-											, $valor["CLIENTE"]
-											, $valor["VENDEDOR"]
-											, $valor["CP"]
-											, $valor["COMISION"] . '%'
-											, 'PAGO ' . $valor["ESTCOM"]
-											, $valor["IMPORTETOTAL"]);
-						$array_exportacion[] = $array_temp;
-					}
-
-					$array_exportacion[] = array('', '', '', '', '', '', '', '');
-					$array_exportacion[] = array('', '', '', '', '', '', 'TOTAL', $sum_importe);
-				} elseif ($tipo_reporte == 2) {
-
-					$egreso_ids = array();
-					foreach ($datos_reporte as $clave=>$valor) {
-						if ($datos_reporte[$clave]['IMPORTETOTAL'] == 0 AND $datos_reporte[$clave]["VC"] == 0) {
-							unset($datos_reporte[$clave]);
-						} else {
-							if (!in_array($datos_reporte[$clave]['EGRESO_ID'], $egreso_ids)) {
-								$egreso_ids[] = $datos_reporte[$clave]['EGRESO_ID'];
-							}
-						}
-					}
-
-					$egreso_ids = implode(',', $egreso_ids);
-
-					$select = "c.razon_social AS CLIENTE, COUNT(e.cliente) AS CANT";
-					$from = "egreso e INNER JOIN cliente c ON e.cliente = c.cliente_id";
-					$where = "e.egreso_id IN ({$egreso_ids}) AND e.vendedor = {$vendedor_id} AND e.fecha BETWEEN '{$desde}' AND '{$hasta}'";
-					$group_by = "c.cliente_id ORDER BY COUNT(e.cliente) DESC";
-					$datos_reporte = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $group_by);
-
-					$subtitulo = "VENDEDOR: {$razon_social} - DESDE: {$desde}   HASTA {$hasta}";
-					$array_encabezados = array('CLIENTE', 'CANTIDAD VENTAS','','','');
-					$array_exportacion = array();
-					$array_exportacion[] = $array_encabezados;
-					foreach ($datos_reporte as $clave=>$valor) {
-						$array_temp = array();
-						$array_temp = array($valor["CLIENTE"]
-											, $valor["CANT"]
+						$array_temp = array($valor["VENDEDOR"]
+											, $valor["IMPORTETOTAL"]
 											, ''
 											, ''
 											, '');
 						$array_exportacion[] = $array_temp;
 					}
-				}
+
+					$array_exportacion[] = array('', '', '', '', '');
+					$array_exportacion[] = array('', '', '', 'TOTAL', $sum_importe);
 
 				break;
 		}
