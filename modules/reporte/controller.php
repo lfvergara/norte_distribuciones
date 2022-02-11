@@ -2361,7 +2361,7 @@ class ReporteController {
 					$sum_importe = $sum_importe + $valor["IMPORTETOTAL"];
 					$array_temp = array();
 					$array_temp = array($valor["VENDEDOR"]
-										, $valor["IMPORTETOTAL"]
+										, $valor["IMPORTE_FINAL"]
 										, ''
 										, ''
 										, '');
