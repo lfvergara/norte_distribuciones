@@ -385,7 +385,7 @@ class HojaRutaController {
 			if ($valor->flete_id == 0) unset($cobrador_collection[$clave]);
 		}
 
-		$this->view->entregas($array_formulario, $this->model,$flete,$cobrador_collection,$monto_total);
+		$this->view->entregas($array_formulario, $this->model,$flete,$cobrador_collection,$monto_total, $monto_contado);
 	}
 
 	function editar_hojaruta($arg){
