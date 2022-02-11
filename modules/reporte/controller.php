@@ -2318,7 +2318,7 @@ class ReporteController {
 			case 7:
 				$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL, e.vendedor AS VENID";
 				$from = "egreso e";
-				$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' ORDER BY e.fecha DESC";
+				$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' ORDER BY e.vendedor ASC";
 				$datos_reporte = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
 				foreach ($datos_reporte as $clave=>$valor) {
@@ -2334,7 +2334,17 @@ class ReporteController {
 					}
 				}
 
-				print_r($datos_reporte);exit;
+				$array_final = array();
+				foreach ($datos_reporte as $clave=>$valor) {
+					$key = array_search($valor['VENID'], array_column($array_final, 'VENID'));
+					if (false !== $key OR !empty($key)) {
+						$array_final[$key]['IMPORTE_FINAL'] = $array_final[$key]['IMPORTE_FINAL']+$valor['IMPORTETOTAL'];
+	 				}else {
+						array_push($array_final, $valor);
+					}
+				}
+
+				print_r($array_final);exit;
 
 				if ($tipo_reporte == 1) {
 					$subtitulo = "VENTAS POR VENDEDOR - DESDE: {$desde}   HASTA {$hasta}";
