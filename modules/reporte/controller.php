@@ -2316,7 +2316,7 @@ class ReporteController {
 				$array_vendedores = array();
 				$array_control = array();
 				foreach ($datos_reporte as $clave=>$valor) {
-					$vendedor_id = $valor['VENDEDOR_ID'];
+					$vendedor_id = $valor['VENID'];
 					if (!in_array($vendedor_id, $array_control)) {
 						$array_control[] = $vendedor_id;
 						$array_temp = array();
