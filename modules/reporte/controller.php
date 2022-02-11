@@ -2350,26 +2350,24 @@ class ReporteController {
 		        }
 
 		        array_multisort($datos_reporte, SORT_ASC, $array_final);
+				$subtitulo = "VENTAS POR VENDEDOR - DESDE: {$desde}   HASTA {$hasta}";
+				$array_encabezados = array('VENDEDOR', 'IMPORTE', '', '', '');
+				$array_exportacion = array();
+				$array_exportacion[] = $array_encabezados;
+				$sum_importe = 0;
+				foreach ($datos_reporte as $clave=>$valor) {
+					$sum_importe = $sum_importe + $valor["IMPORTETOTAL"];
+					$array_temp = array();
+					$array_temp = array($valor["VENDEDOR"]
+										, $valor["IMPORTETOTAL"]
+										, ''
+										, ''
+										, '');
+					$array_exportacion[] = $array_temp;
+				}
 
-				if ($tipo_reporte == 1) {
-					$subtitulo = "VENTAS POR VENDEDOR - DESDE: {$desde}   HASTA {$hasta}";
-					$array_encabezados = array('VENDEDOR', 'IMPORTE', '', '', '');
-					$array_exportacion = array();
-					$array_exportacion[] = $array_encabezados;
-					$sum_importe = 0;
-					foreach ($datos_reporte as $clave=>$valor) {
-						$sum_importe = $sum_importe + $valor["IMPORTETOTAL"];
-						$array_temp = array();
-						$array_temp = array($valor["VENDEDOR"]
-											, $valor["IMPORTETOTAL"]
-											, ''
-											, ''
-											, '');
-						$array_exportacion[] = $array_temp;
-					}
-
-					$array_exportacion[] = array('', '', '', '', '');
-					$array_exportacion[] = array('', '', '', 'TOTAL', $sum_importe);
+				$array_exportacion[] = array('', '', '', '', '');
+				$array_exportacion[] = array('', '', '', 'TOTAL', $sum_importe);
 
 				break;
 		}
