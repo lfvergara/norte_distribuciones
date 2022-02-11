@@ -109,7 +109,7 @@ class ExcelReport extends View {
         $objWriter->save('php://output');
     }
 
-    function extraer_informe_conjunto_remanente($subtitulo, $array_exportacion,$array_exportacion2) {
+    function extraer_informe_conjunto_remanente($subtitulo, $array_exportacion, $array_exportacion2) {
         date_default_timezone_set('America/Mexico_City');
         if (PHP_SAPI == 'cli') die('Este archivo solo se puede ver desde un navegador web');
         $objPHPExcel = new PHPExcel();
@@ -154,6 +154,7 @@ class ExcelReport extends View {
         $color_temp = 'second_info_style';
         foreach ($array_exportacion as $registro) {
           foreach ($registro as $clave=>$valor) {
+            print_r($valor);exit;
             $color = $registro[1];
             $breack_row_temp = ($registro[0] != '') ? $registro[0] : $breack_row_temp;
             $posicion = $this->abecedario[$clave].$l;

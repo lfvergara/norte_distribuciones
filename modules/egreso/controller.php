@@ -1535,7 +1535,7 @@ class EgresoController {
 		$array_exportacion[] = array('','','','Totales','$.......................');
 		$array_cantidades = array('{cant_cuentacorriente}'=>$cant_cuentacorriente, '{cant_contado}'=>$cant_contado);
 
-		ExcelReport()->extraer_informe_conjunto_remanente($subtitulo, $array_exportacion,$array_exportacion2);
+		ExcelReport()->extraer_informe_conjunto_remanente($subtitulo, $array_exportacion, $array_exportacion2);
 
 	}
 
