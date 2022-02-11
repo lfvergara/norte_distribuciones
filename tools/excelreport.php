@@ -420,7 +420,7 @@ class ExcelReport extends View {
                                   'font'=>array(
                                       'name'=>'Arial',
                                       'size'=>9,
-                                      'color'=>array('rgb'=>'000000')),
+                                      'color'=>array('rgb'=>'FF0000')),
                                   'fill'=>array(
                                       'type'=>PHPExcel_Style_Fill::FILL_SOLID,
                                       'color'=>array('rgb'=>'D9D9D9')),
