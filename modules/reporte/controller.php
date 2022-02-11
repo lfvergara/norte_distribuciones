@@ -2319,7 +2319,9 @@ class ReporteController {
 					$vendedor_id = $valor['VENDEDOR_ID'];
 					if (!in_array($vendedor_id, $array_control)) {
 						$array_control[] = $vendedor_id;
+						$array_temp = array();
 						$array_temp = array('VENDEDOR_ID'=>$vendedor_id, 'VENDEDOR'=>$valor['VENDEDOR'], 'IMPORTE'=>0);
+						$array_vendedores[] = $array_temp;
 					}
 
 					$egreso_id = $valor['EGRESO_ID'];
