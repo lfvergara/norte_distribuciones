@@ -219,6 +219,7 @@ class ClienteController {
 		$this->model->tipofactura = filter_input(INPUT_POST, 'tipofactura');
 		$this->model->listaprecio = filter_input(INPUT_POST, 'lista_precio');
 		$this->model->categoriacliente = filter_input(INPUT_POST, 'categoriacliente');
+		print_r($this->model);exit;
 		$this->model->save();
 
 		$this->model = new Cliente();
