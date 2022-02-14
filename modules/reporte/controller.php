@@ -1243,6 +1243,14 @@ class ReporteController {
 		$salario_total = (is_array($salario_total) AND !empty($salario_total)) ? $salario_total[0]['TOTAL'] : 0;
 		$salario_total = (is_null($salario_total)) ? 0 : $salario_total;
 
+		//GANANCIA DIARIA
+		$select = "v.vendedor_id, ROUND(SUM(ed.valor_ganancia),2) AS GANANCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
+		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id INNER JOIN vendedor v ON e.vendedor = v.vendedor_id";
+		$where = "e.fecha = '{$fecha_sys}' AND c.impacto_ganancia = 1";
+		$groupby = "v.vendedor_id";
+		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
+		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array;
+		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 		$array_balance = array('{suma_ingresos_per_actual}'=>$suma_ingresos_per_actual,
 							   '{suma_notacredito_per_actual}'=>$suma_notacredito_per_actual,
@@ -1284,7 +1292,7 @@ class ReporteController {
 
 		$productomarca_collection = Collector()->get('ProductoMarca');
 
-		$this->view->balance($array_balance, $pagocomisiones_collection, $periodo_actual, $cbm, $vehiculocombustible_collection,$producto_collection,$productomarca_collection,$salario_collection);
+		$this->view->balance($array_balance, $pagocomisiones_collection, $periodo_actual, $cbm, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia);
 	}
 
 	function generar_balance() {

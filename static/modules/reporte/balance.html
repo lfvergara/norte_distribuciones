@@ -90,6 +90,77 @@
                 </table>
             </div>
         </div>
+        <div class="x_panel hidden-print">
+            <div class="x_title">
+                <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Configurar</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class=" form">
+                    <form class="form" id="formulario_guardar" method="post" action="{url_app}/configuracionbalance/guardar">
+                        <div class="col-lg-12">
+                            <h4>Activos</h4>
+                            <label class="checkbox">
+                                <input type="checkbox" name="activo_stock_valorizado" value="checked" {configuracionbalance-activo_stock_valorizado}>
+                                <span class="checkbox__icon"></span> Stock Valorizado
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="activo_cuenta_corriente_cliente" value="checked" {configuracionbalance-activo_cuenta_corriente_cliente}>
+                                <span class="checkbox__icon"></span> Cta Cte Clientes
+                            </label>
+                        </div>
+                        <div class="col-lg-12">
+                            <h4>Pasivos</h4>
+                            <label class="checkbox">
+                                <input type="checkbox" name="pasivo_cuenta_corriente_proveedor" value="checked" {configuracionbalance-pasivo_cuenta_corriente_proveedor}>
+                                <span class="checkbox__icon"></span> Cta Cte Proveedores
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" name="pasivo_comisiones_pendientes" value="checked" {configuracionbalance-pasivo_comisiones_pendientes}>
+                                <span class="checkbox__icon"></span> Comisiones Pendientes
+                            </label>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                                <input type="hidden" name="configuracionbalance_id" value="1">
+                                <button class="btn btn-xs btn-primary" style="width: 100%;" type="submit"> <i class="fa fa-cogs"></i> Configurar </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="x_panel hidden-print" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%; background: #d9534f; color: #FFF;">
+            <div class="x_title" style="padding-left: 2%;">
+                <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Libro IVA Ventas</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class=" form">
+                    <form class="form" id="formulario_guardar" method="post" action="{url_app}/reporte/generar_libro_iva_ventas">
+                        <div class="form-group col-lg-6">
+                            <label>Desde</label>
+                            <input type="date" class="form-control" id="desde" name="desde" required>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Hasta</label>
+                            <input type="date" class="form-control" id="hasta" name="hasta" required>
+                        </div>
+                        <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                            <button class="btn btn-xs btn-primary" type="submit" style="width: 100%; background: #2a8a2a; border-color: #2a8a2a;"> <i class="fa fa-download"></i> Generar </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-9 col-sm-9 col-xs-12">
         <div class="col-md-12 col-sm-12 col-xs-12 visible-print" style="padding-left: 0%; padding-right: 0%; background-color: #ededed; display: none;">
@@ -298,75 +369,21 @@
                     </div>
                 </div>
             </div>
-            <div class="x_panel hidden-print">
-                <div class="x_title">
-                    <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Configurar</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                        <li><a class="close-link"><i class="fa fa-close"></i></a></li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div class=" form">
-                        <form class="form" id="formulario_guardar" method="post" action="{url_app}/configuracionbalance/guardar">
-                            <div class="col-lg-12">
-                                <h4>Activos</h4>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="activo_stock_valorizado" value="checked" {configuracionbalance-activo_stock_valorizado}>
-                                    <span class="checkbox__icon"></span> Stock Valorizado
-                                </label>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="activo_cuenta_corriente_cliente" value="checked" {configuracionbalance-activo_cuenta_corriente_cliente}>
-                                    <span class="checkbox__icon"></span> Cta Cte Clientes
-                                </label>
-                            </div>
-                            <div class="col-lg-12">
-                                <h4>Pasivos</h4>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="pasivo_cuenta_corriente_proveedor" value="checked" {configuracionbalance-pasivo_cuenta_corriente_proveedor}>
-                                    <span class="checkbox__icon"></span> Cta Cte Proveedores
-                                </label>
-                                <label class="checkbox">
-                                    <input type="checkbox" name="pasivo_comisiones_pendientes" value="checked" {configuracionbalance-pasivo_comisiones_pendientes}>
-                                    <span class="checkbox__icon"></span> Comisiones Pendientes
-                                </label>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
-                                    <input type="hidden" name="configuracionbalance_id" value="1">
-                                    <button class="btn btn-xs btn-primary" style="width: 100%;" type="submit"> <i class="fa fa-cogs"></i> Configurar </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="x_panel hidden-print" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%; background: #d9534f; color: #FFF;">
+            <div class="x_panel" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%;">
                 <div class="x_title" style="padding-left: 2%;">
-                    <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Libro IVA Ventas</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
-                        <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                    <h2><i class="fa fa-bar-chart"></i>&nbsp;&nbsp; Ganancia Diaria</h2>
+                    <ul class="nav navbar-right panel_toolbox hidden-print">
+                        <li><a class="collapse-link hidden-print"><i class="fa fa-chevron-up"></i></a></li>
+                        <li><a class="close-link hidden-print"><i class="fa fa-close"></i></a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div class=" form">
-                        <form class="form" id="formulario_guardar" method="post" action="{url_app}/reporte/generar_libro_iva_ventas">
-                            <div class="form-group col-lg-6">
-                                <label>Desde</label>
-                                <input type="date" class="form-control" id="desde" name="desde" required>
-                            </div>
-                            <div class="form-group col-lg-6">
-                                <label>Hasta</label>
-                                <input type="date" class="form-control" id="hasta" name="hasta" required>
-                            </div>
-                            <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
-                                <button class="btn btn-xs btn-primary" type="submit" style="width: 100%; background: #2a8a2a; border-color: #2a8a2a;"> <i class="fa fa-download"></i> Generar </button>
-                            </div>
-                        </form>
-                    </div>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            {tbl_vendedor_ganancia}                            
+                        </thead>
+                    </table>
                 </div>
             </div>
         </div>
