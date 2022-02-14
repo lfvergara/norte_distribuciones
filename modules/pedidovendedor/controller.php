@@ -434,7 +434,7 @@ class PedidoVendedorController {
 		$from = "pedidovendedordetalle pvd INNER JOIN producto p ON pvd.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id";
 		$where = "pvd.pedidovendedor_id = {$arg}";
 		$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
-
+		print_r($pedidovendedordetalle_collection);exit;
 		foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
 			$costo = $valor['COSTO'];
 			$flete = $valor['FLETE'];
