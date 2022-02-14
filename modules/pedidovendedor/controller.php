@@ -451,6 +451,8 @@ class PedidoVendedorController {
 			$cantidad_total = $valor_venta * $cantidad;
         	$importe_descuento = $cantidad_total * $descuento / 100;
         	$importe_final = round(($cantidad_total - $importe_descuento), 2);
+
+        	$pedidovendedordetalle[$clave]['IMPORTE'] = $importe_final;
 		}
 
 		$condicionpago_collection = Collector()->get('CondicionPago');
