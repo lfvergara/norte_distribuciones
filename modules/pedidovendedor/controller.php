@@ -435,6 +435,24 @@ class PedidoVendedorController {
 		$where = "pvd.pedidovendedor_id = {$arg}";
 		$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
 
+		foreach ($pedidovendedordetalle as $clave=>$valor) {
+			$costo = $valor['COSTO'];
+			$flete = $valor['FLETE'];
+			$ganancia = $valor['VALGAN'];
+			$cantidad = $valor['CANTIDAD'];
+			$descuento = $valor['DESCUENTO'];
+			$iva = $valor['IVA'];
+
+			$costo_flete = $costo + (($costo * $flete) / 100);
+			$costo_iva = (($costo_flete * $iva) / 100) + $costo_flete;
+			$valor_ganancia = $costo_iva * $ganancia / 100;
+			$valor_venta = $costo_iva + $valor_ganancia;
+
+			$cantidad_total = $valor_venta * $cantidad;
+        	$importe_descuento = $cantidad_total * $descuento / 100;
+        	$importe_final = round(($cantidad_total - $importe_descuento), 2);
+		}
+
 		$condicionpago_collection = Collector()->get('CondicionPago');
 		$condicioniva_collection = Collector()->get('CondicionIVA');
 		$tipofactura_collection = Collector()->get('TipoFactura');
