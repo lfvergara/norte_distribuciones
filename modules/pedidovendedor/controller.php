@@ -435,7 +435,7 @@ class PedidoVendedorController {
 		$where = "pvd.pedidovendedor_id = {$arg}";
 		$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
 
-		foreach ($pedidovendedordetalle as $clave=>$valor) {
+		foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
 			$costo = $valor['COSTO'];
 			$flete = $valor['FLETE'];
 			$ganancia = $valor['VALGAN'];
