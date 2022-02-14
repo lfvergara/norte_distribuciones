@@ -188,7 +188,6 @@ class ReporteView extends View {
 		$gui_tbl_vendedor_pago_comision = $this->render_regex_dict('TBL_PAGOCOMISION', $gui_tbl_vendedor_pago_comision, $pagocomisiones_collection);
 		$gui_tbl_vendedor_pago_salarios = $this->render_regex_dict('TBL_PAGOSALARIOS', $gui_tbl_vendedor_pago_salarios, $salario_collection);
 		$gui_tbl_vendedor_ganancia = $this->render_regex_dict('TBL_VENDEDOR', $gui_tbl_vendedor_ganancia, $ganancia_vendedor_dia);
-		print_r($gui_tbl_vendedor_ganancia);exit;
 
 		$gui_lbl_piechart_pago_comision = $this->render_regex_dict('LBL_PIECHART_PAGO_COMISION', $gui_lbl_piechart_pago_comision, $pagocomisiones_collection);
 		$gui_valores_piechart_pago_comision = $this->render_regex_dict('VALORES_PIECHART_PAGO_COMISION', $gui_valores_piechart_pago_comision, $pagocomisiones_collection);
@@ -212,7 +211,7 @@ class ReporteView extends View {
 		$render = str_replace('{periodo_balance}', $periodo, $render);
 		$render = str_replace('{tbl_producto}', $tbl_producto, $render);
 		$render = str_replace('{tbl_productomarca}', $tbl_productomarca, $render);
-		$render = str_replace('{tbl_vendedor_ganancia}', $tbl_vendedor_ganancia, $render);
+		$render = str_replace('{tbl_vendedor_ganancia}', $gui_tbl_vendedor_ganancia, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
