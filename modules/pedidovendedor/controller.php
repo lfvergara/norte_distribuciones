@@ -409,6 +409,7 @@ class PedidoVendedorController {
 
 		$this->model->pedidovendedor_id = $arg;
 		$this->model->get();
+		$importe_total = $this->model->importe_total;
 		$cliente_id = $this->model->cliente_id;
 
 		$cm = new Cliente();
@@ -434,7 +435,8 @@ class PedidoVendedorController {
 		$from = "pedidovendedordetalle pvd INNER JOIN producto p ON pvd.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id";
 		$where = "pvd.pedidovendedor_id = {$arg}";
 		$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
-		
+
+		$importe_total_control = 0;
 		foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
 			$costo = $valor['COSTO'];
 			$flete = $valor['FLETE'];
@@ -452,7 +454,13 @@ class PedidoVendedorController {
         	$importe_descuento = $cantidad_total * $descuento / 100;
         	$importe_final = round(($cantidad_total - $importe_descuento), 2);
 
+        	$importe_total_control = round(($importe_total_control + $importe_final),2);
         	$pedidovendedordetalle_collection[$clave]['IMPORTE'] = $importe_final;
+		}
+
+		if ($importe_total != $importe_total_control) {
+			$this->model->importe_total = $importe_total_control;
+			$this->model->subtotal = $importe_total_control;
 		}
 
 		$condicionpago_collection = Collector()->get('CondicionPago');
