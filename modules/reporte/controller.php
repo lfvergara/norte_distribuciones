@@ -1016,6 +1016,7 @@ class ReporteController {
 		$desde = "{$anio}-{$mes}-01";
 		$hasta = date("Y-m-d");
 		$periodo = "desde el {$desde} hasta el {$hasta}";
+		$fecha_sys = date('Y-m-d');
 
 		$periodo_actual = date('Ym');
 		$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL";
