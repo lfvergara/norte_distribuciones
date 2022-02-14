@@ -178,7 +178,6 @@ class ReporteView extends View {
 		$gui_tbl_vendedor_pago_comision = file_get_contents("static/modules/reporte/tbl_vendedor_pago_comision.html");
 		$gui_tbl_vendedor_pago_salarios = file_get_contents("static/modules/reporte/tbl_vendedor_pago_salarios.html");
 		$gui_tbl_vendedor_ganancia = file_get_contents("static/modules/reporte/tbl_vendedor_ganancia.html");
-		print_r($gui_tbl_vendedor_ganancia);exit;
 		$gui_tbl_vehiculocombustible = file_get_contents("static/modules/reporte/tbl_vehiculocombustible.html");
 		$tbl_producto = file_get_contents("static/modules/reporte/tbl_producto_array.html");
 		$tbl_productomarca = file_get_contents("static/modules/reporte/tbl_productomarca.html");
@@ -189,6 +188,7 @@ class ReporteView extends View {
 		$gui_tbl_vendedor_pago_comision = $this->render_regex_dict('TBL_PAGOCOMISION', $gui_tbl_vendedor_pago_comision, $pagocomisiones_collection);
 		$gui_tbl_vendedor_pago_salarios = $this->render_regex_dict('TBL_PAGOSALARIOS', $gui_tbl_vendedor_pago_salarios, $salario_collection);
 		$gui_tbl_vendedor_ganancia = $this->render_regex_dict('TBL_VENDEDOR', $gui_tbl_vendedor_ganancia, $ganancia_vendedor_dia);
+		print_r($gui_tbl_vendedor_ganancia);exit;
 
 		$gui_lbl_piechart_pago_comision = $this->render_regex_dict('LBL_PIECHART_PAGO_COMISION', $gui_lbl_piechart_pago_comision, $pagocomisiones_collection);
 		$gui_valores_piechart_pago_comision = $this->render_regex_dict('VALORES_PIECHART_PAGO_COMISION', $gui_valores_piechart_pago_comision, $pagocomisiones_collection);
