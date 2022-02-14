@@ -178,7 +178,7 @@ class ReporteView extends View {
 		$gui_tbl_vendedor_pago_comision = file_get_contents("static/modules/reporte/tbl_vendedor_pago_comision.html");
 		$gui_tbl_vendedor_pago_salarios = file_get_contents("static/modules/reporte/tbl_vendedor_pago_salarios.html");
 		$gui_tbl_vendedor_ganancia = file_get_contents("static/modules/reporte/tbl_vendedor_ganancia.html");
-
+		print_r($gui_tbl_vendedor_ganancia);exit;
 		$gui_tbl_vehiculocombustible = file_get_contents("static/modules/reporte/tbl_vehiculocombustible.html");
 		$tbl_producto = file_get_contents("static/modules/reporte/tbl_producto_array.html");
 		$tbl_productomarca = file_get_contents("static/modules/reporte/tbl_productomarca.html");
