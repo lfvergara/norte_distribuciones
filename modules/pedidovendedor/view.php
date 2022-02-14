@@ -172,6 +172,7 @@ class PedidoVendedorView extends View {
 		$tbl_producto_array = str_replace('<!--TBL_PRODUCTO-->', '', $tbl_producto_array);
 		$tbl_cliente_array = $this->render_regex_dict('TBL_CLIENTE', $tbl_cliente_array, $cliente_collection);
 		$tbl_cliente_array = str_replace('<!--TBL_CLIENTE-->', '', $tbl_cliente_array);
+		print_r($pedidovendedordetalle_collection);exit;
 		if (!empty($pedidovendedordetalle_collection) OR is_array($pedidovendedordetalle_collection)) {
 			$array_producto_ids = array();
 			foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
