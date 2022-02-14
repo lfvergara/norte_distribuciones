@@ -1249,7 +1249,7 @@ class ReporteController {
 		$where = "e.fecha = '{$fecha_sys}' AND c.impacto_ganancia = 1";
 		$groupby = "v.vendedor_id";
 		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
-		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array;
+		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
 		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 		$array_balance = array('{suma_ingresos_per_actual}'=>$suma_ingresos_per_actual,
