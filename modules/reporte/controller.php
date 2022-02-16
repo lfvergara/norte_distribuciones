@@ -866,6 +866,10 @@ class ReporteController {
 			}
 		}
 
+		foreach ($detalle_pagoproveedor as $clave=>$valor) {
+			$detalle_pagoproveedor[$clave]['TSALIDA'] = number_format($valor['TSALIDA'], 2, ',', '.');
+		}
+
 		//PAGO COMISIONES
 		$select = "ROUND(SUM(valor_abonado),2) AS ECOMISION";
 		$from = "egresocomision ec";
