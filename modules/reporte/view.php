@@ -13,7 +13,6 @@ class ReporteView extends View {
 
 	function panel($stock_collection, $array_totales, $sum_importe_producto, $sum_cantidad_producto, $sum_semestre_cuentas,
 				   $vendedor_collection, $gasto_collection, $cuentacorrienteproveedor_collection) {
-		print_r($gasto_collection);exit;
 		$gui = file_get_contents("static/modules/reporte/panel.html");
 		$tbl_cuentacorrienteproveedor = file_get_contents("static/modules/reporte/tbl_cuentacorrienteproveedor.html");
 		$tbl_sum_importe_producto = file_get_contents("static/modules/reporte/tbl_sum_importe_producto.html");
