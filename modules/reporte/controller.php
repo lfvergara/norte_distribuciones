@@ -1266,7 +1266,7 @@ class ReporteController {
 		$salario_collection = CollectorCondition()->get('Salario', $where, 4, $from, $select,$groupby);
 
 		$select = "v.dominio AS DOMINIO, v.denominacion AS REFERENCIA, CONCAT(vma.denominacion, ' ', vm.denominacion) AS VEHICULO,
-				   ROUND(SUM(vc.importe), 2) AS TIMPORTE, ROUND(SUM(vc.cantidad), 2) AS TLITRO";
+				   FORMAT((SUM(vc.importe)), 2,'de_DE') AS TIMPORTE, ROUND(SUM(vc.cantidad), 2) AS TLITRO";
 		$from = "vehiculocombustible vc INNER JOIN vehiculo v ON vc.vehiculo = v.vehiculo_id INNER JOIN
 				 vehiculomodelo vm ON v.vehiculomodelo = vm.vehiculomodelo_id INNER JOIN
 				 vehiculomarca vma ON vm.vehiculomarca = vma.vehiculomarca_id";
