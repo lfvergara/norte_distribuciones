@@ -26,8 +26,8 @@ class StockController {
     	$almacen_collection = Collector()->get('Almacen');
 
     	$select = "ROUND(SUM(e.importe_total),2) AS CONTADO"; 
-		$from = "egreso e";
-		$where = "e.condicionpago = 2 AND e.fecha = CURDATE()";
+		$from = "egreso e INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega esen ON ee.estadoentrega = esen.estadoentrega_id";
+		$where = "e.condicionpago = 2 AND e.fecha = CURDATE() AND esen.estadoentrega_id = 4";
 		$sum_contado = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 		$sum_contado = (is_array($sum_contado)) ? $sum_contado[0]['CONTADO'] : 0;
 		$sum_contado = (is_null($sum_contado)) ? 0 : $sum_contado;
