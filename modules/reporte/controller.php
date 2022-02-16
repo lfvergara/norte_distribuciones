@@ -323,10 +323,10 @@ class ReporteController {
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id";
 		$where = "e.fecha BETWEEN '{$primer_dia_mes}' AND '{$fecha_sys1}'";
 
-		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.importe),2) DESC LIMIT 5";
+		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.importe),2) DESC";
 		$sum_importe_producto = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
-		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.cantidad),2) DESC LIMIT 5";
+		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.cantidad),2) DESC";
 		$sum_cantidad_producto = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
 		$select = "ROUND(SUM(ncd.importe),2) AS IMPORTE, ROUND(SUM(ncd.cantidad),2) AS CANTIDAD";

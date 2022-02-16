@@ -31,6 +31,26 @@ class ReporteView extends View {
 		$gui_lbl_piechart_gasto = str_replace('<!--LBL_PIECHART_GASTO-->', '', $gui_lbl_piechart_gasto);
 		$gui_valores_piechart_gasto = str_replace('<!--VALORES_PIECHART_GASTO-->', '', $gui_valores_piechart_gasto);
 
+
+		if (is_array($sum_importe_producto) AND !empty($sum_importe_producto)) {
+			$sum_importe_producto = $this->order_collection_array($sum_importe_producto, 'IMPORTE', SORT_DESC);
+			$i = 0;
+			foreach ($sum_importe_producto as $clave=>$valor) {
+				$sum_importe_producto[$clave]['IMPORTE'] = number_format($sum_importe_producto[$clave]['IMPORTE'], 2, ',', '.');
+				if ($i > 4) unset($sum_importe_producto[$clave]);
+				$i = $i + 1;
+			}
+		}
+
+		if (is_array($sum_cantidad_producto) AND !empty($sum_cantidad_producto)) {
+			$sum_cantidad_producto = $this->order_collection_array($sum_cantidad_producto, 'CANTIDAD', SORT_DESC);
+			$j = 0;
+			foreach ($sum_cantidad_producto as $clave=>$valor) {
+				if ($j > 4) unset($sum_cantidad_producto[$clave]);
+				$j = $j + 1;
+			}
+		}
+
 		$tbl_sum_importe_producto = $this->render_regex_dict('TBL_SUM_IMPORTE_PRODUCTO', $tbl_sum_importe_producto, $sum_importe_producto);
 		$tbl_sum_cantidad_producto = $this->render_regex_dict('TBL_SUM_CANTIDAD_PRODUCTO', $tbl_sum_cantidad_producto, $sum_cantidad_producto);
 
