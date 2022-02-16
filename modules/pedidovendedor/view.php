@@ -202,12 +202,10 @@ class PedidoVendedorView extends View {
 		}
 
 		$obj_vendedor = $obj_cliente->vendedor;
-		unset($obj_cliente->infocontacto_collection, $obj_cliente->vendedor->infocontacto_collection, $obj_cliente->flete->infocontacto_collection, $obj_cliente->vendedor);
+		unset($obj_cliente->infocontacto_collection, $obj_cliente->vendedor->infocontacto_collection, $obj_cliente->flete->infocontacto_collection);
 		
-		print_r($obj_pedidovendedor);exit;
 		$obj_pedidovendedor = $this->set_dict($obj_pedidovendedor);
 		$obj_cliente = $this->set_dict($obj_cliente);
-		$obj_vendedor = $this->set_dict($obj_vendedor);
 		
 		$render = str_replace('{tbl_producto}', $tbl_producto_array, $gui);
 		$render = str_replace('{tbl_cliente}', $tbl_cliente_array, $render);
@@ -219,7 +217,6 @@ class PedidoVendedorView extends View {
 		$render = str_replace('{hidden_editar_pedidovendedordetalle_array}', $hidden_editar_pedidovendedordetalle_array, $render);
 		$render = $this->render($obj_pedidovendedor, $render);
 		$render = $this->render($obj_cliente, $render);
-		$render = $this->render($obj_vendedor, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
