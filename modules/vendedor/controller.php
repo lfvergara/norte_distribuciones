@@ -98,7 +98,7 @@ class VendedorController {
 		$groupby = "ec.fecha ORDER BY date_format(ec.fecha, '%d/%m/%Y') DESC";
 		$egresocomision_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
-		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, ROUND(SUM(ed.importe),2) AS IMPORTE,
+		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, FORMAT(ed.importe, 2,'de_DE') AS IMPORTE,
 				   ROUND(SUM(ed.cantidad),2) AS CANTIDAD";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id";
 		$where = "date_format(e.fecha, '%Y%m') = '{$periodo_actual}' AND e.vendedor = {$vendedor_id}";
