@@ -318,7 +318,7 @@ class ReporteController {
 							   '{suma_notacredito_hoy}'=>number_format($suma_notacredito_hoy, 2, ',', '.'),
 							   '{total_facturacion_hoy}'=>number_format($total_facturacion_hoy, 2, ',', '.'));
 
-		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, FORMAT(SUM(ed.importe), 2,'de_DE') AS IMPORTE,
+		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, SUM(FORMAT(ed.importe, 2,'de_DE')) AS IMPORTE,
 				   FORMAT(SUM(ed.cantidad), 2,'de_DE') AS CANTIDAD, ed.producto_id AS PRID";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id";
 		$where = "e.fecha BETWEEN '{$primer_dia_mes}' AND '{$fecha_sys1}'";
