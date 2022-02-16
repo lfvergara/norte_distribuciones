@@ -248,7 +248,7 @@ class VendedorController {
 		$ventas_vendedor_tipo_factura = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 		$ventas_vendedor_tipo_factura = (is_array($ventas_vendedor_tipo_factura) AND !empty($ventas_vendedor_tipo_factura)) ? $ventas_vendedor_tipo_factura : array();
 
-		$select = "e.vendedor AS VID, ROUND(SUM(CASE WHEN nc.tipofactura = 4 THEN nc.importe_total WHEN nc.tipofactura = 5 THEN nc.importe_total ELSE 0 END),2) AS BLANCO, ROUND(SUM(CASE WHEN nc.tipofactura = 6 THEN nc.importe_total ELSE 0         END),2) AS NEGRO, ROUND(SUM(nc.importe_total), 2) AS TOTAL";
+		$select = "e.vendedor AS VID, ROUND(SUM(CASE WHEN nc.tipofactura = 4 THEN nc.importe_total WHEN nc.tipofactura = 5 THEN nc.importe_total ELSE 0 END),2) AS BLANCO, ROUND(SUM(CASE WHEN nc.tipofactura = 6 THEN nc.importe_total ELSE 0 END),2) AS NEGRO, ROUND(SUM(nc.importe_total), 2) AS TOTAL";
 		$from = "notacredito nc INNER JOIN egreso e ON nc.egreso_id = e.egreso_id";
 		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}'";
 		$groupby = "e.vendedor";
@@ -273,6 +273,10 @@ class VendedorController {
 					$ventas_vendedor_tipo_factura[$clave]['TOTAL'] = $ventas_total - $nc_total;
 				}
 			}
+
+			$ventas_vendedor_tipo_factura[$clave]['BLANCO'] = number_format($ventas_vendedor_tipo_factura[$clave]['BLANCO'], 2, ',', '.');
+			$ventas_vendedor_tipo_factura[$clave]['NEGRO'] = number_format($ventas_vendedor_tipo_factura[$clave]['NEGRO'], 2, ',', '.');
+			$ventas_vendedor_tipo_factura[$clave]['TBLTOT'] = number_format($ventas_vendedor_tipo_factura[$clave]['TOTAL'], 2, ',', '.');
 		}
 
 		$select = "v.vendedor_id AS VID, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, LEFT(pr.razon_social, 25) AS PROVEEDOR, ROUND(SUM(ed.importe),2) AS IMPORTE";
@@ -314,7 +318,7 @@ class VendedorController {
 
 				if ($flag_ini == 0) {
 					$temp_vendedor_denominacion = $valor['VENDEDOR'];
-					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . $valor['IMPORTE']);
+					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . number_format($valor['IMPORTE'], 2, ',', '.'));
 					$flag_ini = 1;
 				} else {
 					if (count($temp_array_totales) < 3) {
@@ -326,11 +330,11 @@ class VendedorController {
 										'ARRAY_TOTALES'=>$temp_array_totales);
 					$top3_vendedor_proveedor_final[] = $temp_array;
 					$temp_array_totales = array();
-					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . $valor['IMPORTE']);
+					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . number_format($valor['IMPORTE'], 2, ',', '.'));
 					$temp_vendedor_denominacion = $valor['VENDEDOR'];
 				}
 			} else {
-				$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . $valor['IMPORTE']);
+				$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . number_format($valor['IMPORTE'], 2, ',', '.'));
 				if ($cant_array == ($clave + 1)) {
 					if (count($temp_array_totales) < 3) {
 						$faltantes = 3 - count($temp_array_totales);
