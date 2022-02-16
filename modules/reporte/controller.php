@@ -235,6 +235,7 @@ class ReporteController {
 
 		$total_facturado_class = ($total_facturado >= 0) ? 'blue' : 'red';
 		$total_facturado_int = ($total_facturado >= 0) ? $total_facturado : "-" . abs($total_facturado);
+		$total_facturado = number_format($total_facturado, 2, ',', '.');
 		$total_facturado = ($total_facturado >= 0) ? "$" . $total_facturado : "-$" . abs($total_facturado);
 
 		$select = "ROUND(SUM(CASE WHEN e.tipofactura = 1 THEN e.importe_total WHEN e.tipofactura = 3 THEN e.importe_total ELSE 0
@@ -294,7 +295,7 @@ class ReporteController {
 		$suma_total_ventas = $suma_importe_ventas_cont + $suma_importe_ventas_cc;
 		$array_totales = array('{periodo_actual}'=>$periodo_actual,
 							   '{estado_actual}'=> number_format($estado_actual, 2, ',', '.'),
-							   '{total_facturado}'=>number_format($total_facturado, 2, ',', '.'),
+							   '{total_facturado}'=>$total_facturado,
 							   '{total_facturado_class}'=>$total_facturado_class,
 							   '{deuda_cuentacorrientecliente}'=>number_format($deuda_cuentacorrientecliente, 2, ',', '.'),
 							   '{deuda_cuentacorrienteproveedor}'=>number_format($deuda_cuentacorrienteproveedor, 2, ',', '.'),
