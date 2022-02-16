@@ -682,7 +682,7 @@ class ReporteController {
 		$vehiculos = (is_null($vehiculos)) ? 0 : $vehiculos;
 
 		//DETALLE VEHICULOS
-		$select = "v.denominacion AS DETALLE,FORMAT(vc.importe, 2,'de_DE') AS IMPORTETOTAL";
+		$select = "v.denominacion AS DETALLE, FORMAT(vc.importe, 2,'de_DE') AS IMPORTETOTAL";
 		$from = "vehiculocombustible vc INNER JOIN vehiculo v ON v.vehiculo_id = vc.vehiculo";
 		$where = "vc.fecha = '{$fecha_sys}'";
 		$detalle_vehiculos = CollectorCondition()->get('VehiculoCombustible', $where, 4, $from, $select);
@@ -711,20 +711,18 @@ class ReporteController {
 		$pm->proveedor_id = $proveedor_id;
 		$pm->get();
 
-		$select = "date_format(ccp.fecha, '%d/%m/%Y') AS FECHA, ccp.importe AS IMPORTE, ccp.ingreso AS INGRESO, tmc.denominacion AS MOVIMIENTO, ccp.ingreso_id AS IID,
-					 ccp.referencia AS REFERENCIA, CASE ccp.tipomovimientocuenta WHEN 1 THEN 'danger' WHEN 2 THEN 'success' END AS CLASS,
-					 ccp.cuentacorrienteproveedor_id CCPID";
+		$select = "date_format(ccp.fecha, '%d/%m/%Y') AS FECHA, ccp.importe AS IMPORTE, ccp.ingreso AS INGRESO, tmc.denominacion AS MOVIMIENTO, ccp.ingreso_id AS IID, ccp.referencia AS REFERENCIA, CASE ccp.tipomovimientocuenta WHEN 1 THEN 'danger' WHEN 2 THEN 'success' END AS CLASS, ccp.cuentacorrienteproveedor_id CCPID";
 		$from = "cuentacorrienteproveedor ccp INNER JOIN tipomovimientocuenta tmc ON ccp.tipomovimientocuenta = tmc.tipomovimientocuenta_id";
 		$where = "ccp.proveedor_id = {$proveedor_id} and ccp.fecha = '{$fecha}' and ccp.ingresotipopago BETWEEN 2 AND 3";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select);
 
+		/*
 		$ingreso_ids = array();
 		if(is_array($cuentacorriente_collection)){
 			foreach ($cuentacorriente_collection as $clave=>$valor) {
 				$ingreso_id = $valor['IID'];
 				if (!in_array($ingreso_id, $ingreso_ids)) $ingreso_ids[] = $ingreso_id;
-				$select = "ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) -
-								(ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE";
+				$select = "ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE";
 				$from = "cuentacorrienteproveedor ccp";
 				$where = "ccp.ingreso_id = {$ingreso_id} ";
 				$array_temp = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select);
@@ -739,7 +737,7 @@ class ReporteController {
 
 			}
 		}
-
+		*/
 		if(is_array($ingreso_ids)){
 			$max_cuentacorrienteproveedor_ids = array();
 			foreach ($ingreso_ids as $ingreso_id) {
