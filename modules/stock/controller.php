@@ -154,16 +154,16 @@ class StockController {
 		$total_facturado_class = ($cajadiaria >= 0) ? 'blue' : 'red';
 		$array_totales = ($total_facturado + $stock_valorizado) - ($deuda_cuentacorrientecliente + $deuda_cuentacorrientecliente);
 
-		$array_totales = array('{estado_actual}'=>$array_totales,
-							   '{total_facturado}'=>"$" . $cajadiaria,
+		$array_totales = array('{estado_actual}'=>number_format($array_totales, 2, ',', '.'),
+							   '{total_facturado}'=>"$" . number_format($cajadiaria, 2, ',', '.'),
 							   '{total_facturado_class}'=>$total_facturado_class,
-							   '{deuda_cuentacorrientecliente}'=>$deuda_cuentacorrientecliente,
-							   '{deuda_cuentacorrienteproveedor}'=>$deuda_cuentacorrienteproveedor,
-							   '{stock_valorizado}'=>$stock_valorizado,
-							   '{ingreso_cuentacorrientecliente_hoy}'=>$ingreso_cuentacorriente_hoy,
-							   '{egreso_cuentacorrienteproveedor_hoy}'=>$egreso_cuentacorrienteproveedor_hoy,
-							   '{ingreso_contado_hoy}'=>$sum_contado,
-							   '{egreso_comision_hoy}'=>$egreso_comision_hoy);
+							   '{deuda_cuentacorrientecliente}'=>number_format($deuda_cuentacorrientecliente, 2, ',', '.'),
+							   '{deuda_cuentacorrienteproveedor}'=>number_format($deuda_cuentacorrienteproveedor, 2, ',', '.'),
+							   '{stock_valorizado}'=>number_format($stock_valorizado, 2, ',', '.'),
+							   '{ingreso_cuentacorrientecliente_hoy}'=>number_format($ingreso_cuentacorriente_hoy, 2, ',', '.'),
+							   '{egreso_cuentacorrienteproveedor_hoy}'=>number_format($egreso_cuentacorrienteproveedor_hoy, 2, ',', '.'),
+							   '{ingreso_contado_hoy}'=>number_format($sum_contado, 2, ',', '.'),
+							   '{egreso_comision_hoy}'=>number_format($egreso_comision_hoy, 2, ',', '.'));
 		
 		$this->view->panel($stock_collection, $almacen_collection, $array_totales, $am);
 	}
