@@ -678,7 +678,7 @@ class ReporteController {
 		$vehiculos = (is_null($vehiculos)) ? 0 : $vehiculos;
 
 		//DETALLE VEHICULOS
-		$select = "v.denominacion AS DETALLE,ROUND(vc.importe, 2) AS IMPORTETOTAL";
+		$select = "v.denominacion AS DETALLE,FORMAT(vc.importe, 2,'de_DE') AS IMPORTETOTAL";
 		$from = "vehiculocombustible vc INNER JOIN vehiculo v ON v.vehiculo_id = vc.vehiculo";
 		$where = "vc.fecha = '{$fecha_sys}'";
 		$detalle_vehiculos = CollectorCondition()->get('VehiculoCombustible', $where, 4, $from, $select);
@@ -939,7 +939,7 @@ class ReporteController {
 							   '{vehiculos}'=>number_format($vehiculos, 2, ',', '.'),
 							   '{caja}'=>number_format($calculo_cajadiaria, 2, ',', '.'),
 							   '{fecha}'=>$fecha_filtro);
-		
+
 		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor,$detalle_gasto_diario,$detalle_liquidacion,$detalle_vehiculos,$detalle_comision, 2);
 	}
 
