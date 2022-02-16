@@ -1230,7 +1230,7 @@ class ReporteController {
 		$salario_total = (is_null($salario_total)) ? 0 : $salario_total;
 
 		//GANANCIA DIARIA
-		$select = "v.vendedor_id, ROUND(SUM(ed.valor_ganancia),2) AS GANANCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
+		$select = "v.vendedor_id, FORMAT((SUM(ed.valor_ganancia)), 2,'de_DE') AS GANANCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id INNER JOIN vendedor v ON e.vendedor = v.vendedor_id";
 		$where = "e.fecha = '{$fecha_sys}' AND c.impacto_ganancia = 1";
 		$groupby = "v.vendedor_id";
