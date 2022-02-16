@@ -72,7 +72,7 @@ class VendedorController {
 		$this->model->get();
 
 		$periodo_actual = date('Ym');
-		$select = "ROUND(SUM(e.importe_total),2) AS TOTAL, COUNT(*) AS CANTVENTAS";
+		$select = "FORMAT((SUM(e.importe_total)), 2,'de_DE') AS TOTAL, COUNT(*) AS CANTVENTAS";
 		$from = "egreso e INNER JOIN egresocomision ec ON e.egresocomision = ec.egresocomision_id INNER JOIN
 				 vendedor v ON e.vendedor = v.vendedor_id";
 		$where = "v.vendedor_id = {$vendedor_id} AND date_format(e.fecha, '%Y%m') = '{$periodo_actual}'";
@@ -90,15 +90,13 @@ class VendedorController {
 		$estadisticas['PERACTUAL'] = $periodo_actual;
 		$estadisticas['EGRESOCOMISION'] = $egreso_comision_periodoactual;
 
-		$select = "v.vendedor_id AS VID, date_format(ec.fecha, '%d/%m/%Y') AS ECFECHA, ec.fecha AS ECFECBUS,
-				   ROUND(SUM(ec.valor_abonado),2) AS COMISION, ROUND(SUM(e.importe_total),2) AS TOTALFACTURADO";
-		$from = "egreso e INNER JOIN egresocomision ec ON e.egresocomision = ec.egresocomision_id INNER JOIN
-				 vendedor v ON e.vendedor = v.vendedor_id";
+		$select = "v.vendedor_id AS VID, date_format(ec.fecha, '%d/%m/%Y') AS ECFECHA, ec.fecha AS ECFECBUS, ROUND(SUM(ec.valor_abonado),2) AS COMISION, ROUND(SUM(e.importe_total),2) AS TOTALFACTURADO";
+		$from = "egreso e INNER JOIN egresocomision ec ON e.egresocomision = ec.egresocomision_id INNER JOIN vendedor v ON e.vendedor = v.vendedor_id";
 		$where = "v.vendedor_id = {$vendedor_id} AND ec.estadocomision IN (2,3)";
 		$groupby = "ec.fecha ORDER BY date_format(ec.fecha, '%d/%m/%Y') DESC";
 		$egresocomision_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
-		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, FORMAT(ed.importe, 2,'de_DE') AS IMPORTE,
+		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, ROUND(SUM(ed.importe),2) AS IMPORTE,
 				   ROUND(SUM(ed.cantidad),2) AS CANTIDAD";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id";
 		$where = "date_format(e.fecha, '%Y%m') = '{$periodo_actual}' AND e.vendedor = {$vendedor_id}";
