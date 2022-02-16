@@ -684,14 +684,14 @@ class ReporteController {
 		$detalle_vehiculos = CollectorCondition()->get('VehiculoCombustible', $where, 4, $from, $select);
 
 		$calculo_cajadiaria = $this->calcula_cajadiaria();
-		$array_totales = array('{cobranza}'=>$cobranza,
-							   '{ventas}'=>$total_facturacion_hoy,
-							   '{pago_proveedores}'=>$pago_proveedores,
-							   '{pago_comisiones}'=>$egreso_comision_hoy,
-							   '{gasto_diario}'=>$gasto_diario,
-							   '{liquidacion}'=>$liquidacion,
-							   '{vehiculos}'=>$vehiculos,
-							   '{caja}'=>$calculo_cajadiaria,
+		$array_totales = array('{cobranza}'=>number_format($cobranza, 2, ',', '.'),
+							   '{ventas}'=>number_format($total_facturacion_hoy, 2, ',', '.'),
+							   '{pago_proveedores}'=>number_format($pago_proveedores, 2, ',', '.'),
+							   '{pago_comisiones}'=>number_format($egreso_comision_hoy, 2, ',', '.'),
+							   '{gasto_diario}'=>number_format($gasto_diario, 2, ',', '.'),
+							   '{liquidacion}'=>number_format($liquidacion, 2, ',', '.'),
+							   '{vehiculos}'=>number_format($vehiculos, 2, ',', '.'),
+							   '{caja}'=>number_format($calculo_cajadiaria, 2, ',', '.'),
 							   '{fecha}'=>$fecha_sys);
 		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor,$detalle_gasto_diario,$detalle_liquidacion,$detalle_vehiculos,$detalle_comision, 1);
 	}
@@ -930,15 +930,16 @@ class ReporteController {
 		$group_by = "ccc.cobrador";
 		$cobranza_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $group_by);
 
-		$array_totales = array('{cobranza}'=>$cobranza,
-							   '{ventas}'=>$total_facturacion_hoy,
-							   '{pago_proveedores}'=>$pago_proveedores,
-							   '{pago_comisiones}'=>$egreso_comision_hoy,
-							   '{gasto_diario}'=>$gasto_diario,
-							   '{liquidacion}'=>$liquidacion,
-							   '{vehiculos}'=>$vehiculos,
-							   '{caja}'=>$calculo_cajadiaria,
+		$array_totales = array('{cobranza}'=>number_format($cobranza, 2, ',', '.'),
+							   '{ventas}'=>number_format($total_facturacion_hoy, 2, ',', '.'),
+							   '{pago_proveedores}'=>number_format($pago_proveedores, 2, ',', '.'),
+							   '{pago_comisiones}'=>number_format($egreso_comision_hoy, 2, ',', '.'),
+							   '{gasto_diario}'=>number_format($gasto_diario, 2, ',', '.'),
+							   '{liquidacion}'=>number_format($liquidacion, 2, ',', '.'),
+							   '{vehiculos}'=>number_format($vehiculos, 2, ',', '.'),
+							   '{caja}'=>number_format($calculo_cajadiaria, 2, ',', '.'),
 							   '{fecha}'=>$fecha_filtro);
+		
 		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor,$detalle_gasto_diario,$detalle_liquidacion,$detalle_vehiculos,$detalle_comision, 2);
 	}
 
