@@ -611,12 +611,9 @@ class ReporteController {
 					foreach ($detalle_contadoproveedor_hoy as $k=>$v) {
 						$proveedor_id = $v["PID"];
 						if ($temp_proveedor_id == $proveedor_id) {
-							$temp_salida = $detalle_pagoproveedor[$clave]["TSALIDA"] + $detalle_contadoproveedor_hoy[$k]["TSALIDA"];
-							$temp_salida = number_format($temp_salida, 2, ',', '.');
-							$detalle_pagoproveedor[$clave]["TSALIDA"] = $temp_salida;
+							$detalle_pagoproveedor[$clave]["TSALIDA"] = $detalle_pagoproveedor[$clave]["TSALIDA"] + $detalle_contadoproveedor_hoy[$k]["TSALIDA"];
 						} else {
-							$temp_salida = number_format($valor["TSALIDA"], 2, ',', '.');
-							$array_temp = array("PID"=>$valor["PID"], "RAZSOC"=>$valor["RAZSOC"], "TSALIDA"=>$temp_salida);
+							$array_temp = array("PID"=>$valor["PID"], "RAZSOC"=>$valor["RAZSOC"], "TSALIDA"=>$valor["TSALIDA"]);
 							$detalle_pagoproveedor[] = $array_temp;
 						}
 					}
@@ -628,6 +625,10 @@ class ReporteController {
 			} else {
 				$detalle_pagoproveedor = array();
 			}
+		}
+
+		foreach ($detalle_pagoproveedor as $clave=>$valor) {
+			$detalle_pagoproveedor[$clave]['TSALIDA'] = number_format($valor['TSALIDA'], 2, ',', '.');
 		}
 
 		//PAGO COMISIONES
