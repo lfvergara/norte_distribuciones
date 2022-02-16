@@ -72,7 +72,7 @@ class VendedorController {
 		$this->model->get();
 
 		$periodo_actual = date('Ym');
-		$select = "FORMAT((SUM(e.importe_total)), 2,'de_DE') AS TOTAL, COUNT(*) AS CANTVENTAS";
+		$select = "ROUND(SUM(e.importe_total),2) AS TOTAL, COUNT(*) AS CANTVENTAS";
 		$from = "egreso e INNER JOIN egresocomision ec ON e.egresocomision = ec.egresocomision_id INNER JOIN
 				 vendedor v ON e.vendedor = v.vendedor_id";
 		$where = "v.vendedor_id = {$vendedor_id} AND date_format(e.fecha, '%Y%m') = '{$periodo_actual}'";
@@ -192,7 +192,7 @@ class VendedorController {
 
 				if ($flag_ini == 0) {
 					$temp_vendedor_denominacion = $valor['VENDEDOR'];
-					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . $valor['IMPORTE']);
+					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . number_format($valor['IMPORTE'], 2, ',', '.'));
 					$flag_ini = 1;
 				} else {
 					if (count($temp_array_totales) < 3) {
@@ -204,11 +204,11 @@ class VendedorController {
 										'ARRAY_TOTALES'=>$temp_array_totales);
 					$top3_vendedor_proveedor_final[] = $temp_array;
 					$temp_array_totales = array();
-					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . $valor['IMPORTE']);
+					$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . number_format($valor['IMPORTE'], 2, ',', '.'));
 					$temp_vendedor_denominacion = $valor['VENDEDOR'];
 				}
 			} else {
-				$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . $valor['IMPORTE']);
+				$temp_array_totales[] = array('{PROVEEDOR}'=>$valor['PROVEEDOR'], '{IMPORTE}'=>'$' . number_format($valor['IMPORTE'], 2, ',', '.'));
 				if ($cant_array == ($clave + 1)) {
 					if (count($temp_array_totales) < 3) {
 						$faltantes = 3 - count($temp_array_totales);
