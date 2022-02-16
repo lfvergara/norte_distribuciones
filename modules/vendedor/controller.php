@@ -150,6 +150,10 @@ class VendedorController {
 					$ventas_vendedor_tipo_factura[$clave]['NEGRO'] = $ventas_negro - $nc_negro;
 					$ventas_vendedor_tipo_factura[$clave]['TOTAL'] = $ventas_total - $nc_total;
 				}
+
+				$ventas_vendedor_tipo_factura[$clave]['BLANCO'] = number_format($ventas_vendedor_tipo_factura[$clave]['BLANCO'], 2, ',', '.');
+				$ventas_vendedor_tipo_factura[$clave]['NEGRO'] = number_format($ventas_vendedor_tipo_factura[$clave]['NEGRO'], 2, ',', '.');
+				$ventas_vendedor_tipo_factura[$clave]['TOTAL'] = number_format($ventas_vendedor_tipo_factura[$clave]['TOTAL'], 2, ',', '.');
 			}
 		}
 
