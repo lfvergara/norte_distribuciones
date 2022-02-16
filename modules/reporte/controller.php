@@ -664,7 +664,7 @@ class ReporteController {
 		$liquidacion = (is_null($liquidacion)) ? 0 : $liquidacion;
 
 		//DETALLE LIQUIDACIONES
-		$select = "CONCAT(e.apellido, e.nombre) AS EMPLEADO, CONCAT('Desde ', date_format(s.desde, '%d/%m/%Y'), 'hasta el ', date_format(s.hasta, '%d/%m/%Y')) AS DETALLE, ROUND(s.monto, 2) AS IMPORTETOTAL";
+		$select = "CONCAT(e.apellido, e.nombre) AS EMPLEADO, CONCAT('Desde ', date_format(s.desde, '%d/%m/%Y'), 'hasta el ', date_format(s.hasta, '%d/%m/%Y')) AS DETALLE, FORMAT(s.monto, 2,'de_DE') AS IMPORTETOTAL";
 		$from = "salario s INNER JOIN empleado e on e.empleado_id = s.empleado";
 		$where = "s.fecha = '{$fecha_sys}' AND s.tipo_pago IN ('SALARIO', 'ADELANTO')";
 		$detalle_liquidacion = CollectorCondition()->get('Salario', $where, 4, $from, $select);
