@@ -46,6 +46,7 @@ class ReporteView extends View {
 			$sum_cantidad_producto = $this->order_collection_array($sum_cantidad_producto, 'CANTIDAD', SORT_DESC);
 			$j = 0;
 			foreach ($sum_cantidad_producto as $clave=>$valor) {
+				$sum_importe_producto[$clave]['CANTIDAD'] = number_format($sum_importe_producto[$clave]['CANTIDAD'], 2, ',', '.');
 				if ($j > 4) unset($sum_cantidad_producto[$clave]);
 				$j = $j + 1;
 			}
