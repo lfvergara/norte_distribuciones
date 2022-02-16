@@ -958,7 +958,7 @@ class ReporteController {
 		$cm->cobrador_id = $cobrador_id;
 		$cm->get();
 
-		$select = "ROUND(SUM(ccc.ingreso), 2) AS COBRANZA";
+		$select = "FORMAT((SUM(ccc.ingreso)), 2,'de_DE') AS COBRANZA";
 		$from = "cuentacorrientecliente ccc INNER JOIN cobrador c ON ccc.cobrador = c.cobrador_id";
 		$where = "ccc.fecha = '{$fecha}' AND ccc.tipomovimientocuenta = 2 AND c.cobrador_id = {$cobrador_id}";
 		$group_by = "ccc.cobrador";
