@@ -1259,7 +1259,7 @@ class ReporteController {
 							   '{pasivo_corriente}'=>number_format($pasivo_corriente, 2, ',', '.'),
 							   '{ganancia_per_actual}'=>number_format($ganancia_per_actual, 2, ',', '.'));
 
-		$select = "CONCAT(e.apellido, ' ', e.nombre) AS EMPLEADO,SUM(s.monto) AS IMPORTE";
+		$select = "CONCAT(e.apellido, ' ', e.nombre) AS EMPLEADO, FORMAT((SUM(s.monto)), 2,'de_DE') AS IMPORTE";
 		$from = "salario s INNER JOIN empleado e ON s.empleado = e.empleado_id INNER JOIN usuario u ON s.usuario_id = u.usuario_id";
 		$where = "s.fecha BETWEEN '{$desde}' AND '{$hasta}' AND s.tipo_pago IN ('SALARIO', 'ADELANTO')";
 		$groupby = "s.empleado";
@@ -1540,22 +1540,26 @@ class ReporteController {
 
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 
-		$array_balance = array('{suma_ingresos_per_actual}'=>$suma_ingresos_per_actual,
-							   '{suma_notacredito_per_actual}'=>$suma_notacredito_per_actual,
-							   '{total_ingresos_per_actual}'=>$total_ingresos_per_actual,
-							   '{egreso_comision_per_actual}'=>$egreso_comision_per_actual,
-							   '{egreso_salario}'=>$salario_total,
-							   '{egreso_cuentacorrienteproveedor_per_actual}'=>$egreso_cuentacorrienteproveedor_per_actual,
-							   '{egreso_gasto_per_actual}'=>$egreso_gasto_per_actual,
-							   '{egreso_combustible}'=>$vehiculocombustible_total,
-							   '{stock_valorizado}'=>$stock_valorizado,
-							   '{deuda_ccclientes}'=>$estado_cuentacorrientecliente,
-							   '{deuda_ccproveedores}'=>$deuda_cuentacorrienteproveedor,
-							   '{deuda_comisiones}'=>$deuda_comision_total,
-							   '{cajadiaria}'=>$cajadiaria,
-							   '{activo_corriente}'=>$activo_corriente,
-							   '{pasivo_corriente}'=>$pasivo_corriente,
-							   '{ganancia_per_actual}'=>round($ganancia_per_actual,2));
+		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
+							   '{suma_notacredito_per_actual}'=>number_format($suma_notacredito_per_actual, 2, ',', '.'),
+							   '{total_ingresos_per_actual}'=>number_format($total_ingresos_per_actual, 2, ',', '.'),
+							   '{egreso_comision_per_actual}'=>number_format($egreso_comision_per_actual, 2, ',', '.'),
+							   '{egreso_salario}'=>number_format($salario_total, 2, ',', '.'),
+							   '{egreso_cuentacorrienteproveedor_per_actual}'=>number_format($egreso_cuentacorrienteproveedor_per_actual, 2, ',', '.'),
+							   '{egreso_gasto_per_actual}'=>number_format($egreso_gasto_per_actual, 2, ',', '.'),
+							   '{egreso_combustible}'=>number_format($vehiculocombustible_total, 2, ',', '.'),
+							   '{stock_valorizado}'=>number_format($stock_valorizado, 2, ',', '.'),
+							   '{deuda_ccclientes}'=>number_format($estado_cuentacorrientecliente, 2, ',', '.'),
+							   '{stock_valorizado_graph}'=>$stock_valorizado,
+							   '{deuda_ccclientes_graph}'=>$estado_cuentacorrientecliente,
+							   '{deuda_ccproveedores}'=>number_format($deuda_cuentacorrienteproveedor, 2, ',', '.'),
+							   '{deuda_comisiones}'=>number_format($deuda_comision_total, 2, ',', '.'),
+							   '{deuda_ccproveedores_graph}'=>$deuda_cuentacorrienteproveedor,
+							   '{deuda_comisiones_graph}'=>$deuda_comision_total,
+							   '{cajadiaria}'=>number_format($cajadiaria, 2, ',', '.'),
+							   '{activo_corriente}'=>number_format($activo_corriente, 2, ',', '.'),
+							   '{pasivo_corriente}'=>number_format($pasivo_corriente, 2, ',', '.'),
+							   '{ganancia_per_actual}'=>number_format($ganancia_per_actual, 2, ',', '.'));
 
 		$select = "CONCAT(e.apellido, ' ', e.nombre) AS EMPLEADO,SUM(s.monto) AS IMPORTE";
 		$from = "salario s INNER JOIN empleado e ON s.empleado = e.empleado_id INNER JOIN usuario u ON s.usuario_id = u.usuario_id";
