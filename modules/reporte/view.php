@@ -68,8 +68,8 @@ class ReporteView extends View {
 
 		$barchart_periodo = $this->render_regex_dict('BARCHART_PERIODOS', $barchart_periodo, $array_periodos);
 		$barchart_sum_semestre_cc = $this->render_regex_dict('BARCHART_SUM_SEMESTRE_CC', $barchart_sum_semestre_cc, $array_semestre_sum_cc);
-		print_r($barchart_sum_semestre_cc);exit;
 		$barchart_sum_semestre_cont = $this->render_regex_dict('BARCHART_SUM_SEMESTRE_CONT', $barchart_sum_semestre_cont, $array_semestre_sum_cont);
+		
 
 		$render = str_replace('{tbl_cuentacorrienteproveedor}', $tbl_cuentacorrienteproveedor, $gui);
 		$render = str_replace('{fecha_sys}', date('d/m/Y'), $render);
