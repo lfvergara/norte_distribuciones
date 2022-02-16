@@ -60,9 +60,9 @@ class ReporteView extends View {
 		foreach ($sum_semestre_cuentas as $clave=>$valor) {
 			$array_temp_periodos = array('PERIODO'=>$valor['PERIODO']);
 			$array_periodos[] = $array_temp_periodos;
-			$array_temp_cc = array('SUMCC'=>$valor['SUMCC']);
+			$array_temp_cc = array('GRAPHSCC'=>$valor['GRAPHSCC']);
 			$array_semestre_sum_cc[] = $array_temp_cc;
-			$array_temp_cont = array('SUMCONT'=>$valor['SUMCONT']);
+			$array_temp_cont = array('GRAPHSCONT'=>$valor['GRAPHSCONT']);
 			$array_semestre_sum_cont[] = $array_temp_cont;
 		}
 

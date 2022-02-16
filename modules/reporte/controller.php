@@ -369,7 +369,7 @@ class ReporteController {
 
 		// SUMA SEMESTRAL DE VENTAS POR TIPO DE PAGO: CTA CTE O CONTADO
 		// SE USA EN GRÁFICO DE BARRAS
-		$select = "date_format(e.fecha, '%Y%m') AS PERIODO, ROUND(SUM(CASE WHEN e.condicionpago = 1 THEN e.importe_total ELSE 0 END),2) AS GRAPHSUMCC, ROUND(SUM(CASE WHEN e.condicionpago = 2 THEN e.importe_total ELSE 0 END),2) AS GRAPHSUMCONT ";
+		$select = "date_format(e.fecha, '%Y%m') AS PERIODO, ROUND(SUM(CASE WHEN e.condicionpago = 1 THEN e.importe_total ELSE 0 END),2) AS GRAPHSCC, ROUND(SUM(CASE WHEN e.condicionpago = 2 THEN e.importe_total ELSE 0 END),2) AS GRAPHSCONT ";
 		$from = "egreso e";
 		$where = "date_format(e.fecha, '%Y%m') BETWEEN '{$periodo_minimo}' AND '{$periodo_actual}'";
 		$groupby = "date_format(e.fecha, '%Y%m') ORDER BY date_format(e.fecha, '%Y%m') ASC LIMIT 7";
