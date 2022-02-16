@@ -1254,10 +1254,10 @@ class ReporteController {
 							   '{deuda_comisiones}'=>number_format($deuda_comision_total, 2, ',', '.'),
 							   '{deuda_ccproveedores_graph}'=>$deuda_cuentacorrienteproveedor,
 							   '{deuda_comisiones_graph}'=>$deuda_comision_total,
-							   '{cajadiaria}'=>$cajadiaria,
-							   '{activo_corriente}'=>$activo_corriente,
-							   '{pasivo_corriente}'=>$pasivo_corriente,
-							   '{ganancia_per_actual}'=>round($ganancia_per_actual,2));
+							   '{cajadiaria}'=>number_format($cajadiaria, 2, ',', '.'),
+							   '{activo_corriente}'=>number_format($activo_corriente, 2, ',', '.'),
+							   '{pasivo_corriente}'=>number_format($pasivo_corriente, 2, ',', '.'),
+							   '{ganancia_per_actual}'=>number_format($ganancia_per_actual, 2, ',', '.'));
 
 		$select = "CONCAT(e.apellido, ' ', e.nombre) AS EMPLEADO,SUM(s.monto) AS IMPORTE";
 		$from = "salario s INNER JOIN empleado e ON s.empleado = e.empleado_id INNER JOIN usuario u ON s.usuario_id = u.usuario_id";
