@@ -392,17 +392,14 @@ class ReporteController {
 		$where = "ccp.estadomovimientocuenta != 4 GROUP BY ccp.ingreso_id";
 		$cuentacorrienteproveedor_collection = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select);
 		$cuentacorrienteproveedor_collection = (is_array($cuentacorrienteproveedor_collection) AND !empty($cuentacorrienteproveedor_collection)) ? $cuentacorrienteproveedor_collection : array();
-
+		/*
 		$ingreso_ids = array();
 		foreach ($cuentacorrienteproveedor_collection as $clave=>$valor) {
 			$temp_cuentacorrienteproveedor_id = $valor['CCPID'];
 			$ingreso_id = $valor['IID'];
 			$ingresotipopago_id = $valor['ING_TIP_PAG'];
 			if (!in_array($ingreso_id, $ingreso_ids)) $ingreso_ids[] = $ingreso_id;
-			$select = "ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) -
-				  	  (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE,
-					  IF (ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) -
-					  (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2)))) >= 0, 'none', 'inline-block') AS BTN_DISPLAY";
+			$select = "ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE, IF (ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2)))) >= 0, 'none', 'inline-block') AS BTN_DISPLAY";
 			$from = "cuentacorrienteproveedor ccp";
 			$where = "ccp.ingreso_id = {$ingreso_id}";
 			$array_temp = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select);
@@ -414,6 +411,7 @@ class ReporteController {
 
 			$cuentacorrienteproveedor_collection[$clave]['BALANCE'] = $new_balance;
 		}
+		*/
 
 		$this->view->panel($stock_collection, $array_totales, $sum_importe_producto, $sum_cantidad_producto, $sum_semestre_cuentas,
 						   $vendedor_collection, $gasto_collection, $cuentacorrienteproveedor_collection);
