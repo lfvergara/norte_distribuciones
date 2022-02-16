@@ -294,7 +294,7 @@ class ReporteController {
 		$suma_total_ventas = $suma_importe_ventas_cont + $suma_importe_ventas_cc;
 		$array_totales = array('{periodo_actual}'=>$periodo_actual,
 							   '{estado_actual}'=> number_format($estado_actual, 2, ',', '.'),
-							   '{total_facturado}'=>$total_facturado,
+							   '{total_facturado}'=>number_format($total_facturado, 2, ',', '.'),
 							   '{total_facturado_class}'=>$total_facturado_class,
 							   '{deuda_cuentacorrientecliente}'=>number_format($deuda_cuentacorrientecliente, 2, ',', '.'),
 							   '{deuda_cuentacorrienteproveedor}'=>number_format($deuda_cuentacorrienteproveedor, 2, ',', '.'),
