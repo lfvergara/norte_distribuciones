@@ -13,6 +13,7 @@ class ReporteView extends View {
 
 	function panel($stock_collection, $array_totales, $sum_importe_producto, $sum_cantidad_producto, $sum_semestre_cuentas,
 				   $vendedor_collection, $gasto_collection, $cuentacorrienteproveedor_collection) {
+		print_r($gasto_collection);exit;
 		$gui = file_get_contents("static/modules/reporte/panel.html");
 		$tbl_cuentacorrienteproveedor = file_get_contents("static/modules/reporte/tbl_cuentacorrienteproveedor.html");
 		$tbl_sum_importe_producto = file_get_contents("static/modules/reporte/tbl_sum_importe_producto.html");
@@ -69,7 +70,6 @@ class ReporteView extends View {
 		$barchart_periodo = $this->render_regex_dict('BARCHART_PERIODOS', $barchart_periodo, $array_periodos);
 		$barchart_sum_semestre_cc = $this->render_regex_dict('BARCHART_SUM_SEMESTRE_CC', $barchart_sum_semestre_cc, $array_semestre_sum_cc);
 		$barchart_sum_semestre_cont = $this->render_regex_dict('BARCHART_SUM_SEMESTRE_CONT', $barchart_sum_semestre_cont, $array_semestre_sum_cont);
-		
 
 		$render = str_replace('{tbl_cuentacorrienteproveedor}', $tbl_cuentacorrienteproveedor, $gui);
 		$render = str_replace('{fecha_sys}', date('d/m/Y'), $render);
