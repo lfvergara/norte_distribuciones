@@ -826,8 +826,8 @@ class EgresoController {
 				}
 			}
 
+			$importe_control = round($importe_control, 2);
 			if ($importe_total == 0) {
-				$importe_control = round($importe_control, 2);
 				$this->model = new Egreso();
 				$this->model->egreso_id = $egreso_id;
 				$this->model->get();
@@ -841,8 +841,24 @@ class EgresoController {
 					$cccm->importe = $importe_control;
 					$cccm->save();
 				}
-			} 
+			} else {
+				if ($importe_control != $importe_total) {
+					$this->model = new Egreso();
+					$this->model->egreso_id = $egreso_id;
+					$this->model->get();
+					$this->model->importe_total = $importe_control;
+					$this->model->save();
 
+					if ($condicionpago == 1) {
+						$cccm = new CuentaCorrienteCliente();
+						$cccm->cuentacorrientecliente_id = $cuentacorrientecliente_id;
+						$cccm->get();
+						$cccm->importe = $importe_control;
+						$cccm->save();
+					}
+				}	
+			}
+			
 			header("Location: " . URL_APP . "/egreso/consultar/{$egreso_id}");
 		} else {
 			header("Location: " . URL_APP . "/egreso/listar/{$flag_error}");

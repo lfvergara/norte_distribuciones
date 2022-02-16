@@ -934,8 +934,8 @@ class PedidoVendedorController {
 				}
 			}
 
+			$importe_control = round($importe_control, 2);
 			if ($importe_total == 0) {
-				$importe_control = round($importe_control, 2);
 				$tem = new Egreso();
 				$tem->egreso_id = $egreso_id;
 				$tem->get();
@@ -949,8 +949,25 @@ class PedidoVendedorController {
 					$cccm->importe = $importe_control;
 					$cccm->save();
 				}
+			} else {
+				if ($importe_control != $importe_total) {
+					$tem = new Egreso();
+					$tem->egreso_id = $egreso_id;
+					$tem->get();
+					$tem->importe_total = $importe_control;
+					$tem->save();
+
+					if ($condicionpago == 1) {
+						$cccm = new CuentaCorrienteCliente();
+						$cccm->cuentacorrientecliente_id = $cuentacorrientecliente_id;
+						$cccm->get();
+						$cccm->importe = $importe_control;
+						$cccm->save();
+					}
+				}	
 			}
-			
+
+
 			$this->model->pedidovendedor_id = filter_input(INPUT_POST, 'pedidovendedor_id');
 			$this->model->get();
 			$this->model->estadopedido = 2;
