@@ -958,13 +958,13 @@ class ReporteController {
 		$cm->cobrador_id = $cobrador_id;
 		$cm->get();
 
-		$select = "FORMAT((SUM(ccc.ingreso)), 2,'de_DE') AS COBRANZA";
+		$select = "ROUND(SUM(ccc.ingreso), 2) AS COBRANZA";
 		$from = "cuentacorrientecliente ccc INNER JOIN cobrador c ON ccc.cobrador = c.cobrador_id";
 		$where = "ccc.fecha = '{$fecha}' AND ccc.tipomovimientocuenta = 2 AND c.cobrador_id = {$cobrador_id}";
 		$group_by = "ccc.cobrador";
 		$cobranza = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $group_by);
 
-		$select = "ccc.referencia AS REFERENCIA, FORMAT((SUM(ccc.ingreso)), 2,'de_DE') AS INGRESO, c.razon_social AS RAZSOC, c.nombre_fantasia AS NOMFAN";
+		$select = "ccc.referencia AS REFERENCIA, ccc.ingreso AS INGRESO, c.razon_social AS RAZSOC, c.nombre_fantasia AS NOMFAN";
 		$from = "cuentacorrientecliente ccc INNER JOIN cliente c ON ccc.cliente_id = c.cliente_id";
 		$where = "ccc.fecha = '{$fecha}' AND ccc.tipomovimientocuenta = 2 AND ccc.cobrador = {$cobrador_id}";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
