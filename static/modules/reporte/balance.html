@@ -598,7 +598,7 @@
     if ($('#graphActivos').length ){
         Morris.Bar({
             element: 'graphActivos',
-            data: [{x: 'Activos Corrientes', y: {deuda_ccclientes}, z: {stock_valorizado}}],
+            data: [{x: 'Activos Corrientes', y: {deuda_ccclientes_graph}, z: {stock_valorizado_graph}}],
             xkey: 'x',
             ykeys: ['y', 'z'],
             barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
@@ -630,7 +630,7 @@
     if ($('#graphActivosPrint').length ){
         Morris.Bar({
             element: 'graphActivosPrint',
-            data: [{x: 'Activos Corrientes', y: {caja_mensual}, z: {stock_valorizado}, a: {deuda_ccclientes}}],
+            data: [{x: 'Activos Corrientes', y: {caja_mensual}, z: {stock_valorizado_graph}, a: {deuda_ccclientes_graph}}],
             xkey: 'x',
             ykeys: ['y', 'z', 'a'],
             barColors: ['#26B99A', '#34495E', '#ACADAC', '#3498DB'],
@@ -795,5 +795,4 @@ function quitarMarca(marca_id) {
     var index = array_marca_ids.indexOf(marca_id);
     array_marca_ids.splice(index, 1);
 }
-
 </script>

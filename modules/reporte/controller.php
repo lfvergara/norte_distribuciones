@@ -1248,6 +1248,8 @@ class ReporteController {
 							   '{egreso_combustible}'=>number_format($vehiculocombustible_total, 2, ',', '.'),
 							   '{stock_valorizado}'=>number_format($stock_valorizado, 2, ',', '.'),
 							   '{deuda_ccclientes}'=>number_format($estado_cuentacorrientecliente, 2, ',', '.'),
+							   '{stock_valorizado_graph}'=>$stock_valorizado,
+							   '{deuda_ccclientes_graph}'=>$estado_cuentacorrientecliente,
 							   '{deuda_ccproveedores}'=>$deuda_cuentacorrienteproveedor,
 							   '{deuda_comisiones}'=>$deuda_comision_total,
 							   '{cajadiaria}'=>$cajadiaria,
