@@ -291,28 +291,29 @@ class ReporteController {
 
 		$suma_total_compras = $suma_importe_compras_factura + $suma_importe_compras_remito;
 		$estado_actual = ($total_facturado_int + $stock_valorizado) - ($deuda_cuentacorrientecliente + $deuda_cuentacorrienteproveedor);
+		$suma_total_ventas = $suma_importe_ventas_cont + $suma_importe_ventas_cc;
 		$array_totales = array('{periodo_actual}'=>$periodo_actual,
-							   '{estado_actual}'=> number_format($estado_actual, 2),
+							   '{estado_actual}'=> number_format($estado_actual, 2, ',', '.'),
 							   '{total_facturado}'=>$total_facturado,
 							   '{total_facturado_class}'=>$total_facturado_class,
-							   '{deuda_cuentacorrientecliente}'=>$deuda_cuentacorrientecliente,
-							   '{deuda_cuentacorrienteproveedor}'=>$deuda_cuentacorrienteproveedor,
+							   '{deuda_cuentacorrientecliente}'=>number_format($deuda_cuentacorrientecliente, 2, ',', '.'),
+							   '{deuda_cuentacorrienteproveedor}'=>number_format($deuda_cuentacorrienteproveedor, 2, ',', '.'),
 							   '{stock_valorizado}'=>number_format($stock_valorizado, 2, ',', '.'),
-							   '{ingreso_cuentacorrientecliente_hoy}'=>$ingreso_cuentacorriente_hoy,
-							   '{egreso_cuentacorrienteproveedor_hoy}'=>$egreso_cuentacorrienteproveedor_hoy,
-							   '{ingreso_contado_hoy}'=>$sum_contado,
-							   '{egreso_comision_hoy}'=>$egreso_comision_hoy,
-							   '{suma_importe_ventas_cc}'=>$suma_importe_ventas_cc,
-							   '{suma_importe_ventas_cont}'=>$suma_importe_ventas_cont,
-							   '{suma_total_ventas}'=>$suma_importe_ventas_cont + $suma_importe_ventas_cc,
-							   '{suma_importe_factura}'=>$suma_importe_factura,
-							   '{suma_importe_remito}'=>$suma_importe_remito,
-							   '{suma_importe_compras_factura}'=>$suma_importe_compras_factura,
-							   '{suma_importe_compras_remito}'=>$suma_importe_compras_remito,
-							   '{suma_total_compras}'=>$suma_total_compras,
-							   '{suma_ingresos_hoy}'=>$suma_ingresos_hoy,
-							   '{suma_notacredito_hoy}'=>$suma_notacredito_hoy,
-							   '{total_facturacion_hoy}'=>$total_facturacion_hoy);
+							   '{ingreso_cuentacorrientecliente_hoy}'=>number_format($ingreso_cuentacorriente_hoy, 2, ',', '.'),
+							   '{egreso_cuentacorrienteproveedor_hoy}'=>number_format($egreso_cuentacorrienteproveedor_hoy, 2, ',', '.'),
+							   '{ingreso_contado_hoy}'=>number_format($sum_contado, 2, ',', '.'),
+							   '{egreso_comision_hoy}'=>number_format($egreso_comision_hoy, 2, ',', '.'),
+							   '{suma_importe_ventas_cc}'=>number_format($suma_importe_ventas_cc, 2, ',', '.'),
+							   '{suma_importe_ventas_cont}'=>number_format($suma_importe_ventas_cont, 2, ',', '.'),
+							   '{suma_total_ventas}'=>number_format($suma_total_ventas, 2, ',', '.'),
+							   '{suma_importe_factura}'=>number_format($suma_importe_factura, 2, ',', '.'),
+							   '{suma_importe_remito}'=>number_format($suma_importe_remito, 2, ',', '.'),
+							   '{suma_importe_compras_factura}'=>number_format($suma_importe_compras_factura, 2, ',', '.'),
+							   '{suma_importe_compras_remito}'=>number_format($suma_importe_compras_remito, 2, ',', '.'),
+							   '{suma_total_compras}'=>number_format($suma_total_compras, 2, ',', '.'),
+							   '{suma_ingresos_hoy}'=>number_format($suma_ingresos_hoy, 2, ',', '.'),
+							   '{suma_notacredito_hoy}'=>number_format($suma_notacredito_hoy, 2, ',', '.'),
+							   '{total_facturacion_hoy}'=>number_format($total_facturacion_hoy, 2, ',', '.'));
 
 		$select = "ed.codigo_producto AS COD, ed.descripcion_producto AS PRODUCTO, ROUND(SUM(ed.importe),2) AS IMPORTE,
 				   ROUND(SUM(ed.cantidad),2) AS CANTIDAD, ed.producto_id AS PRID";
