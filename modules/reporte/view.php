@@ -57,6 +57,7 @@ class ReporteView extends View {
 		$array_semestre_sum_cc = array();
 		$array_semestre_sum_cont = array();
 		$sum_semestre_cuentas = (is_array($sum_semestre_cuentas) AND !empty($sum_semestre_cuentas)) ? $sum_semestre_cuentas : array();
+		print_r($sum_semestre_cuentas);exit;
 		foreach ($sum_semestre_cuentas as $clave=>$valor) {
 			$array_temp_periodos = array('PERIODO'=>$valor['PERIODO']);
 			$array_periodos[] = $array_temp_periodos;
