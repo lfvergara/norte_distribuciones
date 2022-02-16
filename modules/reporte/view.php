@@ -57,7 +57,6 @@ class ReporteView extends View {
 		$array_semestre_sum_cc = array();
 		$array_semestre_sum_cont = array();
 		$sum_semestre_cuentas = (is_array($sum_semestre_cuentas) AND !empty($sum_semestre_cuentas)) ? $sum_semestre_cuentas : array();
-		print_r($sum_semestre_cuentas);exit;
 		foreach ($sum_semestre_cuentas as $clave=>$valor) {
 			$array_temp_periodos = array('PERIODO'=>$valor['PERIODO']);
 			$array_periodos[] = $array_temp_periodos;
@@ -67,6 +66,7 @@ class ReporteView extends View {
 			$array_semestre_sum_cont[] = $array_temp_cont;
 		}
 
+		print_r($array_semestre_sum_cc);exit;
 		$barchart_periodo = $this->render_regex_dict('BARCHART_PERIODOS', $barchart_periodo, $array_periodos);
 		$barchart_sum_semestre_cc = $this->render_regex_dict('BARCHART_SUM_SEMESTRE_CC', $barchart_sum_semestre_cc, $array_semestre_sum_cc);
 		$barchart_sum_semestre_cont = $this->render_regex_dict('BARCHART_SUM_SEMESTRE_CONT', $barchart_sum_semestre_cont, $array_semestre_sum_cont);
