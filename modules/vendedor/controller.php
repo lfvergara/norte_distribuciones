@@ -155,7 +155,7 @@ class VendedorController {
 			
 			$ventas_vendedor_tipo_factura[$clave]['BLANCO'] = number_format($ventas_vendedor_tipo_factura[$clave]['BLANCO'], 2, ',', '.');
 			$ventas_vendedor_tipo_factura[$clave]['NEGRO'] = number_format($ventas_vendedor_tipo_factura[$clave]['NEGRO'], 2, ',', '.');
-			
+			$ventas_vendedor_tipo_factura[$clave]['GRATOT'] = number_format($ventas_vendedor_tipo_factura[$clave]['TOTAL'], 2, ',', '.');
 		}
 
 		$select = "v.vendedor_id AS VID, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, LEFT(pr.razon_social, 25) AS PROVEEDOR, ROUND(SUM(ed.importe),2) AS IMPORTE";
