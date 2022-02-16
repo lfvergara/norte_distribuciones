@@ -323,10 +323,10 @@ class ReporteController {
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id";
 		$where = "e.fecha BETWEEN '{$primer_dia_mes}' AND '{$fecha_sys1}'";
 
-		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.importe),2) DESC";
+		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.importe),2) DESC LIMIT 5";
 		$sum_importe_producto = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
-		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.cantidad),2) DESC";
+		$groupby = "ed.producto_id, ed.codigo_producto ORDER BY	ROUND(SUM(ed.cantidad),2) DESC LIMIT 5";
 		$sum_cantidad_producto = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
 		$select = "ROUND(SUM(ncd.importe),2) AS IMPORTE, ROUND(SUM(ncd.cantidad),2) AS CANTIDAD";
@@ -376,10 +376,12 @@ class ReporteController {
 		$groupby = "date_format(e.fecha, '%Y%m') ORDER BY date_format(e.fecha, '%Y%m') ASC LIMIT 7";
 		$sum_semestre_cuentas = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 
+		// LISTADO DE VENDEDORES PARA FILTROS
 		$select = "v.vendedor_id AS ID, CONCAT(v.apellido, ' ', v.nombre) AS DENOMINACION";
 		$from = "vendedor v ORDER BY CONCAT(v.apellido, ' ', v.nombre) ASC";
 		$vendedor_collection = CollectorCondition()->get('Egreso', NULL, 4, $from, $select);
 
+		// GASTOS UTILIZADOS PARA GRÁFICO DE TORTA
 		$select = "gc.denominacion AS DENOMINACION, SUM(g.importe) AS IMPORTE";
 		$from = "gasto g INNER JOIN	gastocategoria gc ON g.gastocategoria = gc.gastocategoria_id";
 		$where = "g.fecha BETWEEN '{$primer_dia_mes}' AND '{$fecha_sys1}'";
@@ -392,27 +394,7 @@ class ReporteController {
 		$where = "ccp.estadomovimientocuenta != 4 GROUP BY ccp.ingreso_id";
 		$cuentacorrienteproveedor_collection = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select);
 		$cuentacorrienteproveedor_collection = (is_array($cuentacorrienteproveedor_collection) AND !empty($cuentacorrienteproveedor_collection)) ? $cuentacorrienteproveedor_collection : array();
-		/*
-		$ingreso_ids = array();
-		foreach ($cuentacorrienteproveedor_collection as $clave=>$valor) {
-			$temp_cuentacorrienteproveedor_id = $valor['CCPID'];
-			$ingreso_id = $valor['IID'];
-			$ingresotipopago_id = $valor['ING_TIP_PAG'];
-			if (!in_array($ingreso_id, $ingreso_ids)) $ingreso_ids[] = $ingreso_id;
-			$select = "ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2))),2) AS BALANCE, IF (ROUND(((ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN importe ELSE 0 END),2)) - (ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN importe ELSE 0 END),2)))) >= 0, 'none', 'inline-block') AS BTN_DISPLAY";
-			$from = "cuentacorrienteproveedor ccp";
-			$where = "ccp.ingreso_id = {$ingreso_id}";
-			$array_temp = CollectorCondition()->get('CuentaCorrienteProveedor', $where, 4, $from, $select);
-
-			$balance = $array_temp[0]['BALANCE'];
-			$balance = ($balance == '-0') ? abs($balance) : $balance;
-			$balance_class = ($balance >= 0) ? 'primary' : 'danger';
-			$new_balance = ($balance >= 0) ? "$" . $balance : str_replace('-', '-$', $balance);
-
-			$cuentacorrienteproveedor_collection[$clave]['BALANCE'] = $new_balance;
-		}
-		*/
-
+		
 		$this->view->panel($stock_collection, $array_totales, $sum_importe_producto, $sum_cantidad_producto, $sum_semestre_cuentas,
 						   $vendedor_collection, $gasto_collection, $cuentacorrienteproveedor_collection);
 	}
