@@ -297,7 +297,7 @@ class ReporteController {
 							   '{total_facturado_class}'=>$total_facturado_class,
 							   '{deuda_cuentacorrientecliente}'=>$deuda_cuentacorrientecliente,
 							   '{deuda_cuentacorrienteproveedor}'=>$deuda_cuentacorrienteproveedor,
-							   '{stock_valorizado}'=>$stock_valorizado,
+							   '{stock_valorizado}'=>number_format($stock_valorizado, 2, ','),
 							   '{ingreso_cuentacorrientecliente_hoy}'=>$ingreso_cuentacorriente_hoy,
 							   '{egreso_cuentacorrienteproveedor_hoy}'=>$egreso_cuentacorrienteproveedor_hoy,
 							   '{ingreso_contado_hoy}'=>$sum_contado,
