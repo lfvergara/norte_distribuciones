@@ -968,7 +968,7 @@ class ReporteController {
 		$from = "cuentacorrientecliente ccc INNER JOIN cliente c ON ccc.cliente_id = c.cliente_id";
 		$where = "ccc.fecha = '{$fecha}' AND ccc.tipomovimientocuenta = 2 AND ccc.cobrador = {$cobrador_id}";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
-
+		print_r($cuentacorriente_collection);exit;
 		$this->view->detalle_cobrador_cobranza($cuentacorriente_collection, $cm, $cobranza, $cobrador_id, $fecha);
 	}
 
