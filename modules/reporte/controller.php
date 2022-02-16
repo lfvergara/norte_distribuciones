@@ -928,7 +928,7 @@ class ReporteController {
 			$calculo_cajadiaria = 0;
 		}
 
-		$select = "c.cobrador_id AS CID, ccc.fecha AS FECHA, c.denominacion AS COBRADOR, ROUND(SUM(ccc.ingreso), 2) AS COBRANZA";
+		$select = "c.cobrador_id AS CID, ccc.fecha AS FECHA, c.denominacion AS COBRADOR, FORMAT((SUM(ccc.ingreso)), 2,'de_DE') AS COBRANZA";
 		$from = "cuentacorrientecliente ccc INNER JOIN cobrador c ON ccc.cobrador = c.cobrador_id";
 		$where = "ccc.fecha = '{$fecha_filtro}' AND ccc.tipomovimientocuenta = 2";
 		$group_by = "ccc.cobrador";
@@ -944,7 +944,7 @@ class ReporteController {
 							   '{caja}'=>number_format($calculo_cajadiaria, 2, ',', '.'),
 							   '{fecha}'=>$fecha_filtro);
 
-		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor,$detalle_gasto_diario,$detalle_liquidacion,$detalle_vehiculos,$detalle_comision, 2);
+		$this->view->resumen_diario($array_totales, $cobranza_collection, $detalle_pagoproveedor, $detalle_gasto_diario, $detalle_liquidacion, $detalle_vehiculos, $detalle_comision, 2);
 	}
 
 	function detalle_cobrador_cobranza($arg) {
