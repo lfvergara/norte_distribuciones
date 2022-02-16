@@ -1266,7 +1266,7 @@ class ReporteController {
 		$salario_collection = CollectorCondition()->get('Salario', $where, 4, $from, $select,$groupby);
 
 		$select = "v.dominio AS DOMINIO, v.denominacion AS REFERENCIA, CONCAT(vma.denominacion, ' ', vm.denominacion) AS VEHICULO,
-				   FORMAT((SUM(vc.importe)), 2,'de_DE') AS TIMPORTE, ROUND(SUM(vc.cantidad), 2) AS TLITRO";
+				   FORMAT((SUM(vc.importe)), 2,'de_DE') AS TIMPORTE, FORMAT((SUM(vc.cantidad)), 2,'de_DE') AS TLITRO";
 		$from = "vehiculocombustible vc INNER JOIN vehiculo v ON vc.vehiculo = v.vehiculo_id INNER JOIN
 				 vehiculomodelo vm ON v.vehiculomodelo = vm.vehiculomodelo_id INNER JOIN
 				 vehiculomarca vma ON vm.vehiculomarca = vma.vehiculomarca_id";
@@ -1561,13 +1561,13 @@ class ReporteController {
 							   '{pasivo_corriente}'=>number_format($pasivo_corriente, 2, ',', '.'),
 							   '{ganancia_per_actual}'=>number_format($ganancia_per_actual, 2, ',', '.'));
 
-		$select = "CONCAT(e.apellido, ' ', e.nombre) AS EMPLEADO,SUM(s.monto) AS IMPORTE";
+		$select = "CONCAT(e.apellido, ' ', e.nombre) AS EMPLEADO, FORMAT((SUM(s.monto)), 2,'de_DE') AS IMPORTE";
 		$from = "salario s INNER JOIN empleado e ON s.empleado = e.empleado_id INNER JOIN usuario u ON s.usuario_id = u.usuario_id";
 		$where = "s.fecha BETWEEN '{$desde}' AND '{$hasta}' AND s.tipo_pago IN ('SALARIO', 'ADELANTO')";
 		$groupby = "s.empleado";
 		$salario_collection = CollectorCondition()->get('Salario', $where, 4, $from, $select,$groupby);
 
-		$select = "v.dominio AS DOMINIO, v.denominacion AS REFERENCIA, CONCAT(vma.denominacion, ' ', vm.denominacion) AS VEHICULO, ROUND(SUM(vc.importe), 2) AS TIMPORTE, ROUND(SUM(vc.cantidad), 2) AS TLITRO";
+		$select = "v.dominio AS DOMINIO, v.denominacion AS REFERENCIA, CONCAT(vma.denominacion, ' ', vm.denominacion) AS VEHICULO, FORMAT((SUM(vc.importe)), 2,'de_DE') AS TIMPORTE, FORMAT((SUM(vc.cantidad)), 2,'de_DE') AS TLITRO";
 		$from = "vehiculocombustible vc INNER JOIN vehiculo v ON vc.vehiculo = v.vehiculo_id INNER JOIN vehiculomodelo vm ON v.vehiculomodelo = vm.vehiculomodelo_id INNER JOIN vehiculomarca vma ON vm.vehiculomarca = vma.vehiculomarca_id";
 		$where = "vc.fecha BETWEEN '{$desde}' AND '{$hasta}' GROUP BY vc.vehiculo ORDER BY SUM(vc.importe) DESC";
 		$vehiculocombustible_collection = CollectorCondition()->get('VehiculoCombustible', $where, 4, $from, $select);
