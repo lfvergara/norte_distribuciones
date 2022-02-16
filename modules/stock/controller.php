@@ -111,6 +111,7 @@ class StockController {
 					$costo_iva = (($pm->costo * $pm->iva) / 100) + $pm->costo;
 					$valor_stock_producto = round(($costo_iva * $this->model->cantidad_actual),2);
 					$stock_valorizado = $stock_valorizado + $valor_stock_producto;
+					$stock_valorizado = number_format($stock_valorizado, 2, ',', '.');
 
 					$class_stm = ($this->model->cantidad_actual < $pm->stock_minimo) ? 'danger' : 'success';
 					$this->model->producto = $pm;
