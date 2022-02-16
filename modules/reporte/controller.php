@@ -1238,9 +1238,9 @@ class ReporteController {
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
 		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
-		$array_balance = array('{suma_ingresos_per_actual}'=>$suma_ingresos_per_actual,
-							   '{suma_notacredito_per_actual}'=>$suma_notacredito_per_actual,
-							   '{total_ingresos_per_actual}'=>$total_ingresos_per_actual,
+		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
+							   '{suma_notacredito_per_actual}'=>number_format($suma_notacredito_per_actual, 2, ',', '.'),
+							   '{total_ingresos_per_actual}'=>number_format($total_ingresos_per_actual, 2, ',', '.'),
 							   '{egreso_comision_per_actual}'=>number_format($egreso_comision_per_actual, 2, ',', '.'),
 							   '{egreso_salario}'=>number_format($salario_total, 2, ',', '.'),
 							   '{egreso_cuentacorrienteproveedor_per_actual}'=>number_format($egreso_cuentacorrienteproveedor_per_actual, 2, ',', '.'),
