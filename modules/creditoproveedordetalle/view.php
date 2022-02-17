@@ -10,9 +10,11 @@ class CreditoProveedorDetalleView extends View {
 		foreach ($proveedor_collection as $clave=>$valor) {
 			unset($proveedor_collection[$clave]->infocontacto_collection);
 		}
-		
+
 		$gui_slt_proveedor = $this->render_regex('SLT_PROVEEDOR', $gui_slt_proveedor, $proveedor_collection);
+		
 		$render = $this->render_regex('TBL_CREDITOPROVEEDORDETALLE', $gui, $creditoproveedordetalle_collection);
+		print_r($render);exit;
 		$render = str_replace('{slt_proveedor}', $gui_slt_proveedor, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
