@@ -1243,6 +1243,14 @@ class ReporteController {
 		$groupby = "v.vendedor_id";
 		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
+
+		//CREDITO PROVEEDORES
+		$select = "p.proveedor_id, FORMAT((SUM(cpd.importe)), 2,'de_DE') AS CREDITO, p.razon_social AS PROVEEDOR";
+		$from = "creditoproveedordetalle cpd INNER JOIN proveedor p ON cpd.proveedor = p.proveedor_id";
+		$where = "cpd.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$groupby = "p.proveedor_id";
+		$creditoproveedordetalle_collection = CollectorCondition()->get('CreditoProveedorDetalle', $where, 4, $from, $select, $groupby);
+		$creditoproveedordetalle_collection = (is_array($creditoproveedordetalle_collection) AND !empty($creditoproveedordetalle_collection)) ? $creditoproveedordetalle_collection : array();
 		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
@@ -1289,7 +1297,7 @@ class ReporteController {
 
 		$productomarca_collection = Collector()->get('ProductoMarca');
 
-		$this->view->balance($array_balance, $pagocomisiones_collection, $periodo_actual, $cbm, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia);
+		$this->view->balance($array_balance, $pagocomisiones_collection, $periodo_actual, $cbm, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia, $creditoproveedordetalle_collection);
 	}
 
 	function generar_balance() {
@@ -1545,6 +1553,14 @@ class ReporteController {
 		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
 
+		//CREDITO PROVEEDORES
+		$select = "p.proveedor_id, FORMAT((SUM(cpd.importe)), 2,'de_DE') AS CREDITO, p.razon_social AS PROVEEDOR";
+		$from = "creditoproveedordetalle cpd INNER JOIN proveedor p ON cpd.proveedor = p.proveedor_id";
+		$where = "cpd.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$groupby = "p.proveedor_id";
+		$creditoproveedordetalle_collection = CollectorCondition()->get('CreditoProveedorDetalle', $where, 4, $from, $select, $groupby);
+		$creditoproveedordetalle_collection = (is_array($creditoproveedordetalle_collection) AND !empty($creditoproveedordetalle_collection)) ? $creditoproveedordetalle_collection : array();
+
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 
 		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
@@ -1586,7 +1602,7 @@ class ReporteController {
 
 		$productomarca_collection = Collector()->get('ProductoMarca');
 
-		$this->view->balance($array_balance, $pagocomisiones_collection, $periodo, $cbm, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia);
+		$this->view->balance($array_balance, $pagocomisiones_collection, $periodo, $cbm, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia, $creditoproveedordetalle_collection);
 	}
 
 	function ver_detalle_resultado_ganancia() {
