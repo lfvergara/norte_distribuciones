@@ -61,7 +61,7 @@ class FacturaPDF extends View {
         $obj_configuracion = $this->set_dict($obj_configuracion);
         $obj_cliente = $this->set_dict($obj_cliente);
 
-        $new_array = array_chunk($egresodetalle_collection, 16);
+        $new_array = array_chunk($egresodetalle_collection, 18);
         $contenido = '';
         foreach ($new_array as $egresodetalle_array) {
             $gui_facturaA = file_get_contents("static/common/plantillas_facturas/facturaA.html");
