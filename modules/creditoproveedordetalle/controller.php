@@ -1,14 +1,14 @@
 <?php
-require_once "modules/creditoproveedordetalle/model.php";
-require_once "modules/creditoproveedordetalle/view.php";
+//require_once "modules/creditoproveedordetalle/model.php";
+//require_once "modules/creditoproveedordetalle/view.php";
 require_once "modules/proveedor/model.php";
 
 
 class CreditoProveedorDetalleController {
 
 	function __construct() {
-		$this->model = new CreditoProveedorDetalle();
-		$this->view = new CreditoProveedorDetalleView();
+		//$this->model = new CreditoProveedorDetalle();
+		//$this->view = new CreditoProveedorDetalleView();
 	}
 
 	function panel() {
