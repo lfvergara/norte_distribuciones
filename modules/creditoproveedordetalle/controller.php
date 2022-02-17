@@ -13,6 +13,7 @@ class CreditoProveedorDetalleController {
 
 	function panel() {
     	SessionHandler()->check_session();
+    	print_r($proveedor_collection);exit;
 		$proveedor_collection = Collector()->get('Proveedor');
 		$this->view->panel($proveedor_collection);
 	}
