@@ -4,6 +4,7 @@
 class CreditoProveedorDetalleView extends View {
 
 	function panel($creditoproveedordetalle_collection, $proveedor_collection) {
+		print_r($creditoproveedordetalle_collection);exit;
 		$gui = file_get_contents("static/modules/creditoproveedordetalle/panel.html");
 		$gui_slt_proveedor = file_get_contents("static/common/slt_proveedor.html");
 
@@ -19,9 +20,6 @@ class CreditoProveedorDetalleView extends View {
 		$gui = file_get_contents("static/modules/creditoproveedordetalle/editar.html");
 		$gui_slt_proveedor = file_get_contents("static/common/slt_proveedor.html");
 
-		$proveedor_modelo = $obj_creditoproveedordetalle->proveedor->proveedor_id;
-		foreach ($proveedor_collection as $clave=>$valor) if ($valor->proveedor_id == $proveedor_modelo) unset($proveedor_collection[$clave]);
-		
 		$obj_creditoproveedordetalle = $this->set_dict($obj_creditoproveedordetalle);
 		$gui_slt_proveedor = $this->render_regex('SLT_PROVEEDOR', $gui_slt_proveedor, $proveedor_collection);
 		$render = $this->render_regex('TBL_CREDITOPROVEEDORDETALLE', $gui, $creditoproveedordetalle_collection);
