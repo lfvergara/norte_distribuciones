@@ -7,12 +7,15 @@ class CreditoProveedorDetalleView extends View {
 		$gui = file_get_contents("static/modules/creditoproveedordetalle/panel.html");
 		$gui_slt_proveedor = file_get_contents("static/common/slt_proveedor.html");
 
-		foreach ($proveedor_collection as $clave=>$valor) {
-			unset($proveedor_collection[$clave]->infocontacto_collection);
+		foreach ($creditoproveedordetalle_collection as $clave=>$valor) {
+			unset($creditoproveedordetalle_collection[$clave]->proveedor->infocontactocollection);
 		}
 
-		$gui_slt_proveedor = $this->render_regex('SLT_PROVEEDOR', $gui_slt_proveedor, $proveedor_collection);
+		foreach ($proveedor_collection as $clave=>$valor) {
+			unset($proveedor_collection[$clave]->infocontacto_collection);
+		}		
 		
+		$gui_slt_proveedor = $this->render_regex('SLT_PROVEEDOR', $gui_slt_proveedor, $proveedor_collection);
 		$render = $this->render_regex('TBL_CREDITOPROVEEDORDETALLE', $gui, $creditoproveedordetalle_collection);
 		$render = str_replace('{slt_proveedor}', $gui_slt_proveedor, $render);
 		$render = $this->render_breadcrumb($render);
