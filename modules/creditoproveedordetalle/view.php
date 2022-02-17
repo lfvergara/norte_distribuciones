@@ -4,7 +4,6 @@
 class CreditoProveedorDetalleView extends View {
 
 	function panel($creditoproveedordetalle_collection, $proveedor_collection) {
-		print_r($creditoproveedordetalle_collection);exit;
 		$gui = file_get_contents("static/modules/creditoproveedordetalle/panel.html");
 		$gui_slt_proveedor = file_get_contents("static/common/slt_proveedor.html");
 
