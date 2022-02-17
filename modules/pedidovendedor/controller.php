@@ -340,7 +340,7 @@ class PedidoVendedorController {
 
     	$desde = filter_input(INPUT_POST, 'desde');
     	$hasta = filter_input(INPUT_POST, 'hasta');
-    	$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, UPPER(cl.nombre_fantasia) AS FANTASIA, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, UPPER(CONCAT(ve.APELLIDO, ' ', ve.nombre)) AS VENDEDOR, CASE pv.estadopedido WHEN 1 THEN 'inline-block' WHEN 2 THEN 'none' WHEN 3 THEN 'none' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 2 THEN 'PROCESADO' WHEN 3 THEN 'CANCELADO' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 2 THEN 'success' WHEN 3 THEN 'danger' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED";
+    	$select = "pv.pedidovendedor_id AS PEDVENID, CONCAT(date_format(pv.fecha, '%d/%m/%Y'), ' ', LEFT(pv.hora,5)) AS FECHA, UPPER(cl.razon_social) AS CLIENTE, UPPER(cl.nombre_fantasia) AS FANTASIA, pv.subtotal AS SUBTOTAL, pv.importe_total AS IMPORTETOTAL, UPPER(CONCAT(ve.APELLIDO, ' ', ve.nombre)) AS VENDEDOR, CASE pv.estadopedido WHEN 1 THEN 'inline-block' WHEN 2 THEN 'none' WHEN 3 THEN 'none' END AS DSPBTN, CASE pv.estadopedido WHEN 1 THEN 'SOLICITADO' WHEN 2 THEN 'PROCESADO' WHEN 3 THEN 'CANCELADO' WHEN 4 THEN 'A PROCESAR' WHEN 5 THEN 'ERROR AFIP' END AS LBLEST, CASE pv.estadopedido WHEN 1 THEN 'primary' WHEN 2 THEN 'success' WHEN 3 THEN 'danger' WHEN 4 THEN 'warning' WHEN 5 THEN 'danger' END AS CLAEST, LPAD(pv.pedidovendedor_id, 8, 0) AS NUMPED, cl.cliente_id AS CLIID, pv.egreso_id AS EGRID";
 		$from = "pedidovendedor pv INNER JOIN cliente cl ON pv.cliente_id = cl.cliente_id INNER JOIN vendedor ve ON pv.vendedor_id = ve.vendedor_id INNER JOIN estadopedido ep ON pv.estadopedido = ep.estadopedido_id";
 		if ($usuario_rol == 5) {
 			$vendedor_id = $usuariovendedor_id[0]['VENID'];
@@ -352,9 +352,59 @@ class PedidoVendedorController {
 		$pedidovendedor_collection = CollectorCondition()->get('PedidoVendedor', $where, 4, $from, $select);
 		$pedidovendedor_collection = (is_array($pedidovendedor_collection) AND !empty($pedidovendedor_collection)) ? $pedidovendedor_collection : array();
 
+		foreach ($pedidovendedor_collection as $clave=>$valor) {
+			$cliente_id = $valor['CLIID'];
+			$estado = $valor['LBLEST'];
+			$cm = new Cliente();
+			$cm->cliente_id = $cliente_id;
+			$cm->get();
+			$dias_vencimiento_cuenta_corriente = $cm->dias_vencimiento_cuenta_corriente;
+			
+			$select = "COUNT(ccc.egreso_id) AS CANT";
+			$from = "cuentacorrientecliente ccc";
+			$where = "ccc.fecha < date_add(NOW(), INTERVAL -{$dias_vencimiento_cuenta_corriente} DAY) AND ccc.cliente_id = {$cliente_id} AND ccc.estadomovimientocuenta != 4 AND (ccc.importe > 0 OR ccc.ingreso > 0)";
+			$groupby = "ccc.egreso_id ORDER BY ccc.cliente_id ASC, ccc.egreso_id ASC, ccc.fecha DESC, ccc.estadomovimientocuenta DESC";
+			$vencimiento_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $groupby);
+			$cant_facturas_vencidas = (is_array($vencimiento_collection) AND !empty($vencimiento_collection)) ? $vencimiento_collection[0]['CANT'] : 0;
+
+			$pedidovendedor_collection[$clave]["DSPBTN"] = ($cant_facturas_vencidas > 0) ? 'none' : $pedidovendedor_collection[$clave]["DSPBTN"];
+			if ($estado == 'PROCESADO') {
+				$pedidovendedor_collection[$clave]["DISPLAY_ESTADO_CCC_VENCIDA"] = 'none';
+			} else {
+				$pedidovendedor_collection[$clave]["DISPLAY_ESTADO_CCC_VENCIDA"] = ($cant_facturas_vencidas > 0) ? 'inline-block': 'none';
+			}
+
+			$egreso_id = $valor['EGRID'];
+			if (!is_null($egreso_id) AND $egreso_id > 0) {
+				$em = new Egreso();
+				$em->egreso_id = $egreso_id;
+				$em->get();
+
+				$select = "eafip.punto_venta AS PUNTO_VENTA, eafip.numero_factura AS NUMERO_FACTURA, tf.nomenclatura AS TIPOFACTURA, eafip.cae AS CAE, eafip.vencimiento AS FVENCIMIENTO, eafip.fecha AS FECHA, tf.tipofactura_id AS TF_ID";
+				$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
+				$where = "eafip.egreso_id = {$egreso_id}";
+				$egresoafip = CollectorCondition()->get('EgresoAfip', $where, 4, $from, $select);
+
+				if (is_array($egresoafip) AND !empty($egresoafip)) {
+					$em->punto_venta = $egresoafip[0]['PUNTO_VENTA'];
+					$em->numero_factura = $egresoafip[0]['NUMERO_FACTURA'];
+					$em->tipofactura->nomenclatura = $egresoafip[0]['TIPOFACTURA'];
+				}
+
+				$tipofactura = $em->tipofactura->nomenclatura;
+				$punto_venta = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
+        		$numero_factura = "{$tipofactura} {$punto_venta}-" . str_pad($em->numero_factura, 8, '0', STR_PAD_LEFT);
+			} else {
+				$numero_factura = 'Sin Información';
+			}
+
+			$pedidovendedor_collection[$clave]["EGRESO"] = $numero_factura;
+		}
+
 		$select = "v.vendedor_id AS ID, CONCAT(v.apellido, ' ', v.nombre) AS DENOMINACION";
-		$from = "vendedor v ORDER BY CONCAT(v.apellido, ' ', v.nombre) ASC";
-		$vendedor_collection = CollectorCondition()->get('Vendedor', NULL, 4, $from, $select);
+		$from = "vendedor v";
+		$where = "v.oculto = 0 ORDER BY CONCAT(v.apellido, ' ', v.nombre) ASC";
+		$vendedor_collection = CollectorCondition()->get('Vendedor', $where, 4, $from, $select);
 		$this->view->panel($pedidovendedor_collection, $vendedor_collection);
 	}
 
