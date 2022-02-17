@@ -29,8 +29,9 @@ class CreditoProveedorDetalleController {
 		SessionHandler()->check_session();		
 		$this->model->creditoproveedordetalle_id = $arg;
 		$this->model->get();
+		$creditoproveedordetalle_collection = Collector()->get('CreditoProveedorDetalle');
 		$proveedor_collection = Collector()->get('Proveedor');
-		$this->view->editar($proveedor_collection, $this->model);
+		$this->view->editar($creditoproveedordetalle_collection, $proveedor_collection, $this->model);
 	}
 }
 ?>
