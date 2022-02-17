@@ -12,7 +12,7 @@ class CreditoProveedorDetalleView extends View {
 		}
 
 		foreach ($proveedor_collection as $clave=>$valor) {
-			if ($valor->oculto == 0) {
+			if ($valor->oculto != 0) {
 				unset($proveedor_collection[$clave]);
 			} else {
 				unset($proveedor_collection[$clave]->infocontacto_collection);
@@ -37,7 +37,7 @@ class CreditoProveedorDetalleView extends View {
 		}
 
 		foreach ($proveedor_collection as $clave=>$valor) {
-			if ($valor->oculto == 0) {
+			if ($valor->oculto != 0) {
 				unset($proveedor_collection[$clave]);
 			} else {
 				unset($proveedor_collection[$clave]->infocontacto_collection);
