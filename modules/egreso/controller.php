@@ -1068,6 +1068,7 @@ class EgresoController {
 		$this->model->egreso_id = $egreso_id;
 		$this->model->get();
 		$vendedor_id = $this->model->vendedor->vendedor_id;
+		$cliente_id = $this->model->cliente->cliente_id;
 		$condicionpago_egreso = $this->model->condicionpago->condicionpago_id;
 		$tipofactura_egreso = $this->model->tipofactura->tipofactura_id;
 
@@ -1247,7 +1248,7 @@ class EgresoController {
 		if ($condicionpago_egreso == 1) {
 			$select = "ccc.cuentacorrientecliente_id CCCID";
 			$from = "cuentacorrientecliente ccc";
-			$where = "ccc.egreso_id = {$egreso_id}";
+			$where = "ccc.egreso_id = {$egreso_id} AND ccc.cliente_id = {$cliente_id} ORDER BY ccc.cuentacorrientecliente_id ASC";
 			$cuentacorrientecliente_id = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 			$cuentacorrientecliente_id = $cuentacorrientecliente_id[0]['CCCID'];
 			$cccm = new CuentaCorrienteCliente();

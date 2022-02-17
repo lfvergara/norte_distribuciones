@@ -195,10 +195,24 @@ class NotaCreditoController {
 		$this->model->notacredito_id = $notacredito_id;
 		$this->model->get();
 		$egreso_id = $this->model->egreso_id;
+		$cliente_id = $this->model->cliente->cliente_id;
+		$facturador = $this->model->usuario_id;
+
+		$select = "u.almacen AS ALMACEN_ID";
+		$from = "usuario u";
+		$where = "u.usuario_id = {$facturador}";
+		$almacen_id = CollectorCondition()->get('Usuario', $where, 4, $from, $select); 
+		if (is_array($almacen_id) AND !empty($almacen_id)) {
+			$almacen_id = $almacen_id[0]['ALMACEN_ID'];
+		} else {
+			$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
+		}
 
 		$em = new Egreso();
 		$em->egreso_id = $egreso_id;
 		$em->get();
+		$condicionpago_id = $em->condicionpago->condicionpago_id;
+
 		$comprobante = str_pad($em->punto_venta, 4, '0', STR_PAD_LEFT);
 		$comprobante .= '-' . str_pad($em->numero_factura, 8, '0', STR_PAD_LEFT);
 		$importe = $em->importe_total;
@@ -217,7 +231,7 @@ class NotaCreditoController {
 
 			$select = "s.stock_id AS ID";
 			$from = "stock s";
-			$where = "s.producto_id = {$producto_id} ORDER BY s.stock_id DESC LIMIT 1";
+			$where = "s.producto_id = {$producto_id} AND s.almacen_id = {$almacen_id} ORDER BY s.stock_id DESC LIMIT 1";
 			$stock_id = CollectorCondition()->get('Stock', $where, 4, $from, $select);
 			$stock_id = (is_array($stock_id) AND !empty($stock_id)) ? $stock_id[0]['ID'] : 0;
 			
@@ -244,20 +258,42 @@ class NotaCreditoController {
 			$ncdm->delete();
 		}
 
-		$select = "ccc.cuentacorrientecliente_id AS ID";
-		$from = "cuentacorrientecliente ccc";
-		$where = "ccc.egreso_id = {$egreso_id}";
-		$cuentacorrientecliente_id = CollectorCondition()->get('NotaCreditoDetalle', $where, 4, $from, $select);
-		$cuentacorrientecliente_id = (is_array($cuentacorrientecliente_id) AND !empty($cuentacorrientecliente_id)) ? $cuentacorrientecliente_id[0]['ID'] : 0;
+		if ($condicionpago_id == 1) {
+			$select = "ccc.cuentacorrientecliente_id AS ID";
+			$from = "cuentacorrientecliente ccc";
+			$where = "ccc.egreso_id = {$egreso_id} ADN ccc.cliente_id = {$cliente_id} ORDER BY ccc.egreso_id ASC";
+			$cuentacorrientecliente_id = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
+			
+			if (is_array($cuentacorrientecliente_id) AND !empty($cuentacorrientecliente_id)) {
+				if (count($cuentacorrientecliente_id) > 1) {
+					foreach ($cuentacorrientecliente_id as $clave=>$valor) {
+						$cuentacorrientecliente_id = $valor['ID'];
+						$cccm = new CuentaCorrienteCliente();
+						$cccm->cuentacorrientecliente_id = $cuentacorrientecliente_id;
+						$cccm->get();
+						$cccm->referencia = "Comprobante venta: {$comprobante}";
+						$cccm->estadomovimientocuenta = 3;
+						$cccm->save();
+					}
 
-		if ($cuentacorrientecliente_id != 0) {
-			$cccm = new CuentaCorrienteCliente();
-			$cccm->cuentacorrientecliente_id = $cuentacorrientecliente_id;
-			$cccm->get();
-			$cccm->referencia = "Comprobante venta: {$comprobante}";
-			$cccm->importe = $importe;
-			$cccm->estadomovimientocuenta = 1;
-			$cccm->save();
+					$primer_elemento_id = $cuentacorrientecliente[0]['ID'];
+					$cccm = new CuentaCorrienteCliente();
+					$cccm->cuentacorrientecliente_id = $primer_elemento_id;
+					$cccm->get();
+					$cccm->referencia = "Comprobante venta: {$comprobante}";
+					$cccm->importe = $importe;
+					$cccm->estadomovimientocuenta = 1;
+					$cccm->save();
+				} else {
+					$cccm = new CuentaCorrienteCliente();
+					$cccm->cuentacorrientecliente_id = $cuentacorrientecliente_id;
+					$cccm->get();
+					$cccm->referencia = "Comprobante venta: {$comprobante}";
+					$cccm->importe = $importe;
+					$cccm->estadomovimientocuenta = 1;
+					$cccm->save();
+				}
+			}
 		}
 
 		$ncm = new NotaCredito();
