@@ -18,6 +18,7 @@ class CreditoProveedorDetalleView extends View {
 		$gui_slt_proveedor = $this->render_regex('SLT_PROVEEDOR', $gui_slt_proveedor, $proveedor_collection);
 		$render = $this->render_regex('TBL_CREDITOPROVEEDORDETALLE', $gui, $creditoproveedordetalle_collection);
 		$render = str_replace('{slt_proveedor}', $gui_slt_proveedor, $render);
+		$render = str_replace('{fecha_sys}', date('Y-m-d'), $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
