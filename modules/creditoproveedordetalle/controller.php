@@ -33,5 +33,12 @@ class CreditoProveedorDetalleController {
 		$proveedor_collection = Collector()->get('Proveedor');
 		$this->view->editar($creditoproveedordetalle_collection, $proveedor_collection, $this->model);
 	}
+
+	function eliminar($arg) {
+		SessionHandler()->check_session();		
+		$this->model->creditoproveedordetalle_id = $arg;
+		$this->model->delete();
+		header("Location: " . URL_APP . "/creditoproveedordetalle/panel");
+	}
 }
 ?>
