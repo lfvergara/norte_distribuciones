@@ -1,6 +1,7 @@
 <?php
 require_once "modules/creditoproveedordetalle/model.php";
 require_once "modules/creditoproveedordetalle/view.php";
+require_once "modules/proveedor/model.php";
 
 
 class CreditoProveedorDetalleController {
