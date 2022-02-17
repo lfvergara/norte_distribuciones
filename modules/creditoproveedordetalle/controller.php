@@ -13,9 +13,9 @@ class CreditoProveedorDetalleController {
 
 	function panel() {
     	SessionHandler()->check_session();
+		$creditoproveedordetalle_collection = Collector()->get('CreditoProveedorDetalle');
 		$proveedor_collection = Collector()->get('Proveedor');
-    	print_r($proveedor_collection);exit;
-		$this->view->panel($proveedor_collection);
+    	$this->view->panel($creditoproveedordetalle_collection, $proveedor_collection);
 	}
 
 	function guardar() {
