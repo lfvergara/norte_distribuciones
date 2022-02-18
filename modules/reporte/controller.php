@@ -1245,7 +1245,7 @@ class ReporteController {
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
 
 		//CREDITO PROVEEDORES
-		$select = "p.proveedor_id, FORMAT((SUM(cpd.importe)), 2,'de_DE') AS CREDITO, p.razon_social AS PROVEEDOR";
+		$select = "p.proveedor_id, FORMAT((SUM(cpd.importe)), 2,'de_DE') AS IMPORTE, p.razon_social AS PROVEEDOR";
 		$from = "creditoproveedordetalle cpd INNER JOIN proveedor p ON cpd.proveedor = p.proveedor_id";
 		$where = "cpd.fecha BETWEEN '{$desde}' AND '{$hasta}'";
 		$groupby = "p.proveedor_id";
