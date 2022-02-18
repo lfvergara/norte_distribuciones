@@ -5,6 +5,7 @@ require_once "modules/vendedor/model.php";
 require_once "modules/cobrador/model.php";
 require_once "modules/entregacliente/model.php";
 require_once "modules/cuentacorrientecliente/model.php";
+require_once "modules/ingresotipopago/model.php";
 require_once "tools/cobrosPDFTool.php";
 
 
@@ -34,7 +35,7 @@ class EntregaClienteDetalleController {
   	function vendedor_cobranza($arg) {
 	    SessionHandler()->check_session();
 
-	    $select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
+	    $select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA, ecd.ingresotipopago_id AS INGTIPPAG";
 	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
 	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado = 1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $entregacliente_collection = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
@@ -52,6 +53,12 @@ class EntregaClienteDetalleController {
 				$balance = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;				
 				$entregacliente_collection[$clave]['BALANCE'] = $balance;
+
+				$itpm = new IngresoTipoPago();
+				$itpm->ingresotipopago_id = $entregacliente_collection[$clave]['INGTIPPAG'];
+				$itpm->get();
+				$temp_tipo_pago = $itpm->denominacion;
+				$entregacliente_collection[$clave]['DENTIPPAG'] = $temp_tipo_pago;
 	    	}
 	    }
 
@@ -136,6 +143,7 @@ class EntregaClienteDetalleController {
 					$cccm->ingreso = $monto[1];
 					$cccm->cliente_id = $cobro['cliente_id'];
 					$cccm->egreso_id = $egreso_id;
+					$cccm->ingresotipopago = $cobro['ingresotipopago_id'];
 					$cccm->tipomovimientocuenta = 2;
 					$cccm->estadomovimientocuenta = $estadomovimientocuenta;
 					$cccm->cobrador = $cobrador_id;
@@ -162,6 +170,7 @@ class EntregaClienteDetalleController {
 					$cccm->ingreso = $monto[1];
 					$cccm->cliente_id = $cobro['cliente_id'];
 					$cccm->egreso_id = $egreso_id;
+					$cccm->ingresotipopago = $cobro['ingresotipopago_id'];
 					$cccm->tipomovimientocuenta = 2;
 					$cccm->estadomovimientocuenta = 4;
 					$cccm->cobrador = $cobrador_id;
@@ -196,12 +205,19 @@ class EntregaClienteDetalleController {
 		$this->model->entregaclientedetalle_id = $entregaclientedetalle_id;
 		$this->model->get();
 		$entregacliente_id = $this->model->entregacliente_id;
+		$ingresotipopago_id = $this->model->ingresotipopago_id;
+
+		$itpm = new IngresoTipoPago();
+		$itpm->ingresotipopago_id = $ingresotipopago_id;
+		$itpm->get();
+		$this->model->ingresotipopago = $itpm;
 
 		$ecm = new EntregaCliente();
 		$ecm->entregacliente_id = $entregacliente_id;
 		$ecm->get();
 
-		$this->view->editar_ajax($ecm, $this->model);
+		$ingresotipopago_collection = Collector()->get('IngresoTipoPago');
+		$this->view->editar_ajax($ingresotipopago_collection, $ecm, $this->model);
 	}
 
 	function actualizar() {
@@ -211,11 +227,13 @@ class EntregaClienteDetalleController {
 		$monto = filter_input(INPUT_POST, "monto");
 		$parcial = filter_input(INPUT_POST, "parcial");
 		$vendedor_id = filter_input(INPUT_POST, "vendedor_id");
+		$ingresotipopago_id = filter_input(INPUT_POST, "ingresotipopago_id");
 
 		$this->model->entregaclientedetalle_id = $entregaclientedetalle_id;
 		$this->model->get();
 		$this->model->monto = $monto;
 		$this->model->parcial = $monto;
+		$this->model->ingresotipopago_id = $ingresotipopago_id;
 		$this->model->save();
 
 		$ecm = new EntregaCliente();
@@ -236,7 +254,7 @@ class EntregaClienteDetalleController {
 		}
 
 		$vendedor_id = $arg;
-		$select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA";
+		$select = "ecd.entregaclientedetalle_id AS ID, ec.entregacliente_id AS ENTREGACLIENTE, ecd.egreso_id AS EGRESO, CONCAT(c.razon_social,'(', c.nombre_fantasia , ')') AS CLIENTE, ec.cliente_id AS CLINT, ec.estado AS ESTADO, ec.fecha AS FECHA, CONCAT('$',ec.monto) AS MONTO, e.punto_venta AS PUNTO_VENTA, ecd.parcial AS VAL_PARCIAL, (CASE WHEN ecd.parcial = 1 THEN 'PARCIAL' ELSE 'TOTAL' END) AS PARCIAL, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA, ecd.ingresotipopago_id AS INGTIPPAG";
 	    $from = "entregaclientedetalle ecd INNER JOIN entregacliente ec ON ec.entregacliente_id = ecd.entregacliente_id INNER JOIN cliente c on c.cliente_id = ec.cliente_id INNER JOIN egreso e ON e.egreso_id = ecd.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
 	    $where = "ec.vendedor_id  = {$arg} AND ec.anulada = 0 and ec.estado=1 and ec.fecha < now() ORDER BY ecd.egreso_id ASC";
 	    $entregacliente_collection = CollectorCondition()->get('EntregaClienteDetalle', $where, 4, $from, $select);
@@ -253,6 +271,12 @@ class EntregaClienteDetalleController {
 				$balance = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
 	    		$balance = (is_array($balance) AND !empty($balance)) ? $balance[0]['BALANCE'] : 0;				
 				$entregacliente_collection[$clave]['BALANCE'] = $balance;
+
+				$itpm = new IngresoTipoPago();
+				$itpm->ingresotipopago_id = $entregacliente_collection[$clave]['INGTIPPAG'];
+				$itpm->get();
+				$temp_tipo_pago = $itpm->denominacion;
+				$entregacliente_collection[$clave]['DENTIPPAG'] = $temp_tipo_pago;
 	    	}
 	    }
 

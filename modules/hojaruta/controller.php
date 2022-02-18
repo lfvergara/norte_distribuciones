@@ -385,7 +385,7 @@ class HojaRutaController {
 			if ($valor->flete_id == 0) unset($cobrador_collection[$clave]);
 		}
 
-		$this->view->entregas($array_formulario, $this->model,$flete,$cobrador_collection,$monto_total, $monto_contado);
+		$this->view->entregas($array_formulario, $this->model, $flete, $cobrador_collection, $monto_total, $monto_contado);
 	}
 
 	function editar_hojaruta($arg){
@@ -514,6 +514,7 @@ class HojaRutaController {
 
 		$egreso_estadoentrega_array = $_POST["egreso_estadoentrega"];
 		$egreso_abonado_array = $_POST["egreso_abonado"];
+		$egreso_ingresotipopago_array = $_POST["egreso_ingresotipopago"];
 		$egreso_pagoentrega_array = $_POST["egreso_pagoentrega"];
 		$egreso_monto_parcial_array = $_POST["monto_parcial"];
 
@@ -569,6 +570,7 @@ class HojaRutaController {
 					$cccma->ingreso = $cccm->importe;
 					$cccma->cliente_id = $cccm->cliente_id;
 					$cccma->egreso_id = $cccm->egreso_id;
+					$cccma->ingresotipopago = $egreso_ingresotipopago_array[$egreso_id];
 					$cccma->tipomovimientocuenta = 2;
 					$cccma->estadomovimientocuenta = 4;
 					$cccma->cobrador = $cobrador_id;
@@ -582,6 +584,7 @@ class HojaRutaController {
 					$cccma->ingreso = $egreso_monto_parcial_array[$egreso_id];
 					$cccma->cliente_id = $cccm->cliente_id;
 					$cccma->egreso_id = $cccm->egreso_id;
+					$cccma->ingresotipopago = $egreso_ingresotipopago_array[$egreso_id];
 					$cccma->tipomovimientocuenta = 2;
 					$cccma->estadomovimientocuenta = 3;
 					$cccma->cobrador = $cobrador_id;
