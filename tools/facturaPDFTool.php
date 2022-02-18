@@ -221,7 +221,7 @@ class FacturaPDF extends View {
         $obj_egreso = $this->set_dict($obj_egreso);
         $obj_configuracion = $this->set_dict($obj_configuracion);
         $obj_cliente = $this->set_dict($obj_cliente);
-        $new_array = array_chunk($egresodetalle_collection, 23);
+        $new_array = array_chunk($egresodetalle_collection, 24);
         $contenido = '';
         foreach ($new_array as $egresodetalle_array) {
             $gui_remitoR = file_get_contents("static/common/plantillas_facturas/remitoR.html");
