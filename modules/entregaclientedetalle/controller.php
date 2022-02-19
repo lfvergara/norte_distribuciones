@@ -206,7 +206,7 @@ class EntregaClienteDetalleController {
 		$this->model->get();
 		$entregacliente_id = $this->model->entregacliente_id;
 		$ingresotipopago_id = $this->model->ingresotipopago_id;
-		print_r($ingresotipopago_id);exit;
+
 		$itpm = new IngresoTipoPago();
 		$itpm->ingresotipopago_id = $ingresotipopago_id;
 		$itpm->get();
