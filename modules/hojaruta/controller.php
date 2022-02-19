@@ -520,7 +520,6 @@ class HojaRutaController {
 
 		$array_egreso_ids = array();
 		foreach ($egreso_estadoentrega_array as $clave=>$valor) {
-			print_r($egreso_ingresotipopago_array[$egreso_id]);
 			$egreso_id = $clave;
 			$estadoentrega_id = $valor;
 			$array_egreso_ids[] = "{$egreso_id}@{$estadoentrega_id}";
@@ -534,7 +533,7 @@ class HojaRutaController {
 			$eem->egresoentrega_id = $egresoentrega_id;
 			$eem->get();
 			$eem->estadoentrega = $estadoentrega_id;
-			//$eem->save();
+			$eem->save();
 
 			$estado_abonado = $egreso_abonado_array[$egreso_id];
 			if ($estado_abonado == 1) {
@@ -560,7 +559,7 @@ class HojaRutaController {
 						$cccma->cuentacorrientecliente_id = $v['CCCID'];
 						$cccma->get();
 						$cccma->estadomovimientocuenta = 4;
-						//$cccma->save();
+						$cccma->save();
 					}
 
 					$cccma = new CuentaCorrienteCliente();
@@ -575,7 +574,7 @@ class HojaRutaController {
 					$cccma->tipomovimientocuenta = 2;
 					$cccma->estadomovimientocuenta = 4;
 					$cccma->cobrador = $cobrador_id;
-					//$cccma->save();
+					$cccma->save();
 				} else {
 					$cccma = new CuentaCorrienteCliente();
 					$cccma->fecha = date('Y-m-d');
@@ -589,18 +588,17 @@ class HojaRutaController {
 					$cccma->tipomovimientocuenta = 2;
 					$cccma->estadomovimientocuenta = 3;
 					$cccma->cobrador = $cobrador_id;
-					//$cccma->save();
+					$cccma->save();
 				}
 			}			
 		}
-		exit;
 
 		$egreso_ids = implode(',', $array_egreso_ids);
 		$this->model->hojaruta_id = $hojaruta_id;
 		$this->model->get();
 		$this->model->egreso_ids = $egreso_ids;
 		$this->model->estadoentrega = 7;
-		//$this->model->save();
+		$this->model->save();
 
 		header("Location: " . URL_APP . "/hojaruta/panel");
 	}
