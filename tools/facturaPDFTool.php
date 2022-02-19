@@ -163,7 +163,7 @@ class FacturaPDF extends View {
         $obj_egreso = $this->set_dict($obj_egreso);
         $obj_configuracion = $this->set_dict($obj_configuracion);
         $obj_cliente = $this->set_dict($obj_cliente);
-        $new_array = array_chunk($egresodetalle_collection, 17);
+        $new_array = array_chunk($egresodetalle_collection, 16);
         $contenido = '';
         $cantidad_hojas = count($new_array);
         $i = 1;
@@ -233,6 +233,8 @@ class FacturaPDF extends View {
         $obj_cliente = $this->set_dict($obj_cliente);
         $new_array = array_chunk($egresodetalle_collection, 24);
         $contenido = '';
+        $cantidad_hojas = count($new_array);
+        $i = 1;
         foreach ($new_array as $egresodetalle_array) {
             $gui_remitoR = file_get_contents("static/common/plantillas_facturas/remitoR.html");
             $gui_tbl_remitoR = file_get_contents("static/common/plantillas_facturas/tbl_remitoR.html");
@@ -242,8 +244,10 @@ class FacturaPDF extends View {
             $gui_remitoR = $this->render($obj_egreso, $gui_remitoR);
             $gui_remitoR = $this->render($obj_cliente, $gui_remitoR);
             $gui_remitoR = str_replace('{tbl_egresodetalle}', $gui_tbl_remitoR, $gui_remitoR);
-
+            $gui_remitoR = str_replace('{cantidad_hojas}', $cantidad_hojas, $gui_remitoR);
+            $gui_remitoR = str_replace('{numero_hoja}', $i, $gui_remitoR);
             $contenido .= $gui_remitoR;
+            $i = $i + 1;
         }
 
         $contenido = str_replace('{flete}', $flete, $contenido);
