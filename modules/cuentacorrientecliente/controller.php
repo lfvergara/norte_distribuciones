@@ -293,7 +293,7 @@ class CuentaCorrienteClienteController {
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $groupby);
 		$cuentacorriente_collection = (is_array($cuentacorriente_collection) AND !empty($cuentacorriente_collection)) ? $cuentacorriente_collection : array();
 
-		$select = "ccc.egreso_id, c.cliente_id, v.vendedor_id, '-' AS VENCIMIENTO, 'PENDIENTE' AS ESTACOMP, 'danger' AS CLASSCOMP, 'Migración Sistemas' AS FACTURA, c.razon_social AS CLIENTE, c.localidad AS BARRIO, c.domicilio AS DOMICILIO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, ((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id AND cccd.cliente_id = ccc.cliente_id)) AS BALANCE";
+		$select = "'-' AS FECHA, ccc.egreso_id, c.cliente_id, v.vendedor_id, '-' AS VENCIMIENTO, 'PENDIENTE' AS ESTACOMP, 'danger' AS CLASSCOMP, 'Migración Sistemas' AS FACTURA, c.razon_social AS CLIENTE, c.localidad AS BARRIO, c.domicilio AS DOMICILIO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, ((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id AND cccd.cliente_id = ccc.cliente_id)) AS BALANCE";
 		$from = "cuentacorrientecliente ccc INNER JOIN cliente c ON ccc.cliente_id = c.cliente_id INNER JOIN  vendedor v ON c.vendedor = v.vendedor_id";
 		$where = "((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id AND cccd.cliente_id = ccc.cliente_id)) < -0.5 AND ccc.egreso_id = 0 {$prewhere}";
 		$groupby = "c.cliente_id, ccc.egreso_id, v.vendedor_id";
@@ -339,21 +339,33 @@ class CuentaCorrienteClienteController {
 		switch ($arg) {
 			case 'all':
 				$where = "((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id)) < -0.5";
+				$prewhere = "";
 				break;
 			default:
 				$vendedor_id = $arg;
 				$where = "((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id)) < -0.5 AND v.vendedor_id = {$vendedor_id}";
+				$prewhere = "AND v.vendedor_id = {$vendedor_id}";
 				break;
 		}
 
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $groupby);
+		$cuentacorriente_collection = (is_array($cuentacorriente_collection) AND !empty($cuentacorriente_collection)) ? $cuentacorriente_collection : array();
+
+		$select = "'-' AS FECHA, ccc.egreso_id, c.cliente_id, v.vendedor_id, '-' AS VENCIMIENTO, 'PENDIENTE' AS ESTACOMP, 'danger' AS CLASSCOMP, 'Migración Sistemas' AS FACTURA, c.razon_social AS CLIENTE, c.localidad AS BARRIO, c.domicilio AS DOMICILIO, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR, ((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id AND cccd.cliente_id = ccc.cliente_id)) AS BALANCE";
+		$from = "cuentacorrientecliente ccc INNER JOIN cliente c ON ccc.cliente_id = c.cliente_id INNER JOIN  vendedor v ON c.vendedor = v.vendedor_id";
+		$where = "((IF((SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id) IS NULL, 0, (SELECT ROUND(SUM(cccia.importe),2) FROM cuentacorrientecliente cccia WHERE cccia.tipomovimientocuenta = 2 AND cccia.egreso_id = ccc.egreso_id AND cccia.cliente_id = ccc.cliente_id))) - (SELECT ROUND(SUM(cccd.importe),2) FROM cuentacorrientecliente cccd WHERE cccd.tipomovimientocuenta = 1 AND cccd.egreso_id = ccc.egreso_id AND cccd.cliente_id = ccc.cliente_id)) < -0.5 AND ccc.egreso_id = 0 {$prewhere}";
+		$groupby = "c.cliente_id, ccc.egreso_id, v.vendedor_id";
+		$cuentacorriente_collection1 = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select, $groupby);
+		$cuentacorriente_collection1 = (is_array($cuentacorriente_collection1) AND !empty($cuentacorriente_collection1)) ? $cuentacorriente_collection1 : array();
+
+		$cuentacorriente_collection_final = array_merge($cuentacorriente_collection, $cuentacorriente_collection1);
 
 		$subtitulo = "LISTA DE CUENTAS CORRIENTES POR VENDEDOR";
 		$array_encabezados = array('VENDEDOR', 'FECHA', 'VENCIMIENTO', 'ESTADO', 'FACTURA', 'CLIENTE', 'BARRIO', 'DOMICILIO', 'BALANCE');
 		$array_exportacion = array();
 		$array_exportacion[] = $array_encabezados;
 		$sum_importe = 0;
-		foreach ($cuentacorriente_collection as $clave=>$valor) {
+		foreach ($cuentacorriente_collection_final as $clave=>$valor) {
 			$sum_importe = $sum_importe + $valor["BALANCE"];
 			$array_temp = array();
 			$array_temp = array($valor["VENDEDOR"]
