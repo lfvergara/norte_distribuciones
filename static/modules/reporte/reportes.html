@@ -209,6 +209,12 @@
                 <div class="x_content">
                     <div class=" form">
                         <form class="form" id="formulario_guardar" method="post" action="{url_app}/reporte/clientes_no_compra_x_dias">
+                            <div class="form-group col-lg-6">
+                                <label>Vendedor</label>
+                                <select class="form-control m-bot15" name="vendedor" id="vendedor" required>
+                                    {slt_vendedor}
+                                </select>
+                            </div>
                             <div class="form-group col-lg-12" align="center">
                               <label>Cantidad de Días</label>
                               <input type="number" class="form-control" id="dias" name="dias" required="">

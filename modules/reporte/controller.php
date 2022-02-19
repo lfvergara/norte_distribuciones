@@ -2457,11 +2457,12 @@ class ReporteController {
 		require_once "tools/excelreport.php";
 		$dias = filter_input(INPUT_POST, 'dias');
 		$cliente = filter_input(INPUT_POST, 'cliente');
+		$vendedor = filter_input(INPUT_POST, 'vendedor');
 
 		$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA";
 		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN provincia p ON cl.provincia = p.provincia_id";
-		$where_cliente = "e.fecha BETWEEN CURDATE() - INTERVAL {$dias} DAY AND CURDATE() AND cl.oculto = 0";
-		$where = ($cliente == 'all') ? $where_cliente : "{$where_cliente} AND cl.cliente_id = {$cliente} AND cl.oculto = 0";
+		$where_cliente = "e.fecha BETWEEN CURDATE() - INTERVAL {$dias} DAY AND CURDATE() AND cl.oculto = 0 AND e.vendedor = {$vendedor}";
+		$where = ($cliente == 'all') ? $where_cliente : "{$where_cliente} AND cl.cliente_id = {$cliente} AND cl.oculto = 0 AND e.vendedor = {$vendedor}";
 		$groupby = 'e.cliente ORDER BY cl.razon_social ASC';
 
 		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select,$groupby);
