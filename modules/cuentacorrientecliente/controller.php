@@ -531,8 +531,7 @@ class CuentaCorrienteClienteController {
 			if ($valor->oculto == 1) unset($cobrador_collection[$clave]);
 		}
 
-		$ingresotipopago_collection = CollectorCondition()->get('IngresoTipoPago', $where, 4, $from, $select);
-
+		$ingresotipopago_collection = Collector()->get('IngresoTipoPago');
 		$this->view->traer_formulario_abonar_ajax($ingresotipopago_collection, $cobrador_collection, $this->model, $cm, $balance);
 	}
 
