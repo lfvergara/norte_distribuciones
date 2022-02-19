@@ -63,7 +63,8 @@ class FacturaPDF extends View {
 
         $new_array = array_chunk($egresodetalle_collection, 17);
         $contenido = '';
-        print_r($new_array);exit;
+        $cantidad_hojas = count($new_array);
+        print_r($cantidad_hojas);exit;
         foreach ($new_array as $egresodetalle_array) {
             $gui_facturaA = file_get_contents("static/common/plantillas_facturas/facturaA.html");
             $gui_tbl_facturaA = file_get_contents("static/common/plantillas_facturas/tbl_facturaA.html");
