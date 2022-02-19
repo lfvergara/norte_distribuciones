@@ -176,8 +176,8 @@ class FacturaPDF extends View {
             $gui_facturaB = $this->render($obj_configuracion, $gui_facturaB);
             $gui_facturaB = $this->render($obj_cliente, $gui_facturaB);
             $gui_facturaB = str_replace('{tbl_egresodetalle}', $gui_tbl_facturaB, $gui_facturaB);
-            $gui_facturaB = str_replace('{cantidad_hojas}', $cantidad_hojas, $gui_facturaA);
-            $gui_facturaB = str_replace('{numero_hoja}', $i, $gui_facturaA);
+            $gui_facturaB = str_replace('{cantidad_hojas}', $cantidad_hojas, $gui_facturaB);
+            $gui_facturaB = str_replace('{numero_hoja}', $i, $gui_facturaB);
             $contenido .= $gui_facturaB;
             $i = $i + 1;
         }
