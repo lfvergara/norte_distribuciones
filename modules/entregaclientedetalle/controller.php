@@ -227,7 +227,7 @@ class EntregaClienteDetalleController {
 		$monto = filter_input(INPUT_POST, "monto");
 		$parcial = filter_input(INPUT_POST, "parcial");
 		$vendedor_id = filter_input(INPUT_POST, "vendedor_id");
-		$ingresotipopago_id = filter_input(INPUT_POST, "ingresotipopago_id");
+		$ingresotipopago_id = filter_input(INPUT_POST, "ingresotipopago");
 
 		$this->model->entregaclientedetalle_id = $entregaclientedetalle_id;
 		$this->model->get();
