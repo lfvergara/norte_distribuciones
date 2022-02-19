@@ -2460,7 +2460,7 @@ class ReporteController {
 		$vendedor = filter_input(INPUT_POST, 'vendedor');
 
 		$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
-		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN provincia p ON cl.provincia = p.provincia_id INNER JOIN vendedor ON cl.vendedor = v.vendedor_id";
+		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN provincia p ON cl.provincia = p.provincia_id INNER JOIN vendedor v ON cl.vendedor = v.vendedor_id";
 		$where_cliente = "e.fecha BETWEEN CURDATE() - INTERVAL {$dias} DAY AND CURDATE() AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 		$where = ($cliente == 'all') ? $where_cliente : "{$where_cliente} AND cl.cliente_id = {$cliente} AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 		$groupby = 'e.cliente ORDER BY cl.razon_social ASC';
