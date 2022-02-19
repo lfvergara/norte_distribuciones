@@ -2464,12 +2464,11 @@ class ReporteController {
 		$where_cliente = "e.fecha BETWEEN CURDATE() - INTERVAL {$dias} DAY AND CURDATE() AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 		$where = ($cliente == 'all') ? $where_cliente : "{$where_cliente} AND cl.cliente_id = {$cliente} AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 		$groupby = 'e.cliente ORDER BY cl.razon_social ASC';
-
 		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select,$groupby);
 
-		$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA";
-		$from = "cliente cl INNER JOIN provincia p ON cl.provincia = p.provincia_id";
-		$where = "cl.oculto = 0  ORDER BY cl.razon_social ASC";
+		$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
+		$from = "cliente cl INNER JOIN provincia p ON cl.provincia = p.provincia_id INNER JOIN vendedor v ON cl.vendedor = v.vendedor_id";
+		$where = "cl.oculto = 0 AND cl.vendedor = {$vendedor} ORDER BY cl.razon_social ASC";
 		$clientes_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);
 
 		$subtitulo = "Lista de clientes que no compran hace X({$dias}) Días";
@@ -2492,9 +2491,9 @@ class ReporteController {
 			if (is_array($egresos_collection)) {
 				$newArray = array();
 			} else {
-				$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA";
-				$from = "cliente cl INNER JOIN provincia p ON cl.provincia = p.provincia_id";
-				$where = "cl.cliente_id = {$cliente} AND cl.oculto = 0";
+				$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
+				$from = "cliente cl INNER JOIN provincia p ON cl.provincia = p.provincia_id INNER JOIN vendedor v ON cl.vendedor = v.vendedor_id";
+				$where = "cl.cliente_id = {$cliente} AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 				$clientes_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);
 				$newArray = $clientes_collection;
 			}
@@ -2502,13 +2501,12 @@ class ReporteController {
 
 		foreach ($newArray as $clave=>$valor) {
 			$array_temp = array();
-			$array_temp = array(
-							$valor["ID"]
-						,	$valor["RAZON_SOCIAL"]
-						, $valor["NOMBRE_FANTASIA"]
-						, $valor["VENDEDOR"]
-						, $valor["DOCUMENTO"]
-						, $valor["PROVINCIA"]);
+			$array_temp = array($valor["ID"]
+								, $valor["RAZON_SOCIAL"]
+								, $valor["NOMBRE_FANTASIA"]
+								, $valor["VENDEDOR"]
+								, $valor["DOCUMENTO"]
+								, $valor["PROVINCIA"]);
 			$array_exportacion[] = $array_temp;
 		}
 
