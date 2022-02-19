@@ -165,6 +165,8 @@ class FacturaPDF extends View {
         $obj_cliente = $this->set_dict($obj_cliente);
         $new_array = array_chunk($egresodetalle_collection, 17);
         $contenido = '';
+        $cantidad_hojas = count($new_array);
+        $i = 1;
         foreach ($new_array as $egresodetalle_array) {
             $gui_facturaB = file_get_contents("static/common/plantillas_facturas/facturaB.html");
             $gui_tbl_facturaB = file_get_contents("static/common/plantillas_facturas/tbl_facturaB.html");
@@ -174,7 +176,10 @@ class FacturaPDF extends View {
             $gui_facturaB = $this->render($obj_configuracion, $gui_facturaB);
             $gui_facturaB = $this->render($obj_cliente, $gui_facturaB);
             $gui_facturaB = str_replace('{tbl_egresodetalle}', $gui_tbl_facturaB, $gui_facturaB);
+            $gui_facturaB = str_replace('{cantidad_hojas}', $cantidad_hojas, $gui_facturaA);
+            $gui_facturaB = str_replace('{numero_hoja}', $i, $gui_facturaA);
             $contenido .= $gui_facturaB;
+            $i = $i + 1;
         }
 
         $contenido = str_replace('{flete}', $flete, $contenido);
