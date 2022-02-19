@@ -2459,8 +2459,8 @@ class ReporteController {
 		$cliente = filter_input(INPUT_POST, 'cliente');
 		$vendedor = filter_input(INPUT_POST, 'vendedor');
 
-		$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA";
-		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN provincia p ON cl.provincia = p.provincia_id";
+		$select = "cl.cliente_id AS ID,cl.razon_social AS RAZON_SOCIAL, cl.nombre_fantasia AS NOMBRE_FANTASIA, cl.documento AS DOCUMENTO,p.denominacion AS PROVINCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
+		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN provincia p ON cl.provincia = p.provincia_id INNER JOIN vendedor ON cl.vendedor = v.vendedor_id";
 		$where_cliente = "e.fecha BETWEEN CURDATE() - INTERVAL {$dias} DAY AND CURDATE() AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 		$where = ($cliente == 'all') ? $where_cliente : "{$where_cliente} AND cl.cliente_id = {$cliente} AND cl.oculto = 0 AND cl.vendedor = {$vendedor}";
 		$groupby = 'e.cliente ORDER BY cl.razon_social ASC';
@@ -2473,7 +2473,7 @@ class ReporteController {
 		$clientes_collection = CollectorCondition()->get('Cliente', $where, 4, $from, $select);
 
 		$subtitulo = "Lista de clientes que no compran hace X({$dias}) Días";
-		$array_encabezados = array('COD', 'CLIENTE', 'NOM FANTASIA', 'DOCUMENTO', 'PROVINCIA');
+		$array_encabezados = array('COD', 'CLIENTE', 'NOM FANTASIA', 'VENDEDOR', 'DOCUMENTO', 'PROVINCIA');
 		$array_exportacion = array();
 		$array_exportacion[] = $array_encabezados;
 
@@ -2482,7 +2482,7 @@ class ReporteController {
 				$newArray = array();
 				foreach ($clientes_collection as $key => $cliente) {
 					if (array_search($cliente['ID'], array_column($egresos_collection, 'ID')) === FALSE) {
-						$newArray[] = array('ID'=>$cliente['ID'],'RAZON_SOCIAL'=>$cliente['RAZON_SOCIAL'], 'NOMBRE_FANTASIA'=>$cliente['NOMBRE_FANTASIA'],'DOCUMENTO'=>$cliente['DOCUMENTO'],'PROVINCIA'=>$cliente['PROVINCIA']);
+						$newArray[] = array('ID'=>$cliente['ID'],'RAZON_SOCIAL'=>$cliente['RAZON_SOCIAL'], 'NOMBRE_FANTASIA'=>$cliente['NOMBRE_FANTASIA'],'VENDEDOR'=>$cliente['VENDEDOR'], 'DOCUMENTO'=>$cliente['DOCUMENTO'],'PROVINCIA'=>$cliente['PROVINCIA']);
 					}
 				}
 			} else {
@@ -2506,6 +2506,7 @@ class ReporteController {
 							$valor["ID"]
 						,	$valor["RAZON_SOCIAL"]
 						, $valor["NOMBRE_FANTASIA"]
+						, $valor["VENDEDOR"]
 						, $valor["DOCUMENTO"]
 						, $valor["PROVINCIA"]);
 			$array_exportacion[] = $array_temp;
