@@ -209,7 +209,7 @@ class IngresoController {
 		$this->model->condicioniva = filter_input(INPUT_POST, 'condicioniva');
 		$this->model->condicionpago = $condicionpago;
 		$this->model->tipofactura = filter_input(INPUT_POST, 'tipofactura');
-		$this->model->save();
+		//$this->model->save();
 		$ingreso_id = $this->model->ingreso_id;
 
 		$tfm = new TipoFactura();
@@ -229,25 +229,34 @@ class IngresoController {
 			$ccpm->ingresotipopago = null;
 			$ccpm->tipomovimientocuenta = 1;
 			$ccpm->estadomovimientocuenta = 1;
-			$ccpm->save();
+			//$ccpm->save();
 		}
 		
 		$ingresos_array = $_POST['ingreso'];
 		$productos_ids = array();
 		foreach ($ingresos_array as $ingreso) {
 			$costo_base = round(($ingreso['costo_total'] / $ingreso['cantidad']),2);
-			
+			$nuevo_costo = $ingreso['costo'];
+
 			$productos_ids[] = $ingreso['producto_id'];
 			$pm = new Producto();
 			$pm->producto_id = $ingreso['producto_id'];
 			$pm->get();
-			$pm->costo = $costo_base;
+			
+			$flete = $pm->flete;
 			$iva = $pm->iva;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			$valor_iva = ($iva * $costo_base) / 100;
-			$costo_iva = $valor_iva + $costo_base;
-			$valor_ganancia = ($valor_ganancia * $costo_iva) / 100;
-			$precio_venta = $costo_iva + $valor_ganancia;
+
+			$valor_flete = $flete * $nuevo_costo / 100;
+			$costo_mas_flete = $nuevo_costo + $valor_flete;
+
+			$valor_iva = $iva * $costo_mas_flete / 100;
+			$costo_mas_flete_mas_iva = $costo_mas_flete + $valor_iva;
+
+			$valor_ganancia = $porcentaje_ganancia * $costo_mas_flete_mas_iva / 100;
+			$precio_venta = $costo_mas_flete_mas_iva + $valor_ganancia;
+
+			$pm->costo = $nuevo_costo;
 			$pm->precio_venta = round($precio_venta, 2);
 			if ($opcion_actualiza_producto == 1) $pm->save();
 
