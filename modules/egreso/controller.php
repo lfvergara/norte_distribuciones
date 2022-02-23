@@ -704,7 +704,7 @@ class EgresoController {
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			
+
 			if ($tipofactura == 2) {
 				$valor_neto = $neto + ($iva * $neto / 100);
 				$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
@@ -715,6 +715,8 @@ class EgresoController {
 			$total_neto = $valor_neto * $cantidad;
 			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
 			$ganancia = round(($ganancia_temp - $total_neto),2);
+			$ganancia_final = $ganancia - $valor_descuento;
+			$ganancia_final = round($ganancia_final, 2);
 
 			$edm = new EgresoDetalle();
 			$edm->codigo_producto = $egreso['codigo'];
@@ -726,7 +728,7 @@ class EgresoController {
 			$edm->costo_producto = $costo_producto;
 			$edm->iva = $egreso['iva'];
 			$edm->importe = $importe;
-			$edm->valor_ganancia = $ganancia;
+			$edm->valor_ganancia = $ganancia_final;
 			$edm->producto_id = $egreso['producto_id'];
 			$edm->egreso_id = $egreso_id;
 			$edm->egresodetalleestado = 1;
@@ -1177,14 +1179,23 @@ class EgresoController {
 			$pm = new Producto();
 			$pm->producto_id = $producto_id;
 			$pm->get();
-			$flete = $pm->flete;
-			$neto = $pm->costo;
-			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			$valor_neto = $neto + ($flete * $neto / 100);
-			$total_neto = $valor_neto * $cantidad;
 
+			$neto = $pm->costo;
+			$flete = $pm->flete;
+			$porcentaje_ganancia = $pm->porcentaje_ganancia;
+
+			if ($tipofactura == 2) {
+				$valor_neto = $neto + ($iva * $neto / 100);
+				$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
+			} else {
+				$valor_neto = $neto + ($flete * $neto / 100);
+			}
+			
+			$total_neto = $valor_neto * $cantidad;
 			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
 			$ganancia = round(($ganancia_temp - $total_neto),2);
+			$ganancia_final = $ganancia - $valor_descuento;
+			$ganancia_final = round($ganancia_final, 2);
 
 			$ncdm = new NotaCreditoDetalle();
 			$ncdm->codigo_producto = $egreso['codigo'];
@@ -1196,7 +1207,7 @@ class EgresoController {
 			$ncdm->costo_producto = $egreso['costo'];
 			$ncdm->iva = $egreso['iva'];
 			$ncdm->importe = $egreso['costo_total'];
-			$ncdm->valor_ganancia = $ganancia;
+			$ncdm->valor_ganancia = $ganancia_final;
 			$ncdm->producto_id = $egreso['producto_id'];
 			$ncdm->egreso_id = $egreso_id;
 			$ncdm->notacredito_id = $notacredito_id;

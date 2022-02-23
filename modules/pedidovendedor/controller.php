@@ -863,7 +863,7 @@ class PedidoVendedorController {
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-			
+
 			if ($tipofactura == 2) {
 				$valor_neto = $neto + ($iva * $neto / 100);
 				$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
@@ -874,6 +874,8 @@ class PedidoVendedorController {
 			$total_neto = $valor_neto * $cantidad;
 			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
 			$ganancia = round(($ganancia_temp - $total_neto),2);
+			$ganancia_final = $ganancia - $valor_descuento;
+			$ganancia_final = round($ganancia_final, 2);
 
 			$edm = new EgresoDetalle();
 			$edm->codigo_producto = $egreso['codigo'];
@@ -885,7 +887,7 @@ class PedidoVendedorController {
 			$edm->costo_producto = $costo_producto;
 			$edm->iva = $egreso['iva'];
 			$edm->importe = $importe;
-			$edm->valor_ganancia = $ganancia;
+			$edm->valor_ganancia = $ganancia_final;
 			$edm->producto_id = $egreso['producto_id'];
 			$edm->egreso_id = $egreso_id;
 			$edm->egresodetalleestado = 1;
