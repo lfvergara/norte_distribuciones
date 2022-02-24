@@ -517,6 +517,7 @@ class PedidoVendedorController {
 			$sm = new Stock();
 			$sm->stock_id = $stock_id['STOCK_ID'];
 			$sm->get();
+			print_r($sm);
 			$cantidad_actual = $sm->cantidad_actual;
 
 			if ($cantidad > $cantidad_actual) {
@@ -526,7 +527,7 @@ class PedidoVendedorController {
 			}
 
 		}
-
+		exit;
 		if ($importe_total != $importe_total_control) {
 			$this->model->importe_total = $importe_total_control;
 			$this->model->subtotal = $importe_total_control;
