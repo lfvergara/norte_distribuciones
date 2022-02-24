@@ -497,9 +497,9 @@
             }).responseText;
 
             if (parseFloat(cant_temporal) > parseFloat(cantidad_actual)) {
-                document.getElementById('btn_cargar').disabled = 'true';
+                document.getElementById('btn_cargar').disabled = true;
             } else {
-                document.getElementById('btn_cargar').disabled = 'false';
+                document.getElementById('btn_cargar').disabled = false;
             }
             
             console.log('ID:' + producto_id_temporal);
@@ -562,9 +562,9 @@
             }).responseText;
 
             if (parseFloat(cant_temporal) > parseFloat(cantidad_actual)) {
-                document.getElementById('btn_cargar').disabled = 'true';
+                document.getElementById('btn_cargar').disabled = true;
             } else {
-                document.getElementById('btn_cargar').disabled = 'false';
+                document.getElementById('btn_cargar').disabled = false;
             }
             
             console.log('ID:' + producto_id_temporal);
