@@ -300,17 +300,6 @@
 
     function egresarProducto() {
 
-        var tab = document.getElementById('bodyTblProducto');
-        for (i=0; fila = tab.getElementsByTagName('tr')[i]; i++) {
-                var cant_temporal = fila.getElementsByTagName('td')[1].innerHTML;
-                var producto_id_temporal_array = tab.rows[i].getAttribute('id');
-                producto_id_temporal_array = producto_id_temporal_array.split('_');
-                var producto_id_temporal = producto_id_temporal_array[1];
-
-                console.log('ID:' + producto_id_temporal);
-                console.log('Cantidad:' + cant_temporal);
-        }
-
         document.getElementById('alerta_stock').style.display = 'none';
         var producto_id = document.getElementById('producto_id').value;
         var flag = array_ids.indexOf(producto_id);
@@ -493,6 +482,29 @@
             document.getElementById('alerta_stock').style.display = 'block';
             return false;
         }
+
+        var tab = document.getElementById('bodyTblProducto');
+        for (i=0; fila = tab.getElementsByTagName('tr')[i]; i++) {
+            var cant_temporal = fila.getElementsByTagName('td')[1].innerHTML;
+            var producto_id_temporal_array = tab.rows[i].getAttribute('id');
+            producto_id_temporal_array = producto_id_temporal_array.split('_');
+            var producto_id_temporal = producto_id_temporal_array[1];
+
+            var cantidad_actual = $.ajax({
+                url: '{url_app}/pedidovendedor/traer_cantidad_actual_ajax/' + producto_id_temporal,
+                    dataType: 'text',
+                    async: false
+            }).responseText;
+
+            if (parseFloat(cant_temporal) > parseFloat(cantidad_actual)) {
+                document.getElementById('btn_cargar').disabled = 'true';
+            } else {
+                document.getElementById('btn_cargar').disabled = 'false';
+            }
+            
+            console.log('ID:' + producto_id_temporal);
+            console.log('Cantidad:' + cant_temporal);
+        }
     }
 
     function quitarProducto(producto_id) {
@@ -535,6 +547,29 @@
         div_array_egresos.removeChild(input_importe_descuento);
         div_array_egresos.removeChild(input_costo);
         div_array_egresos.removeChild(input_costo_total);
+
+        var tab = document.getElementById('bodyTblProducto');
+        for (i=0; fila = tab.getElementsByTagName('tr')[i]; i++) {
+            var cant_temporal = fila.getElementsByTagName('td')[1].innerHTML;
+            var producto_id_temporal_array = tab.rows[i].getAttribute('id');
+            producto_id_temporal_array = producto_id_temporal_array.split('_');
+            var producto_id_temporal = producto_id_temporal_array[1];
+
+            var cantidad_actual = $.ajax({
+                url: '{url_app}/pedidovendedor/traer_cantidad_actual_ajax/' + producto_id_temporal,
+                    dataType: 'text',
+                    async: false
+            }).responseText;
+
+            if (parseFloat(cant_temporal) > parseFloat(cantidad_actual)) {
+                document.getElementById('btn_cargar').disabled = 'true';
+            } else {
+                document.getElementById('btn_cargar').disabled = 'false';
+            }
+            
+            console.log('ID:' + producto_id_temporal);
+            console.log('Cantidad:' + cant_temporal);
+        }
     }
 
     function verificarPedido() {

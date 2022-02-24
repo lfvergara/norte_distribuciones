@@ -1197,6 +1197,24 @@ class PedidoVendedorController {
 		header("Location: " . URL_APP . "/pedidovendedor/prepara_lote_vendedor/{$vendedor_id}");
 	}
 
+	function traer_cantidad_actual_ajax($arg) {
+		SessionHandler()->check_session();
+		$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
+		$producto_id = $arg;
+
+		$select = "MAX(s.stock_id) AS STOCK_ID";
+		$from = "stock s";
+		$where = "s.producto_id = {$producto_id} AND s.almacen_id = {$almacen_id}";
+		$groupby = "s.producto_id";
+		$stockid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
+
+		$sm = new Stock();
+		$sm->stock_id = $stockid_collection[0]['STOCK_ID'];
+		$sm->get();
+		$cantidad_actual = $sm->cantidad_actual;
+		print $cantidad_actual;			
+	}
+
 	function proceso_lote($arg) {
 		$pedidovendedor_id = $arg;
 		
