@@ -500,6 +500,9 @@
             if (parseFloat(cant_temporal) > parseFloat(cantidad_actual)) {
                 console.log('Hola');
                 document.getElementById('btn_cargar').disabled = true;
+                return false;
+            } else {
+                document.getElementById('btn_cargar').disabled = false;
             }
         }
     }
@@ -562,6 +565,9 @@
             if (parseFloat(cant_temporal) > parseFloat(cantidad_actual)) {
                 console.log('Hola');
                 document.getElementById('btn_cargar').disabled = true;
+                return false;
+            } else {
+                document.getElementById('btn_cargar').disabled = false;
             }
         }
     }
