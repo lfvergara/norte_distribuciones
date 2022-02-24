@@ -303,6 +303,9 @@
         var tab = document.getElementById('bodyTblProducto');
         for (i=0; fila = tab.getElementsByTagName('tr')[i]; i++) {
                 var cant_temporal = fila.getElementsByTagName('td')[1].innerHTML;
+                var producto_id_temporal = tab.rows[i].rowIndex;
+
+                console.log('ID:' + producto_id_temporal);
                 console.log('Cantidad:' + cant_temporal);
             for (j=0; celda = fila.getElementsByTagName('td')[j]; j++) {
                 console.log(celda.innerHTML);
