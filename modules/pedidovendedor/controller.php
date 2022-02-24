@@ -453,7 +453,7 @@ class PedidoVendedorController {
     	$usuario_rol = $_SESSION["data-login-" . APP_ABREV]["usuario-configuracionmenu"];
     	$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
     	$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
-    	
+
     	$select = "uv.usuario_id AS USUID, uv.vendedor_id AS VENID";
 		$from = "usuariovendedor uv";
 		$where = "uv.usuario_id = {$usuario_id}";
@@ -519,7 +519,7 @@ class PedidoVendedorController {
 			$sm = new Stock();
 			$sm->stock_id = $stock_id['STOCK_ID'];
 			$sm->get();
-			print_r($sm);
+			print_r($almacen_id);
 			$cantidad_actual = $sm->cantidad_actual;
 
 			if ($cantidad > $cantidad_actual) {
