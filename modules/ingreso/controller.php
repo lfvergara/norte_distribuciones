@@ -229,7 +229,7 @@ class IngresoController {
 			$ccpm->ingresotipopago = null;
 			$ccpm->tipomovimientocuenta = 1;
 			$ccpm->estadomovimientocuenta = 1;
-			//$ccpm->save();
+			$ccpm->save();
 		}
 		
 		$ingresos_array = $_POST['ingreso'];
