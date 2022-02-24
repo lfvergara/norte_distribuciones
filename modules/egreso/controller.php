@@ -124,6 +124,7 @@ class EgresoController {
 		$producto_collection = CollectorCondition()->get('Producto', $where, 4, $from, $select, $groupby);
 		foreach ($producto_collection as $clave=>$valor) {
 			$producto_id = $valor['PRODUCTO_ID'];
+
 			$select = "MAX(s.stock_id) AS STOCK_ID";
 			$from = "stock s";
 			$where = "s.producto_id = {$producto_id}";
@@ -1613,6 +1614,15 @@ class EgresoController {
 		$pm = new Producto();
 		$pm->producto_id = $producto_id;
 		$pm->get();
+
+		$neto = $pm->costo;
+		$flete = $pm->flete;
+		$porcentaje_ganancia = $pm->porcentaje_ganancia;
+		$valor_neto = $neto + ($iva * $neto / 100);
+		$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
+		$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
+		$pm->precio_venta = round($pvp, 2);
+
 		$select = "MAX(s.stock_id) AS MAXID";
 		$from = "stock s";
 		$where = "s.producto_id = {$producto_id} AND s.almacen_id = {$almacen_id}";
