@@ -488,6 +488,7 @@ class PedidoVendedorController {
 
 		$importe_total_control = 0;
 		foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
+			$producto_id = $valor['PRODUCTO'];
 			$costo = $valor['COSTO'];
 			$flete = $valor['FLETE'];
 			$ganancia = $valor['VALGAN'];
@@ -506,6 +507,24 @@ class PedidoVendedorController {
 
         	$importe_total_control = round(($importe_total_control + $importe_final),2);
         	$pedidovendedordetalle_collection[$clave]['IMPORTE'] = $importe_final;
+
+        	$select = "MAX(s.stock_id) AS STOCK_ID";
+			$from = "stock s";
+			$where = "s.producto_id = {$producto_id} AND s.almacen_id = {$almacen_id}";
+			$groupby = "s.producto_id";
+			$stockid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
+
+			$sm = new Stock();
+			$sm->stock_id = $stock_id['STOCK_ID'];
+			$sm->get();
+			$cantidad_actual = $sm->cantidad_actual;
+
+			if ($cantidad > $cantidad_actual) {
+				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = 'danger';
+			} else {
+				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = '';
+			}
+
 		}
 
 		if ($importe_total != $importe_total_control) {
