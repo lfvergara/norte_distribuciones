@@ -452,6 +452,8 @@ class PedidoVendedorController {
     	SessionHandler()->check_session();
     	$usuario_rol = $_SESSION["data-login-" . APP_ABREV]["usuario-configuracionmenu"];
     	$usuario_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
+    	$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
+    	
     	$select = "uv.usuario_id AS USUID, uv.vendedor_id AS VENID";
 		$from = "usuariovendedor uv";
 		$where = "uv.usuario_id = {$usuario_id}";
@@ -525,9 +527,10 @@ class PedidoVendedorController {
 			} else {
 				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = 'success';
 			}
-
 		}
+
 		exit;
+		
 		if ($importe_total != $importe_total_control) {
 			$this->model->importe_total = $importe_total_control;
 			$this->model->subtotal = $importe_total_control;
