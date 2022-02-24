@@ -529,8 +529,6 @@ class PedidoVendedorController {
 			}
 		}
 
-		exit;
-		
 		if ($importe_total != $importe_total_control) {
 			$this->model->importe_total = $importe_total_control;
 			$this->model->subtotal = $importe_total_control;
