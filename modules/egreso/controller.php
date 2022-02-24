@@ -1615,12 +1615,14 @@ class EgresoController {
 		$pm->producto_id = $producto_id;
 		$pm->get();
 
+		$iva = $pm->iva;
 		$neto = $pm->costo;
 		$flete = $pm->flete;
 		$porcentaje_ganancia = $pm->porcentaje_ganancia;
-		$valor_neto = $neto + ($iva * $neto / 100);
-		$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
-		$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
+		
+		$valor_neto = $neto + ($flete * $neto / 100);
+		$valor_con_iva = $valor_neto + ($iva * $valor_neto / 100);
+		$pvp = $valor_con_iva + ($porcentaje_ganancia * $valor_con_iva / 100);
 		$pm->precio_venta = round($pvp, 2);
 
 		$select = "MAX(s.stock_id) AS MAXID";
