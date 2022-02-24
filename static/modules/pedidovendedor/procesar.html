@@ -299,6 +299,16 @@
     }
 
     function egresarProducto() {
+
+        var tab = document.getElementById('bodyTblProducto');
+        for (i=0; fila = tab.getElementsByTagName('tr')[i]; i++) {
+            for (j=0; celda = fila.getElementsByTagName('td')[j]; j++) {
+                console.log(celda.innerHTML);
+            
+            }
+
+        }
+
         document.getElementById('alerta_stock').style.display = 'none';
         var producto_id = document.getElementById('producto_id').value;
         var flag = array_ids.indexOf(producto_id);
