@@ -525,7 +525,7 @@ class PedidoVendedorController {
 			if ($cantidad > $cantidad_actual) {
 				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = 'danger';
 			} else {
-				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = 'success';
+				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = '';
 			}
 		}
 
