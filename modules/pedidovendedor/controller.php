@@ -489,6 +489,7 @@ class PedidoVendedorController {
 		$pedidovendedordetalle_collection = CollectorCondition()->get('PedidoVendedorDetalle', $where, 4, $from, $select);
 
 		$importe_total_control = 0;
+		$flag_error = 0;
 		foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
 			$producto_id = $valor['PRODUCTO'];
 			$costo = $valor['COSTO'];
@@ -524,6 +525,7 @@ class PedidoVendedorController {
 
 			if ($cantidad > $cantidad_actual) {
 				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = 'danger';
+				$flag_error = 1;
 			} else {
 				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = '';
 			}
@@ -543,7 +545,7 @@ class PedidoVendedorController {
 			if (!in_array($valor->tipofactura_id, $array_ids)) unset($tipofactura_collection[$clave]);
 		}
 
-		$this->view->procesar($producto_collection, $cliente_collection, $pedidovendedordetalle_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection, $this->model, $cm);
+		$this->view->procesar($producto_collection, $cliente_collection, $pedidovendedordetalle_collection, $condicionpago_collection, $condicioniva_collection, $tipofactura_collection, $this->model, $cm, $flag_error);
 	}
 
 	function actualizar() {
