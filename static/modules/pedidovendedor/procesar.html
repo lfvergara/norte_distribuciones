@@ -302,7 +302,7 @@
 
         var tab = document.getElementById('bodyTblProducto');
         for (i=0; fila = tab.getElementsByTagName('tr')[i]; i++) {
-                var cant_temporal = fila.getElementsByTagName('td')[1];
+                var cant_temporal = fila.getElementsByTagName('td')[1].innerHTML;
                 console.log('Cantidad:' + cant_temporal);
             for (j=0; celda = fila.getElementsByTagName('td')[j]; j++) {
                 console.log(celda.innerHTML);
