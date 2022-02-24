@@ -209,7 +209,7 @@ class IngresoController {
 		$this->model->condicioniva = filter_input(INPUT_POST, 'condicioniva');
 		$this->model->condicionpago = $condicionpago;
 		$this->model->tipofactura = filter_input(INPUT_POST, 'tipofactura');
-		//$this->model->save();
+		$this->model->save();
 		$ingreso_id = $this->model->ingreso_id;
 
 		$tfm = new TipoFactura();
