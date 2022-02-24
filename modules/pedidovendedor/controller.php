@@ -519,7 +519,7 @@ class PedidoVendedorController {
 			$sm = new Stock();
 			$sm->stock_id = $stock_id['STOCK_ID'];
 			$sm->get();
-			print_r($almacen_id);
+			print_r($producto_id);
 			$cantidad_actual = $sm->cantidad_actual;
 
 			if ($cantidad > $cantidad_actual) {
