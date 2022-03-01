@@ -1608,6 +1608,7 @@ class ReporteController {
 		$groupby = "v.vendedor_id";
 		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
+		print_r($ganancia_vendedor_dia);
 
 		//CREDITO PROVEEDORES
 		$select = "p.proveedor_id, FORMAT((SUM(cpd.importe)), 2,'de_DE') AS CREDITO, p.razon_social AS PROVEEDOR";
