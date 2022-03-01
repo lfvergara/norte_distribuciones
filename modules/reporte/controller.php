@@ -1266,7 +1266,9 @@ class ReporteController {
 				if(!in_array($egreso_id, $array_egreso_ids)) $array_egreso_ids[] = $egreso_id;
 			}
 		}
-		print_r($array_egreso_ids);
+
+		$egreso_ids = implode(',', $array_egreso_ids);
+		print_r($egreso_ids);
 		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
