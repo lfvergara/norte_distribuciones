@@ -1173,6 +1173,29 @@ class ReporteController {
 		$group_by = "v.vendedor_id,	date_format(ec.fecha, '%Y%m') ORDER BY SUM(valor_abonado) DESC";
 		$pagocomisiones_collection = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select, $group_by);
 
+		//ENTREGAS PENDIENTES
+		$select = "hr.egreso_ids AS IDS";
+		$from = "hojaruta hr";
+		$where = "hr.estadoentrega = 3";
+		$hojaruta_collection = CollectorCondition()->get('HojaRuta', $where, 4, $from, $select);
+		$array_egreso_ids = array();
+		foreach ($hojaruta_collection as $clave=>$valor) {
+			$array_tuplas = explode(",", $valor['IDS']);
+			foreach ($array_tuplas as $tupla) {
+				$ids = explode("@", $tupla);
+				$egreso_id = $ids[0];
+				$estadoentrega_id = $ids[1];
+				if(!in_array($egreso_id, $array_egreso_ids) AND $estadoentrega_id == 3) $array_egreso_ids[] = $egreso_id;
+			}
+		}
+
+		$egreso_ids = implode(',', $array_egreso_ids);
+		$select = "ROUND(SUM(e.importe_total), 2) CONTADO";
+		$from = "egreso e";
+		$where = "e.egreso_id IN ({$egreso_ids}) AND e.condicionpago = 2";
+		$carga_pendiente = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
+		$carga_pendiente = (is_array($carga_pendiente) AND !empty($carga_pendiente)) ? $carga_pendiente[0]['CONTADO'] : 0;
+
 		$activo_corriente = 0;
 		if ($cbm->activo_stock_valorizado == 'checked') {
 			$activo_corriente = $activo_corriente + $stock_valorizado;
@@ -1180,6 +1203,10 @@ class ReporteController {
 
 		if ($cbm->activo_cuenta_corriente_cliente == 'checked') {
 			$activo_corriente = $activo_corriente + $estado_cuentacorrientecliente;
+		}
+
+		if ($cbm->activo_carga_pendiente == 'checked') {
+			$activo_corriente = $activo_corriente + $carga_pendiente;
 		}
 
 		$pasivo_corriente = 0;
@@ -1252,29 +1279,6 @@ class ReporteController {
 		$creditoproveedordetalle_collection = CollectorCondition()->get('CreditoProveedorDetalle', $where, 4, $from, $select, $groupby);
 		$creditoproveedordetalle_collection = (is_array($creditoproveedordetalle_collection) AND !empty($creditoproveedordetalle_collection)) ? $creditoproveedordetalle_collection : array();
 
-		//ENTREGAS PENDIENTES
-		$select = "hr.egreso_ids AS IDS";
-		$from = "hojaruta hr";
-		$where = "hr.estadoentrega = 3";
-		$hojaruta_collection = CollectorCondition()->get('HojaRuta', $where, 4, $from, $select);
-		$array_egreso_ids = array();
-		foreach ($hojaruta_collection as $clave=>$valor) {
-			$array_tuplas = explode(",", $valor['IDS']);
-			foreach ($array_tuplas as $tupla) {
-				$ids = explode("@", $tupla);
-				$egreso_id = $ids[0];
-				$estadoentrega_id = $ids[1];
-				if(!in_array($egreso_id, $array_egreso_ids) AND $estadoentrega_id == 3) $array_egreso_ids[] = $egreso_id;
-			}
-		}
-
-		$egreso_ids = implode(',', $array_egreso_ids);
-		$select = "ROUND(SUM(e.importe_total), 2) CONTADO";
-		$from = "egreso e";
-		$where = "e.egreso_id IN ({$egreso_ids}) AND e.condicionpago = 2";
-		$carga_pendiente = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
-		$carga_pendiente = (is_array($carga_pendiente) AND !empty($carga_pendiente)) ? $carga_pendiente[0]['CONTADO'] : 0;
-		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
 							   '{suma_notacredito_per_actual}'=>number_format($suma_notacredito_per_actual, 2, ',', '.'),
