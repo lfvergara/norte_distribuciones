@@ -199,6 +199,7 @@ class ReporteView extends View {
 		$gui_valores_piechart_pago_comision = str_replace('<!--VALORES_PIECHART_PAGO_COMISION-->', '', $gui_valores_piechart_pago_comision);
 
 		$obj_configuracionbalance = $this->set_dict($obj_configuracionbalance);
+		print_r($obj_configuracionbalance);
 		foreach ($obj_configuracionbalance as $propiedad=>$valor) {
 			$nueva_propiedad = str_replace('}', '_tachado}', $propiedad);
 			$nuevo_valor = ($valor == 'checked') ? 'none' : 'line-through';
