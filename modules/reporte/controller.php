@@ -1261,7 +1261,7 @@ class ReporteController {
 		foreach ($hojaruta_collection as $clave=>$valor) {
 			$array_tuplas = explode(",", $valor['IDS']);
 			foreach ($array_tuplas as $tupla) {
-				$ids = explode("@", $valor['IDS']);
+				$ids = explode("@", $tupla);
 				$egreso_id = $ids[0];
 				if(!in_array($egreso_id, $array_egreso_ids)) $array_egreso_ids[] = $egreso_id;
 			}
