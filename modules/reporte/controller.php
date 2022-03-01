@@ -1251,6 +1251,22 @@ class ReporteController {
 		$groupby = "p.proveedor_id";
 		$creditoproveedordetalle_collection = CollectorCondition()->get('CreditoProveedorDetalle', $where, 4, $from, $select, $groupby);
 		$creditoproveedordetalle_collection = (is_array($creditoproveedordetalle_collection) AND !empty($creditoproveedordetalle_collection)) ? $creditoproveedordetalle_collection : array();
+
+		//ENTREGAS PENDIENTES
+		$select = "hr.egreso_ids AS IDS";
+		$from = "hojaruta hr";
+		$where = "hr.estadoentrega = 3";
+		$hojaruta_collection = CollectorCondition()->get('HojaRuta', $where, 4, $from, $select);
+		$array_egreso_ids = array();
+		foreach ($hojaruta_collection as $clave=>$valor) {
+			$array_tuplas = explode(",", $valor['IDS']);
+			foreach ($array_tuplas as $tupla) {
+				$ids = explode("@", $valor['IDS']);
+				$egreso_id = $ids[0];
+				if(!in_array($egreso_id, $array_egreso_ids)) $array_egreso_ids[] = $egreso_id;
+			}
+		}
+		print_r($array_egreso_ids);
 		
 		$ganancia_per_actual = $sum_ganancia_per_actual - $rest_nc_ganancia_per_actual - $egreso_comision_per_actual - $egreso_gasto_per_actual - $vehiculocombustible_total - $salario_total;
 		$array_balance = array('{suma_ingresos_per_actual}'=>number_format($suma_ingresos_per_actual, 2, ',', '.'),
