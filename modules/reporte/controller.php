@@ -1332,6 +1332,7 @@ class ReporteController {
 	function generar_balance() {
 		SessionHandler()->check_session();
 
+		$fecha_sys = date('Y-m-d');
 		$desde = filter_input(INPUT_POST, 'desde');
 		$hasta = filter_input(INPUT_POST, 'hasta');
 		$periodo = "desde el {$desde} hasta el {$hasta}";
@@ -1608,8 +1609,7 @@ class ReporteController {
 		$groupby = "v.vendedor_id";
 		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
-		print_r($ganancia_vendedor_dia);
-
+		
 		//CREDITO PROVEEDORES
 		$select = "p.proveedor_id, FORMAT((SUM(cpd.importe)), 2,'de_DE') AS CREDITO, p.razon_social AS PROVEEDOR";
 		$from = "creditoproveedordetalle cpd INNER JOIN proveedor p ON cpd.proveedor = p.proveedor_id";
