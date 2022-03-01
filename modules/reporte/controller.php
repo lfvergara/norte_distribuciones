@@ -1510,6 +1510,29 @@ class ReporteController {
 		$group_by = "v.vendedor_id, ec.fecha ORDER BY SUM(valor_abonado) DESC";
 		$pagocomisiones_collection = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select, $group_by);
 
+		//ENTREGAS PENDIENTES
+		$select = "hr.egreso_ids AS IDS";
+		$from = "hojaruta hr";
+		$where = "hr.estadoentrega = 3";
+		$hojaruta_collection = CollectorCondition()->get('HojaRuta', $where, 4, $from, $select);
+		$array_egreso_ids = array();
+		foreach ($hojaruta_collection as $clave=>$valor) {
+			$array_tuplas = explode(",", $valor['IDS']);
+			foreach ($array_tuplas as $tupla) {
+				$ids = explode("@", $tupla);
+				$egreso_id = $ids[0];
+				$estadoentrega_id = $ids[1];
+				if(!in_array($egreso_id, $array_egreso_ids) AND $estadoentrega_id == 3) $array_egreso_ids[] = $egreso_id;
+			}
+		}
+
+		$egreso_ids = implode(',', $array_egreso_ids);
+		$select = "ROUND(SUM(e.importe_total), 2) CONTADO";
+		$from = "egreso e";
+		$where = "e.egreso_id IN ({$egreso_ids}) AND e.condicionpago = 2";
+		$carga_pendiente = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
+		$carga_pendiente = (is_array($carga_pendiente) AND !empty($carga_pendiente)) ? $carga_pendiente[0]['CONTADO'] : 0;
+
 		$activo_corriente = 0;
 		if ($cbm->activo_stock_valorizado == 'checked') {
 			$activo_corriente = $activo_corriente + $stock_valorizado;
@@ -1517,6 +1540,10 @@ class ReporteController {
 
 		if ($cbm->activo_cuenta_corriente_cliente == 'checked') {
 			$activo_corriente = $activo_corriente + $estado_cuentacorrientecliente;
+		}
+
+		if ($cbm->activo_carga_pendiente == 'checked') {
+			$activo_corriente = $activo_corriente + $carga_pendiente;
 		}
 
 		$pasivo_corriente = 0;
@@ -1602,8 +1629,10 @@ class ReporteController {
 							   '{egreso_combustible}'=>number_format($vehiculocombustible_total, 2, ',', '.'),
 							   '{stock_valorizado}'=>number_format($stock_valorizado, 2, ',', '.'),
 							   '{deuda_ccclientes}'=>number_format($estado_cuentacorrientecliente, 2, ',', '.'),
+							   '{carga_pendiente}'=>number_format($carga_pendiente, 2, ',', '.'),
 							   '{stock_valorizado_graph}'=>$stock_valorizado,
 							   '{deuda_ccclientes_graph}'=>$estado_cuentacorrientecliente,
+							   '{carga_pendiente_graph}'=>$carga_pendiente,
 							   '{deuda_ccproveedores}'=>number_format($deuda_cuentacorrienteproveedor, 2, ',', '.'),
 							   '{deuda_comisiones}'=>number_format($deuda_comision_total, 2, ',', '.'),
 							   '{deuda_ccproveedores_graph}'=>$deuda_cuentacorrienteproveedor,
