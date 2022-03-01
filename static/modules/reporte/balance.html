@@ -239,6 +239,16 @@
     </div>
     <div class="col-md-9 col-sm-9 col-xs-12">
         <div class="col-md-12 col-sm-12 col-xs-12 visible-print" style="padding-left: 0%; padding-right: 0%; background-color: #ededed; display: none;">
+            <div class="x_panel" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%;">
+                <div class="x_content" align="right" style="padding-right: 5%;">
+                    <div class="row tile_count" style="margin-bottom: 0px; margin-top: 0px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12 tile_stats_count">
+                            <span class="count_top green"><i class="fa fa-info-circle"></i> Resultado %Ganancia</span>
+                            <div class="count green" style="font-size: 30px;">${ganancia_per_actual}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 1%; padding-right: 0%;">
                 <div class="x_panel" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%;">
                     <div class="x_content" align="right" style="padding-right: 5%;">
@@ -278,7 +288,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-12 col-sm-6 col-xs-6" style="padding-left: 1%; padding-right: 0%;">
                 <div class="x_panel" style="padding-left: 2px; padding-right: 2px; margin-bottom: 2%;">
                     <div class="x_content" align="right" style="padding-right: 5%;">
@@ -288,17 +297,6 @@
                                 <div class="count red" style="font-size: 30px;">${pasivo_corriente}</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 col-sm-6 col-xs-12" style="padding-left: 1%; padding-right: 1%;">
-                <div class="x_panel" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%;">
-                    <div class="x_title" style="padding-left: 2%;">
-                        <h2><i class="fa fa-briefcase"></i>&nbsp;&nbsp; Pasivos Corrientes</h2>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr style="font-size: 12px;">
@@ -311,6 +309,16 @@
                                 </tr>
                             </thead>
                         </table>
+                    </div>
+                </div>
+            </div>            
+            <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left: 1%; padding-right: 1%;">
+                <div class="x_panel" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%;">
+                    <div class="x_title" style="padding-left: 2%;">
+                        <h2><i class="fa fa-briefcase"></i>&nbsp;&nbsp; Pasivos Corrientes</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
                         <div id="graphPasivosPrint" style="width:600%; height:300px;" ></div>
                     </div>
                 </div>
