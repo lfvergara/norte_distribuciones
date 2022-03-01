@@ -204,8 +204,7 @@ class ReporteView extends View {
 			$nuevo_valor = ($valor == 'checked') ? 'none' : 'line-through';
 			$obj_configuracionbalance["{$nueva_propiedad}"] = $nuevo_valor;
 		}
-		print_r($obj_configuracionbalance);
-
+		
 		$render = $this->render($array_balances, $gui);
 		$render = $this->render($obj_configuracionbalance, $render);
 		$render = str_replace('{valores_piechart_pago_comision}', $gui_valores_piechart_pago_comision, $render);
