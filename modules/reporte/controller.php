@@ -997,7 +997,7 @@ class ReporteController {
 		header("Location: " . URL_APP . "/reporte/resumen_diario");
 	}
 
-	function rentabilidad {
+	function rentabilidad() {
     	SessionHandler()->check_session();
 		$anio = date('Y');
 		$mes = date('m');
