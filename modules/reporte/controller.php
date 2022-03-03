@@ -1014,22 +1014,21 @@ class ReporteController {
 		$ganancia = (is_array($ganancia) AND !empty($ganancia)) ? $ganancia[0]['GANANCIA'] : 0;
 		$ganancia = (is_null($ganancia)) ? 0 : $ganancia;
 
-
 		// FACTURACIÓN Y NOTAS DE CRÉDITO
 		$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL";
 		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN vendedor ve ON e.vendedor = ve.vendedor_id INNER JOIN condicionpago cp ON e.condicionpago = cp.condicionpago_id INNER JOIN condicioniva ci ON e.condicioniva = ci.condicioniva_id INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega ese ON ee.estadoentrega = ese.estadoentrega_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
 		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}'";
 		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
-
 		$suma_facturacion = 0;
 		$suma_notacredito = 0;
 		$facturacion = 0;
+		$egreso_id_array = array();
 		if (is_array($egresos_collection) AND !empty($egresos_collection)) {
 			foreach ($egresos_collection as $clave=>$valor) {
 				$egreso_importe_total = $egresos_collection[$clave]['IMPORTETOTAL'];
-
 				$egreso_id = $valor['EGRESO_ID'];
+
 				$select = "nc.importe_total AS IMPORTETOTAL";
 				$from = "notacredito nc";
 				$where = "nc.egreso_id = {$egreso_id}";
@@ -1041,14 +1040,52 @@ class ReporteController {
 				}
 
 				$suma_facturacion = $suma_facturacion + $egreso_importe_total;
+				if(!in_array($egreso_id, $egreso_id_array)) $egreso_id_array[] = $egreso_id;
 			}
 		}
-
+		
 		$facturacion = $suma_facturacion - $suma_notacredito;
+		$egreso_ids = implode(',', $egreso_id_array);
+
+		//GANANCIA NOTAS DE CREDITO
+		$select = "ROUND(SUM(ncd.valor_ganancia),2) AS GANANCIA";
+		$from = "notacredito nc INNER JOIN notacreditodetalle ncd ON nc.notacredito_id = ncd.notacredito_id INNER JOIN egreso e ON nc.egreso_id = e.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
+		$where = "e.egreso_id IN ({$egreso_ids}) AND c.impacto_ganancia = 1";
+		$ganancia_notacredito = CollectorCondition()->get('NotaCredito', $where, 4, $from, $select);
+		$ganancia_notacredito = (is_array($ganancia_notacredito) AND !empty($ganancia_notacredito)) ? $ganancia_notacredito[0]['GANANCIA'] : 0;
+		$ganancia_notacredito = (is_null($ganancia_notacredito)) ? 0 : $ganancia_notacredito;
+
+		//SALARIO
+		$select = "ROUND(SUM(s.monto), 2) AS TOTAL";
+		$from = "salario s";
+		$where = "s.fecha BETWEEN '{$desde}' AND '{$hasta}' AND s.tipo_pago IN ('SALARIO', 'ADELANTO')";
+		$salario = CollectorCondition()->get('Salario', $where, 4, $from, $select);
+		$salario = (is_array($salario) AND !empty($salario)) ? $salario[0]['TOTAL'] : 0;
+		$salario = (is_null($salario)) ? 0 : $salario;
+
+		//GASTOS
+		$select = "ROUND(SUM(g.importe), 2) AS IMPORTETOTAL";
+		$from = "gasto g INNER JOIN gastocategoria gc ON gc.gastocategoria_id = g.gastocategoria INNER JOIN gastosubcategoria gsc ON gsc.gastosubcategoria_id = gc.gastosubcategoria";
+		$where = "g.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$gastos = CollectorCondition()->get('Gasto', $where, 4, $from, $select);
+		$gastos = (is_array($gastos)) ? $gastos[0]['IMPORTETOTAL'] : 0;
+		$gastos = (is_null($gastos)) ? 0 : $gastos;
+
+		//COMBUSTIBLE
+		$select = "ROUND(SUM(vc.importe), 2) AS TOTAL";
+		$from = "vehiculocombustible vc";
+		$where = "vc.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$combustible = CollectorCondition()->get('VehiculoCombustible', $where, 4, $from, $select);
+		$combustible = (is_array($combustible) AND !empty($combustible)) ? $combustible[0]['TOTAL'] : 0;
+		$combustible = (is_null($combustible)) ? 0 : $combustible;
 
 		$array_valores = array('{ganancia}'=>$ganancia,
+							   '{ganancia_notacredito}'=>$ganancia_notacredito,
 							   '{facturacion}'=>$facturacion,
-							   '{notacredito}'=>$suma_notacredito);
+							   '{notacredito}'=>$suma_notacredito,
+							   '{salario}'=>$salario,
+							   '{gastos}'=>$gastos,
+							   '{combustible}'=>$combustible);
 		print_r($array_valores);exit;
 
 	}
