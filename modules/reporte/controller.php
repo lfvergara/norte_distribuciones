@@ -997,6 +997,62 @@ class ReporteController {
 		header("Location: " . URL_APP . "/reporte/resumen_diario");
 	}
 
+	function rentabilidad {
+    	SessionHandler()->check_session();
+		$anio = date('Y');
+		$mes = date('m');
+		$desde = "{$anio}-{$mes}-01";
+		$hasta = date("Y-m-d");
+		$periodo = "desde el {$desde} hasta el {$hasta}";
+		$fecha_sys = date('Y-m-d');
+		
+		// GANANCIA
+		$select = "ROUND(SUM(ed.valor_ganancia),2) AS GANANCIA";
+		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
+		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND c.impacto_ganancia = 1";
+		$ganancia = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
+		$ganancia = (is_array($ganancia) AND !empty($ganancia)) ? $ganancia[0]['GANANCIA'] : 0;
+		$ganancia = (is_null($ganancia)) ? 0 : $ganancia;
+
+
+		// FACTURACIÓN Y NOTAS DE CRÉDITO
+		$select = "e.egreso_id AS EGRESO_ID, e.importe_total AS IMPORTETOTAL";
+		$from = "egreso e INNER JOIN cliente cl ON e.cliente = cl.cliente_id INNER JOIN vendedor ve ON e.vendedor = ve.vendedor_id INNER JOIN condicionpago cp ON e.condicionpago = cp.condicionpago_id INNER JOIN condicioniva ci ON e.condicioniva = ci.condicioniva_id INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id INNER JOIN estadoentrega ese ON ee.estadoentrega = ese.estadoentrega_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
+
+
+		$suma_facturacion = 0;
+		$suma_notacredito = 0;
+		$facturacion = 0;
+		if (is_array($egresos_collection) AND !empty($egresos_collection)) {
+			foreach ($egresos_collection as $clave=>$valor) {
+				$egreso_importe_total = $egresos_collection[$clave]['IMPORTETOTAL'];
+
+				$egreso_id = $valor['EGRESO_ID'];
+				$select = "nc.importe_total AS IMPORTETOTAL";
+				$from = "notacredito nc";
+				$where = "nc.egreso_id = {$egreso_id}";
+				$notacredito = CollectorCondition()->get('NotaCredito', $where, 4, $from, $select);
+
+				if (is_array($notacredito) AND !empty($notacredito)) {
+					$importe_notacredito = $notacredito[0]['IMPORTETOTAL'];
+					$suma_notacredito = $suma_notacredito + $importe_notacredito;
+				}
+
+				$suma_facturacion = $suma_facturacion + $egreso_importe_total;
+			}
+		}
+
+		$facturacion = $suma_ingresos_per_actual - $suma_notacredito;
+
+		$array_valores = array('{ganancia}'=>$ganancia,
+							   '{facturacion}'=>$facturacion,
+							   '{notacredito}'=>$suma_notacredito);
+		print_r($array_valores);exit;
+
+	}
+
 	function balance() {
 		SessionHandler()->check_session();
 		$cbm = new ConfiguracionBalance();
