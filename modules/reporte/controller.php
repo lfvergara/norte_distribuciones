@@ -1044,7 +1044,7 @@ class ReporteController {
 			}
 		}
 
-		$facturacion = $suma_ingresos_per_actual - $suma_notacredito;
+		$facturacion = $suma_facturacion - $suma_notacredito;
 
 		$array_valores = array('{ganancia}'=>$ganancia,
 							   '{facturacion}'=>$facturacion,
