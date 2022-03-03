@@ -1222,7 +1222,7 @@ class ReporteController {
 
 		$select = "ROUND(SUM(ed.valor_ganancia),2) AS GANANCIA";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
-		$where = "date_format(e.fecha, '%Y%m') = '{$periodo_actual}' AND c.impacto_ganancia = 1";
+		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND c.impacto_ganancia = 1";
 		$sum_ganancia_per_actual = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 		$sum_ganancia_per_actual = (is_array($sum_ganancia_per_actual) AND !empty($sum_ganancia_per_actual)) ? $sum_ganancia_per_actual[0]['GANANCIA'] : 0;
 		$sum_ganancia_per_actual = (is_null($sum_ganancia_per_actual)) ? 0 : $sum_ganancia_per_actual;
