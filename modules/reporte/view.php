@@ -188,8 +188,12 @@ class ReporteView extends View {
 		$obj_cliente = $obj_egreso->cliente;
 		$obj_vendedor = $obj_egreso->vendedor;
 		unset($obj_cliente->infocontacto_collection, $obj_cliente->vendedor, $obj_vendedor->infocontacto_collection, $obj_cliente->flete, $obj_egreso->egresoentrega, $obj_egreso->cliente, $obj_egreso->vendedor);
-
-		print_r($obj_egreso);exit;
+		$obj_egreso->punto_venta = str_pad($obj_egreso->punto_venta, 4, '0', STR_PAD_LEFT);
+		$obj_egreso->numero_factura = str_pad($obj_egreso->numero_factura, 8, '0', STR_PAD_LEFT);
+		$obj_egreso = $this->set_dict($obj_egreso);
+		
+		$render = $this->render($obj_egreso, $gui);
+		print $render;
 	}
 
 	function balance($array_balances, $pagocomisiones_collection, $periodo, $obj_configuracionbalance, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia, $creditoproveedordetalle_collection) {
