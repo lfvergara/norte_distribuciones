@@ -1079,13 +1079,28 @@ class ReporteController {
 		$combustible = (is_array($combustible) AND !empty($combustible)) ? $combustible[0]['TOTAL'] : 0;
 		$combustible = (is_null($combustible)) ? 0 : $combustible;
 
+		$select = "ROUND(SUM(valor_abonado),2) AS ECOMISION";
+		$from = "egresocomision ec INNER JOIN egreso e ON ";
+		$where = "ec.estadocomision IN (2,3) AND ec.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$comision = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select);
+		$comision = (is_array($comision)) ? $comision[0]['ECOMISION'] : 0;
+		$comision = (is_null($comision)) ? 0 : $comision;
+
+		$ganancia_real = $ganancia - $ganancia_notacredito;
+		$porcentaje_ganancia = $ganancia_real * 100 / $facturacion;
+
+		$rentabilidad = $ganancia_real - $salario - $gastos - $combustible - $comision;
 		$array_valores = array('{ganancia}'=>$ganancia,
 							   '{ganancia_notacredito}'=>$ganancia_notacredito,
 							   '{facturacion}'=>$facturacion,
 							   '{notacredito}'=>$suma_notacredito,
 							   '{salario}'=>$salario,
 							   '{gastos}'=>$gastos,
-							   '{combustible}'=>$combustible);
+							   '{combustible}'=>$combustible,
+							   '{comision}'=>$comision,
+							   '{ganancia_real}'=>$ganancia_real,
+							   '{porcentaje_ganancia}'=>$porcentaje_ganancia,
+							   '{rentabilidad}'=>$rentabilidad);
 		print_r($array_valores);exit;
 
 	}
