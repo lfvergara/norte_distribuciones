@@ -171,7 +171,7 @@ class ReporteView extends View {
 		print $render;
 	}
 
-	function balance($array_valores) {
+	function rentabilidad($array_valores) {
 		$gui = file_get_contents("static/modules/reporte/rentabilidad.html");
 		$render = $this->render($array_balances, $gui);
 		$render = $this->render_breadcrumb($render);
