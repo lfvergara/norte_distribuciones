@@ -1160,6 +1160,7 @@ class ReporteController {
 			$valor_ganancia = $valor['VALGAN'];
 			$cantidad = $valor['CANTIDAD'];
 			$ganancia_total = $ganancia_total + $valor_ganancia;
+			$descuento = $valor['VD'];
 
 			if ($tipofactura == 2) {
 				$valor_neto = $costo + ($flete * $costo / 100);
@@ -1179,6 +1180,8 @@ class ReporteController {
 			$egresodetalle_collection[$clave]['PORGAN'] = number_format($porcentaje_ganancia, 2, ',', '.');
 			$egresodetalle_collection[$clave]['COSTO'] = number_format($valor['COSTO'], 2, ',', '.');
 			$egresodetalle_collection[$clave]['PVP'] = number_format($valor['PVP'], 2, ',', '.');
+			$egresodetalle_collection[$clave]['VALGAN'] = number_format($valor['VALGAN'], 2, ',', '.');
+			$egresodetalle_collection[$clave]['VD'] = number_format($valor['VD'], 2, ',', '.');
 		}
 
 		$porcentaje_ganancia_total = $ganancia_total * 100 / $importe_total;
