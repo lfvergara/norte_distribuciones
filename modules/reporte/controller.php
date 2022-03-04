@@ -1157,8 +1157,8 @@ class ReporteController {
 			$valor_ganancia = $valor['VALGAN'];
 			$cantidad = $valor['CANTIDAD'];
 
-			$valor_neto = $costo + ($flete * $costo / 100);
-			$valor_neto = $valor_neto + ($iva * $valor_neto / 100);
+			$valor_neto = $costo + ($iva * $costo / 100);
+			$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
 			
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
