@@ -194,7 +194,7 @@ class ReporteView extends View {
 		$obj_egreso->numero_factura = str_pad($obj_egreso->numero_factura, 8, '0', STR_PAD_LEFT);
 		$obj_egreso = $this->set_dict($obj_egreso);
 		
-		$render = str_replace('{tbl_egresodetalle_rentabilidad}', $tbl_egresodetalle_rentabilidad, $gui);
+		$render = str_replace('{tbl_egresodetalle_rentabilidad}', $tbl_egresodetalle, $gui);
 		$render = $this->render($obj_egreso, $render);
 		print $render;
 	}
