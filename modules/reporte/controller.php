@@ -1194,6 +1194,7 @@ class ReporteController {
 			$cantidad = $valor['CANTIDAD'];
 			$tipofactura = $valor['TIPFAC'];
 			$egresodetalle_id = $valor['EGRDETID'];
+			$descuento = $valor['VD'];
 
 			if ($tipofactura == 2) {
 				$valor_neto = $costo + ($flete * $costo / 100);
@@ -1205,15 +1206,17 @@ class ReporteController {
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
 			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
+			$ganancia_temporal = round(($valor_ganancia * $cantidad), 2);
+			$ganancia_final = $ganancia_temporal - $descuento;
 
 			$edm = new EgresoDetalle();
 			$edm->egresodetalle_id = $egresodetalle_id;
 			$edm->get();
-			$edm->valor_ganancia = round(($valor_ganancia * $cantidad), 2);
+			$edm->valor_ganancia = round($ganancia_final, 2);
 			$edm->save()	;		
 		}
 		
-		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
+		exit;
 	}
 
 	function balance() {
