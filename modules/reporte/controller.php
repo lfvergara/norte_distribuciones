@@ -1101,7 +1101,8 @@ class ReporteController {
 							   '{comision}'=>$comision,
 							   '{ganancia_real}'=>$ganancia_real,
 							   '{porcentaje_ganancia}'=>$porcentaje_ganancia,
-							   '{rentabilidad}'=>$rentabilidad);
+							   '{rentabilidad}'=>$rentabilidad,
+							   '{porcentaje_rentabilidad}'=>$porcentaje_rentabilidad);
 
 		foreach ($array_valores as $clave=>$valor) {
 			$array_valores[$clave] = round($valor, 2);
