@@ -6,6 +6,7 @@ require_once "modules/productomarca/model.php";
 require_once "modules/egreso/model.php";
 require_once "modules/egresodetalle/model.php";
 require_once "modules/egresocomision/model.php";
+require_once "modules/egresoafip/model.php";
 require_once "modules/cuentacorrientecliente/model.php";
 require_once "modules/cuentacorrienteproveedor/model.php";
 require_once "modules/gasto/model.php";
@@ -1123,11 +1124,11 @@ class ReporteController {
 		$em = new Egreso();
 		$em->egreso_id = $egreso_id;
 		$em->get();
-		print_r($em);exit;
 		$select = "eafip.punto_venta AS PUNTO_VENTA, eafip.numero_factura AS NUMERO_FACTURA, tf.nomenclatura AS TIPOFACTURA, eafip.cae AS CAE, eafip.vencimiento AS FVENCIMIENTO, eafip.fecha AS FECHA, tf.tipofactura_id AS TF_ID";
 		$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
 		$where = "eafip.egreso_id = {$egreso_id}";
 		$egresoafip = CollectorCondition()->get('EgresoAfip', $where, 4, $from, $select);
+		print_r($em);exit;
 
 		if (is_array($egresoafip)) {
 			$egresoafip = $egresoafip[0];
