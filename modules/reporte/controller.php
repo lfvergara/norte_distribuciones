@@ -1161,7 +1161,7 @@ class ReporteController {
 			
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
-			$egresodetalle_collection['PORGAN'] = round($porcentaje_ganancia, 2);
+			$egresodetalle_collection[$clave]['PORGAN'] = round($porcentaje_ganancia, 2);
 		}
 		
 		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
