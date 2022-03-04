@@ -1090,6 +1090,7 @@ class ReporteController {
 		$porcentaje_ganancia = $ganancia_real * 100 / $facturacion;
 
 		$rentabilidad = $ganancia_real - $salario - $gastos - $combustible - $comision;
+		$porcentaje_rentabilidad = $rentabilidad * 100 / $facturacion;
 		$array_valores = array('{ganancia}'=>$ganancia,
 							   '{ganancia_notacredito}'=>$ganancia_notacredito,
 							   '{facturacion}'=>$facturacion,
@@ -1101,6 +1102,10 @@ class ReporteController {
 							   '{ganancia_real}'=>$ganancia_real,
 							   '{porcentaje_ganancia}'=>$porcentaje_ganancia,
 							   '{rentabilidad}'=>$rentabilidad);
+
+		foreach ($array_valores as $clave=>$valor) {
+			$array_valores[$clave] = round($valor, 2);
+		}
 		print_r($array_valores);exit;
 
 	}
