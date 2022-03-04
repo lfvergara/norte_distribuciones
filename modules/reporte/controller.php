@@ -1123,7 +1123,7 @@ class ReporteController {
 		$em = new Egreso();
 		$em->egreso_id = $egreso_id;
 		$em->get();
-
+		print_r($em);exit;
 		$select = "eafip.punto_venta AS PUNTO_VENTA, eafip.numero_factura AS NUMERO_FACTURA, tf.nomenclatura AS TIPOFACTURA, eafip.cae AS CAE, eafip.vencimiento AS FVENCIMIENTO, eafip.fecha AS FECHA, tf.tipofactura_id AS TF_ID";
 		$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
 		$where = "eafip.egreso_id = {$egreso_id}";
