@@ -1173,6 +1173,49 @@ class ReporteController {
 		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
 	}
 
+	function refactorizar() {
+		SessionHandler()->check_session();
+		$desde = "{$anio}-{$mes}-01";
+		$hasta = date("Y-m-d");
+		
+		//$tipofactura = $em->tipofactura->tipofactura_id;
+		$select = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.valor_descuento AS VD, ed.costo_producto AS PVP, ed.neto_producto AS COSTO, ROUND(ed.importe, 2) AS IMPORTE, ed.iva AS IVA, ed.flete_producto AS FLETE, ed.valor_ganancia AS VALGAN, e.tipofactura AS TIPFAC, ed.egresodetalle_id AS EGRDETID";
+		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN
+				 productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN egreso e ON ed.egreso_id = e.egreso_id";
+		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND ed.egresodetalle_id BETWEEN 17974 AND 18473";
+		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
+
+		foreach ($egresodetalle_collection as $clave=>$valor) {
+			$costo = $valor['COSTO'];
+			$flete = $valor['FLETE'];
+			$iva = $valor['IVA'];
+			$venta = $valor['PVP'];
+			$valor_ganancia = $valor['VALGAN'];
+			$cantidad = $valor['CANTIDAD'];
+			$tipofactura = $valor['TIPFAC'];
+			$egresodetalle_id = $valor['EGRDETID'];
+
+			if ($tipofactura == 2) {
+				$valor_neto = $costo + ($flete * $costo / 100);
+				$valor_neto = $valor_neto + ($iva * $valor_neto / 100);
+			} else {
+				$valor_neto = $costo + ($flete * $costo / 100);
+			}
+			
+			$valor_ganancia = $venta - $valor_neto;
+			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
+			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
+
+			$edm = new EgresoDetalle();
+			$edm->egresodetalle_id = $egresodetalle_id;
+			$edm->get();
+			$edm->valor_ganancia = round(($valor_ganancia * $cantidad), 2);
+			$edm->save()	;		
+		}
+		
+		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
+	}
+
 	function balance() {
 		SessionHandler()->check_session();
 		$cbm = new ConfiguracionBalance();
