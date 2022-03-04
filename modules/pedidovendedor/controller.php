@@ -883,6 +883,7 @@ class PedidoVendedorController {
 			$pm->producto_id = $producto_id;
 			$pm->get();
 
+			$iva = $pm->iva;
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
