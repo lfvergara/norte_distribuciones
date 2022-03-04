@@ -171,8 +171,11 @@ class ReporteView extends View {
 		print $render;
 	}
 
-	function rentabilidad($array_valores) {
+	function rentabilidad($array_valores, $egreso_collection) {
 		$gui = file_get_contents("static/modules/reporte/rentabilidad.html");
+		$gui_tbl_egreso = file_get_contents("static/modules/reporte/tbl_egreso.html");
+		$gui_tbl_egreso = $this->render_regex_dict('TBL_EGRESO', $gui_tbl_egreso, $egreso_collection);
+		$render = str_replace('{tbl_egreso}', $gui_tbl_egreso, $gui);
 		$render = $this->render($array_valores, $gui);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
