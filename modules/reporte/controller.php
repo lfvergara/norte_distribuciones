@@ -1155,13 +1155,14 @@ class ReporteController {
 			$iva = $valor['IVA'];
 			$venta = $valor['PVP'];
 			$valor_ganancia = $valor['VALGAN'];
+			$cantidad = $valor['CANTIDAD'];
 
 			$valor_neto = $costo + ($flete * $costo / 100);
 			$valor_neto = $valor_neto + ($iva * $valor_neto / 100);
 			
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
-			$egresodetalle_collection[$clave]['VALGANREC'] = round($valor_ganancia, 2);
+			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
 			$egresodetalle_collection[$clave]['PORGAN'] = round($porcentaje_ganancia, 2);
 		}
 		
