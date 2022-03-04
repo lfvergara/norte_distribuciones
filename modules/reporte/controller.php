@@ -1161,6 +1161,7 @@ class ReporteController {
 			
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
+			$egresodetalle_collection[$clave]['VALGANREC'] = round($valor_ganancia, 2);
 			$egresodetalle_collection[$clave]['PORGAN'] = round($porcentaje_ganancia, 2);
 		}
 		
