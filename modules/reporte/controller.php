@@ -1128,7 +1128,6 @@ class ReporteController {
 		$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
 		$where = "eafip.egreso_id = {$egreso_id}";
 		$egresoafip = CollectorCondition()->get('EgresoAfip', $where, 4, $from, $select);
-		print_r($egresoafip);exit;
 
 		if (is_array($egresoafip)) {
 			$egresoafip = $egresoafip[0];
@@ -1148,6 +1147,7 @@ class ReporteController {
 				 productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "ed.egreso_id = {$egreso_id}";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
+		print_r($egresodetalle_collection);exit;
 
 		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
 	}
