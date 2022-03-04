@@ -171,6 +171,14 @@ class ReporteView extends View {
 		print $render;
 	}
 
+	function balance($array_valores) {
+		$gui = file_get_contents("static/modules/reporte/rentabilidad.html");
+		$render = $this->render($array_balances, $gui);
+		$render = $this->render_breadcrumb($render);
+		$template = $this->render_template($render);
+		print $template;
+	}
+
 	function balance($array_balances, $pagocomisiones_collection, $periodo, $obj_configuracionbalance, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia, $creditoproveedordetalle_collection) {
 		$gui = file_get_contents("static/modules/reporte/balance.html");
 		$gui_lbl_piechart_gasto = file_get_contents("static/modules/reporte/lbl_piechart_gasto.html");

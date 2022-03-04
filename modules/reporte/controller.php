@@ -1102,11 +1102,12 @@ class ReporteController {
 							   '{ganancia_real}'=>$ganancia_real,
 							   '{porcentaje_ganancia}'=>$porcentaje_ganancia,
 							   '{rentabilidad}'=>$rentabilidad,
-							   '{porcentaje_rentabilidad}'=>$porcentaje_rentabilidad);
+							   '{porcentaje_rentabilidad}'=>$porcentaje_rentabilidad,
+							   '{desde}'=>$desde,
+							   '{hasta}'=>$hasta);
 
 		foreach ($array_valores as $clave=>$valor) $array_valores[$clave] = number_format($valor, 2, ',', '.');
-		print_r($array_valores);exit;
-
+		$this->view->rentabilidad($array_valores);
 	}
 
 	function balance() {
