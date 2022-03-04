@@ -158,6 +158,7 @@
         </div>
     </div>
 </div>  
+<div class="col-md-4 col-sm-12 col-xs-12" id="div_visor"></div>  
 <!-- Datatables -->
 <script src="{url_static}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{url_static}vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -172,7 +173,13 @@
     } );
 
     function controlarRentabilidadVenta(egreso_id) {
-        document.getElementById('panel_reporte_producto').style.display = 'block';
-        document.getElementById('panel_reporte_marca').style.display = 'none';
+        var traer_venta_ajax = $.ajax({
+            url: '{url_app}/reporte/traer_venta_ajax/' + egreso_id,
+                dataType: 'text',
+                async: false
+        }).responseText;
+
+
+        document.getElementById('div_visor').innerHtml = traer_venta_ajax;
     }
 </script>
