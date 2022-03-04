@@ -1080,9 +1080,10 @@ class ReporteController {
 		$combustible = (is_array($combustible) AND !empty($combustible)) ? $combustible[0]['TOTAL'] : 0;
 		$combustible = (is_null($combustible)) ? 0 : $combustible;
 
+		//COMISION
 		$select = "ROUND(SUM(valor_abonado),2) AS ECOMISION";
-		$from = "egresocomision ec INNER JOIN egreso e ON ";
-		$where = "ec.estadocomision IN (2,3) AND ec.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$from = "egresocomision ec INNER JOIN egreso e ON ec.egresocomision_id = e.egresocomision";
+		$where = "ec.estadocomision IN (2,3) AND e.egreso_id IN ({$egreso_ids})";
 		$comision = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select);
 		$comision = (is_array($comision)) ? $comision[0]['ECOMISION'] : 0;
 		$comision = (is_null($comision)) ? 0 : $comision;
@@ -1249,6 +1250,7 @@ class ReporteController {
 		$suma_ingresos_per_actual = 0;
 		$suma_notacredito_per_actual = 0;
 		$total_ingresos_per_actual = 0;
+		$egreso_id_array = array();
 		if (is_array($egresos_collection) AND !empty($egresos_collection)) {
 			foreach ($egresos_collection as $clave=>$valor) {
 				$egreso_importe_total = $egresos_collection[$clave]['IMPORTETOTAL'];
@@ -1265,14 +1267,16 @@ class ReporteController {
 				}
 
 				$suma_ingresos_per_actual = $suma_ingresos_per_actual + $egreso_importe_total;
+				if(!in_array($egreso_id, $egreso_id_array)) $egreso_id_array[] = $egreso_id;
 			}
 		}
 
 		$total_ingresos_per_actual = $suma_ingresos_per_actual - $suma_notacredito_per_actual;
+		$ganancia_egreso_ids = implode(',', $egreso_id_array);
 
 		$select = "ROUND(SUM(valor_abonado),2) AS ECOMISION";
-		$from = "egresocomision ec";
-		$where = "ec.estadocomision IN (2,3) AND ec.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$from = "egresocomision ec INNER JOIN egreso e ON ec.egresocomision_id = e.egresocomision";
+		$where = "ec.estadocomision IN (2,3) AND e.egreso_id IN ({$ganancia_egreso_ids})";
 		$egreso_comision_per_actual = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select);
 		$egreso_comision_per_actual = (is_array($egreso_comision_per_actual)) ? $egreso_comision_per_actual[0]['ECOMISION'] : 0;
 		$egreso_comision_per_actual = (is_null($egreso_comision_per_actual)) ? 0 : $egreso_comision_per_actual;
@@ -1452,7 +1456,7 @@ class ReporteController {
 
 		$select = "ROUND(SUM(ed.valor_ganancia),2) AS GANANCIA";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
-		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND c.impacto_ganancia = 1";
+		$where = "e.egreso_id IN ({$ganancia_egreso_ids}) AND c.impacto_ganancia = 1";
 		$sum_ganancia_per_actual = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 		$sum_ganancia_per_actual = (is_array($sum_ganancia_per_actual) AND !empty($sum_ganancia_per_actual)) ? $sum_ganancia_per_actual[0]['GANANCIA'] : 0;
 		$sum_ganancia_per_actual = (is_null($sum_ganancia_per_actual)) ? 0 : $sum_ganancia_per_actual;
@@ -1473,7 +1477,7 @@ class ReporteController {
 
 		$select = "ROUND(SUM(ncd.valor_ganancia),2) AS GANANCIA";
 		$from = "notacredito nc INNER JOIN notacreditodetalle ncd ON nc.notacredito_id = ncd.notacredito_id INNER JOIN egreso e ON nc.egreso_id = e.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
-		$where = "date_format(nc.fecha, '%Y%m') = '{$periodo_actual}' AND c.impacto_ganancia = 1";
+		$where = "e.egreso_id IN ({$ganancia_egreso_ids}) AND c.impacto_ganancia = 1";
 		$rest_nc_ganancia_per_actual = CollectorCondition()->get('NotaCredito', $where, 4, $from, $select);
 		$rest_nc_ganancia_per_actual = (is_array($rest_nc_ganancia_per_actual) AND !empty($rest_nc_ganancia_per_actual)) ? $rest_nc_ganancia_per_actual[0]['GANANCIA'] : 0;
 		$rest_nc_ganancia_per_actual = (is_null($rest_nc_ganancia_per_actual)) ? 0 : $rest_nc_ganancia_per_actual;
@@ -1587,6 +1591,7 @@ class ReporteController {
 		$suma_ingresos_per_actual = 0;
 		$suma_notacredito_per_actual = 0;
 		$total_ingresos_per_actual = 0;
+		$egreso_id_array = array();
 		if (is_array($egresos_collection) AND !empty($egresos_collection)) {
 			foreach ($egresos_collection as $clave=>$valor) {
 				$egreso_importe_total = $egresos_collection[$clave]['IMPORTETOTAL'];
@@ -1603,14 +1608,16 @@ class ReporteController {
 				}
 
 				$suma_ingresos_per_actual = $suma_ingresos_per_actual + $egreso_importe_total;
+				if(!in_array($egreso_id, $egreso_id_array)) $egreso_id_array[] = $egreso_id;
 			}
 		}
 
 		$total_ingresos_per_actual = $suma_ingresos_per_actual - $suma_notacredito_per_actual;
+		$ganancia_egreso_ids = implode(',', $egreso_id_array);
 
 		$select = "ROUND(SUM(valor_abonado),2) AS ECOMISION";
-		$from = "egresocomision ec";
-		$where = "ec.estadocomision IN (2,3) AND ec.fecha BETWEEN '{$desde}' AND '{$hasta}'";
+		$from = "egresocomision ec INNER JOIN egreso e ON ec.egresocomision_id = e.egresocomision";
+		$where = "ec.estadocomision IN (2,3) AND e.egreso_id IN ({$ganancia_egreso_ids})";
 		$egreso_comision_per_actual = CollectorCondition()->get('EgresoComision', $where, 4, $from, $select);
 		$egreso_comision_per_actual = (is_array($egreso_comision_per_actual)) ? $egreso_comision_per_actual[0]['ECOMISION'] : 0;
 		$egreso_comision_per_actual = (is_null($egreso_comision_per_actual)) ? 0 : $egreso_comision_per_actual;
@@ -1802,17 +1809,16 @@ class ReporteController {
 		$sum_contado_per_actual = (is_array($sum_contado_per_actual) AND !empty($sum_contado_per_actual)) ? $sum_contado_per_actual[0]['CONTADO'] : 0;
 		$sum_contado_per_actual = (is_null($sum_contado_per_actual)) ? 0 : $sum_contado_per_actual;
 
-
 		$select = "ROUND(SUM(ed.valor_ganancia),2) AS GANANCIA";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
-		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND c.impacto_ganancia = 1";
+		$where = "e.egreso_id IN ({$ganancia_egreso_ids}) AND c.impacto_ganancia = 1";
 		$sum_ganancia_per_actual = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 		$sum_ganancia_per_actual = (is_array($sum_ganancia_per_actual) AND !empty($sum_ganancia_per_actual)) ? $sum_ganancia_per_actual[0]['GANANCIA'] : 0;
 		$sum_ganancia_per_actual = (is_null($sum_ganancia_per_actual)) ? 0 : $sum_ganancia_per_actual;
 
 		$select = "ROUND(SUM(ncd.valor_ganancia),2) AS GANANCIA";
 		$from = "notacredito nc INNER JOIN notacreditodetalle ncd ON nc.notacredito_id = ncd.notacredito_id INNER JOIN egreso e ON nc.egreso_id = e.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id";
-		$where = "nc.fecha BETWEEN '{$desde}' AND '{$hasta}' AND c.impacto_ganancia = 1";
+		$where = "e.egreso_id IN ({$ganancia_egreso_ids}) AND c.impacto_ganancia = 1";
 		$rest_nc_ganancia_per_actual = CollectorCondition()->get('NotaCredito', $where, 4, $from, $select);
 		$rest_nc_ganancia_per_actual = (is_array($rest_nc_ganancia_per_actual) AND !empty($rest_nc_ganancia_per_actual)) ? $rest_nc_ganancia_per_actual[0]['GANANCIA'] : 0;
 		$rest_nc_ganancia_per_actual = (is_null($rest_nc_ganancia_per_actual)) ? 0 : $rest_nc_ganancia_per_actual;
