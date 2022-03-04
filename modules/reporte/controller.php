@@ -1199,7 +1199,7 @@ class ReporteController {
 		//$tipofactura = $em->tipofactura->tipofactura_id;
 		$select = "ed.codigo_producto AS CODIGO, ed.descripcion_producto AS DESCRIPCION, ed.cantidad AS CANTIDAD, pu.denominacion AS UNIDAD, ed.descuento AS DESCUENTO, ed.valor_descuento AS VD, ed.costo_producto AS PVP, ed.neto_producto AS COSTO, ROUND(ed.importe, 2) AS IMPORTE, ed.iva AS IVA, ed.flete_producto AS FLETE, ed.valor_ganancia AS VALGAN, e.tipofactura AS TIPFAC, ed.egresodetalle_id AS EGRDETID";
 		$from = "egresodetalle ed INNER JOIN producto p ON ed.producto_id = p.producto_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id INNER JOIN egreso e ON ed.egreso_id = e.egreso_id";
-		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND ed.egresodetalle_id BETWEEN 15001 AND 17973";
+		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND ed.egresodetalle_id BETWEEN 1 AND 3000";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
 		foreach ($egresodetalle_collection as $clave=>$valor) {
@@ -1212,14 +1212,9 @@ class ReporteController {
 			$tipofactura = $valor['TIPFAC'];
 			$egresodetalle_id = $valor['EGRDETID'];
 			$descuento = $valor['VD'];
-
-			if ($tipofactura == 2) {
-				$valor_neto = $costo + ($flete * $costo / 100);
-				$valor_neto = $valor_neto + ($iva * $valor_neto / 100);
-			} else {
-				$valor_neto = $costo + ($flete * $costo / 100);
-			}
 			
+			$valor_neto = $costo + ($flete * $costo / 100);
+			$valor_neto = $valor_neto + ($iva * $valor_neto / 100);
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
 			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
