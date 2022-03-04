@@ -182,7 +182,7 @@ class ReporteView extends View {
 		print $template;
 	}
 
-	function traer_venta_ajax($obj_egreso, $egresodetalle_collection) {
+	function traer_venta_ajax($obj_egreso, $egresodetalle_collection, $array_valores) {
 		$gui = file_get_contents("static/modules/reporte/control_egreso_ajax.html");
 		$gui_tbl_egresodetalle = file_get_contents("static/modules/reporte/tbl_egresodetalle_rentabilidad.html");
 		$gui_tbl_egresodetalle = $this->render_regex_dict('TBL_EGRESODETALLE', $gui_tbl_egresodetalle, $egresodetalle_collection);
@@ -204,6 +204,7 @@ class ReporteView extends View {
 		$render = str_replace('{tbl_egresodetalle_rentabilidad}', $gui_tbl_egresodetalle, $gui);
 		$render = str_replace('{referencia_calculos_rentabilidad}', $gui_referencia_calculos_rentabilidad, $render);
 		$render = $this->render($obj_egreso, $render);
+		$render = $this->render($array_valores, $render);
 		print $render;
 	}
 

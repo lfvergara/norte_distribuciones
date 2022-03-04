@@ -1124,6 +1124,7 @@ class ReporteController {
 		$em = new Egreso();
 		$em->egreso_id = $egreso_id;
 		$em->get();
+		$importe_total = $em->importe_total;
 		$select = "eafip.punto_venta AS PUNTO_VENTA, eafip.numero_factura AS NUMERO_FACTURA, tf.nomenclatura AS TIPOFACTURA, eafip.cae AS CAE, eafip.vencimiento AS FVENCIMIENTO, eafip.fecha AS FECHA, tf.tipofactura_id AS TF_ID";
 		$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
 		$where = "eafip.egreso_id = {$egreso_id}";
@@ -1149,6 +1150,7 @@ class ReporteController {
 		$where = "ed.egreso_id = {$egreso_id}";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
 
+		$ganancia_total = 0;
 		foreach ($egresodetalle_collection as $clave=>$valor) {
 			$costo = $valor['COSTO'];
 			$flete = $valor['FLETE'];
@@ -1171,9 +1173,13 @@ class ReporteController {
 			$egresodetalle_collection[$clave]['IMPVEN'] = round(($venta * $cantidad), 2);
 			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
 			$egresodetalle_collection[$clave]['PORGAN'] = round($porcentaje_ganancia, 2);
+			$ganancia_total = $ganancia_total + $valor_ganancia;
 		}
+
+		$porcentaje_ganancia_total = $ganancia_total * 100 / $importe_total;
+		$array_valores = array('{ganancia_total}'=>$ganancia_total, '{porcentaje_ganancia_total}'=>$porcentaje_ganancia_total);
 		
-		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
+		$this->view->traer_venta_ajax($em, $egresodetalle_collection, $array_valores);
 	}
 
 	function refactorizar() {
