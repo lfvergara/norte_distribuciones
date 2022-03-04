@@ -1104,9 +1104,7 @@ class ReporteController {
 							   '{rentabilidad}'=>$rentabilidad,
 							   '{porcentaje_rentabilidad}'=>$porcentaje_rentabilidad);
 
-		foreach ($array_valores as $clave=>$valor) {
-			$array_valores[$clave] = round($valor, 2);
-		}
+		foreach ($array_valores as $clave=>$valor) $array_valores[$clave] = number_format($valor, 2, ',', '.');
 		print_r($array_valores);exit;
 
 	}
