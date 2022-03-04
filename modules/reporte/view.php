@@ -189,7 +189,7 @@ class ReporteView extends View {
 		$obj_vendedor = $obj_egreso->vendedor;
 		unset($obj_cliente->infocontacto_collection, $obj_cliente->vendedor, $obj_vendedor->infocontacto_collection, $obj_cliente->flete, $obj_egreso->egresoentrega, $obj_egreso->cliente, $obj_egreso->vendedor);
 
-		print_r($obj_egreso);
+		print_r($obj_egreso);exit;
 	}
 
 	function balance($array_balances, $pagocomisiones_collection, $periodo, $obj_configuracionbalance, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia, $creditoproveedordetalle_collection) {

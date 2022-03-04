@@ -1147,8 +1147,7 @@ class ReporteController {
 				 productounidad pu ON p.productounidad = pu.productounidad_id";
 		$where = "ed.egreso_id = {$egreso_id}";
 		$egresodetalle_collection = CollectorCondition()->get('EgresoDetalle', $where, 4, $from, $select);
-		print_r($egresodetalle_collection);exit;
-
+		
 		$this->view->traer_venta_ajax($em, $egresodetalle_collection);
 	}
 
