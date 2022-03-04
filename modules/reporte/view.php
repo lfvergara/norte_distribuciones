@@ -194,6 +194,8 @@ class ReporteView extends View {
 		$obj_egreso->numero_factura = str_pad($obj_egreso->numero_factura, 8, '0', STR_PAD_LEFT);
 		$tipofactura = $obj_egreso->tipofactura->tipofactura_id;
 		$obj_egreso = $this->set_dict($obj_egreso);
+		$obj_cliente = $this->set_dict($obj_cliente);
+		$obj_vendedor = $this->set_dict($obj_vendedor);
 
 		if ($tipofactura == 2) {
 			$gui_referencia_calculos_rentabilidad = file_get_contents("static/modules/reporte/referencia_calculos_rentabilidad_r.html");
@@ -204,6 +206,8 @@ class ReporteView extends View {
 		$render = str_replace('{tbl_egresodetalle_rentabilidad}', $gui_tbl_egresodetalle, $gui);
 		$render = str_replace('{referencia_calculos_rentabilidad}', $gui_referencia_calculos_rentabilidad, $render);
 		$render = $this->render($obj_egreso, $render);
+		$render = $this->render($obj_cliente, $render);
+		$render = $this->render($obj_vendedor, $render);
 		$render = $this->render($array_valores, $render);
 		print $render;
 	}
