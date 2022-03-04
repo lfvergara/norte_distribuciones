@@ -4175,11 +4175,11 @@ ul.notifications {
     margin-top: 4px;
 }
 @media (max-width: 460px) {
-    .dataTables_wrapper .col-sm-6 {
+    .dataTables_wrapper .col-sm-3 {
         width: 100%;
         margin-bottom: 5px;
     }
-    .dataTables_wrapper .col-sm-6 .dataTables_filter {
+    .dataTables_wrapper .col-sm-9 .dataTables_filter {
         float: none;
     }
 }
