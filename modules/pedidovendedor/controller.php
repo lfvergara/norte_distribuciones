@@ -887,14 +887,9 @@ class PedidoVendedorController {
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
-
-			if ($tipofactura == 2) {
-				$valor_neto = $neto + ($iva * $neto / 100);
-				$valor_neto = $valor_neto + ($flete * $valor_neto / 100);
-			} else {
-				$valor_neto = $neto + ($flete * $neto / 100);
-			}
 			
+			$valor_neto = $neto + ($iva * $neto / 100);
+			$valor_neto = $valor_neto + ($flete * $valor_neto / 100);						
 			$total_neto = $valor_neto * $cantidad;
 			$total_pvp = $costo_producto * $cantidad;
 			$ganancia = round(($total_pvp - $total_neto),2);
