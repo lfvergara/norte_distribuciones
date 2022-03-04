@@ -1128,7 +1128,7 @@ class ReporteController {
 		$from = "egresoafip eafip INNER JOIN tipofactura tf ON eafip.tipofactura = tf.tipofactura_id";
 		$where = "eafip.egreso_id = {$egreso_id}";
 		$egresoafip = CollectorCondition()->get('EgresoAfip', $where, 4, $from, $select);
-		print_r($em);exit;
+		print_r($egresoafip);exit;
 
 		if (is_array($egresoafip)) {
 			$egresoafip = $egresoafip[0];
