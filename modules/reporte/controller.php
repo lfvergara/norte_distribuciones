@@ -1170,8 +1170,9 @@ class ReporteController {
 			
 			$valor_ganancia = $venta - $valor_neto;
 			$porcentaje_ganancia = $valor_ganancia * 100 / $venta;
+			$importe_neto = $valor_neto * $cantidad;
 			$egresodetalle_collection[$clave]['NETO'] = number_format($valor_neto, 2, ',', '.');
-			$egresodetalle_collection[$clave]['IMPNET'] = number_format(($valor_neto * $cantidad), 2, ',', '.');
+			$egresodetalle_collection[$clave]['IMPNET'] = number_format($importe_neto, 2, ',', '.');
 			$egresodetalle_collection[$clave]['IMPVEN'] = round(($venta * $cantidad), 2);
 			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
 			$egresodetalle_collection[$clave]['PORGAN'] = round($porcentaje_ganancia, 2);
