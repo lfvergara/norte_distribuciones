@@ -1158,6 +1158,7 @@ class ReporteController {
 			$venta = $valor['PVP'];
 			$valor_ganancia = $valor['VALGAN'];
 			$cantidad = $valor['CANTIDAD'];
+			$ganancia_total = $ganancia_total + $valor_ganancia;
 
 			if ($tipofactura == 2) {
 				$valor_neto = $costo + ($flete * $costo / 100);
@@ -1173,11 +1174,10 @@ class ReporteController {
 			$egresodetalle_collection[$clave]['IMPVEN'] = round(($venta * $cantidad), 2);
 			$egresodetalle_collection[$clave]['VALGANREC'] = round(($valor_ganancia * $cantidad), 2);
 			$egresodetalle_collection[$clave]['PORGAN'] = round($porcentaje_ganancia, 2);
-			$ganancia_total = $ganancia_total + $valor_ganancia;
 		}
 
 		$porcentaje_ganancia_total = $ganancia_total * 100 / $importe_total;
-		$array_valores = array('{ganancia_total}'=>$ganancia_total, '{porcentaje_ganancia_total}'=>$porcentaje_ganancia_total);
+		$array_valores = array('{ganancia_total}'=>round($ganancia_total, 2), '{porcentaje_ganancia_total}'=>round($porcentaje_ganancia_total, 2));
 		
 		$this->view->traer_venta_ajax($em, $egresodetalle_collection, $array_valores);
 	}
