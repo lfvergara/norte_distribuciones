@@ -673,6 +673,7 @@ class EgresoController {
 			$neto = $pm->costo;
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
+			$iva = $pm->iva;
 
 			if ($tipofactura == 2) {
 				$valor_neto = $neto + ($iva * $neto / 100);
@@ -682,8 +683,8 @@ class EgresoController {
 			}
 			
 			$total_neto = $valor_neto * $cantidad;
-			$ganancia_temp = $total_neto * ($porcentaje_ganancia / 100 + 1);
-			$ganancia = round(($ganancia_temp - $total_neto),2);
+			$total_pvp = $costo_producto * $cantidad;
+			$ganancia = round(($total_pvp - $total_neto),2);
 			$ganancia_final = $ganancia - $valor_descuento;
 			$ganancia_final = round($ganancia_final, 2);
 
