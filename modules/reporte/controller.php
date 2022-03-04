@@ -1020,7 +1020,7 @@ class ReporteController {
 		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}'";
 		$egresos_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
-		$suma_facturacion = 0;
+		$ventas = 0;
 		$suma_notacredito = 0;
 		$facturacion = 0;
 		$egreso_id_array = array();
@@ -1039,12 +1039,12 @@ class ReporteController {
 					$suma_notacredito = $suma_notacredito + $importe_notacredito;
 				}
 
-				$suma_facturacion = $suma_facturacion + $egreso_importe_total;
+				$ventas = $ventas + $egreso_importe_total;
 				if(!in_array($egreso_id, $egreso_id_array)) $egreso_id_array[] = $egreso_id;
 			}
 		}
 		
-		$facturacion = $suma_facturacion - $suma_notacredito;
+		$facturacion = $ventas - $suma_notacredito;
 		$egreso_ids = implode(',', $egreso_id_array);
 
 		//GANANCIA NOTAS DE CREDITO
@@ -1093,6 +1093,7 @@ class ReporteController {
 		$porcentaje_rentabilidad = $rentabilidad * 100 / $facturacion;
 		$array_valores = array('{ganancia}'=>$ganancia,
 							   '{ganancia_notacredito}'=>$ganancia_notacredito,
+							   '{ventas}'=>$ventas,
 							   '{facturacion}'=>$facturacion,
 							   '{notacredito}'=>$suma_notacredito,
 							   '{salario}'=>$salario,
