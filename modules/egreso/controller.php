@@ -43,38 +43,6 @@ class EgresoController {
 		$where = "e.fecha >= {$dias_minimo} ORDER BY e.fecha DESC";
 		$egreso_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
-		$select = "ROUND(SUM(e.importe_total),2) AS CONTADO";
-		$from = "egreso e";
-		$where = "e.condicionpago = 2";
-		$sum_contado = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
-		$sum_contado = (is_array($sum_contado)) ? $sum_contado[0]['CONTADO'] : 0;
-
-		$select = "ROUND(SUM(ccc.importe),2) AS CUENTACORRIENTE";
-		$from = "cuentacorrientecliente ccc";
-		$where = "ccc.tipomovimientocuenta = 2";
-		$sum_cuntacorriente = CollectorCondition()->get('CuentaCorrienteCliente', $where, 4, $from, $select);
-		$sum_cuntacorriente = (is_array($sum_cuntacorriente)) ? $sum_cuntacorriente[0]['CUENTACORRIENTE'] : 0;
-		$total_facturado = $sum_contado + $sum_cuntacorriente;
-
-		$select = "ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 1 THEN ccc.importe ELSE 0 END),2) AS TDEUDA,
-				   ROUND(SUM(CASE WHEN ccc.tipomovimientocuenta = 2 THEN ccc.importe ELSE 0 END),2) AS TINGRESO";
-		$from = "cuentacorrientecliente ccc";
-		$cuentacorriente_total = CollectorCondition()->get('CuentaCorrienteCliente', NULL, 4, $from, $select);
-		if (is_array($cuentacorriente_total)) {
-			$cuentacorriente_deuda = $cuentacorriente_total[0]['TDEUDA'];
-			$cuentacorriente_deuda = (is_null($cuentacorriente_deuda)) ? 0 : $cuentacorriente_deuda;
-
-			$cuentacorriente_ingreso = $cuentacorriente_total[0]['TINGRESO'];
-			$cuentacorriente_ingreso = (is_null($cuentacorriente_ingreso)) ? 0 : $cuentacorriente_ingreso;
-
-			$deuda_cuentacorrientecliente = $cuentacorriente_deuda - $cuentacorriente_ingreso;
-		} else {
-			$deuda_cuentacorrientecliente = 0;
-		}
-
-		$array_totales = array('{total_facturado}'=>$total_facturado,
-							   '{deuda_cuentacorrientecliente}'=>$deuda_cuentacorrientecliente);
-
 		switch ($arg) {
 			case 1:
 				$array_msj = array('{mensaje}'=>'[INFO] Se ha registrado la venta',
@@ -103,7 +71,7 @@ class EgresoController {
 				break;
 		}
 
-		$this->view->listar($egreso_collection, $array_msj, $array_totales);
+		$this->view->listar($egreso_collection, $array_msj);
 	}
 
 	function egresar() {
