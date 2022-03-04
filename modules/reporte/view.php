@@ -184,12 +184,12 @@ class ReporteView extends View {
 
 	function traer_egreso_ajax($obj_egreso, $egresodetalle_collection) {
 		$gui = file_get_contents("static/modules/reporte/control_egreso_ajax.html");
+		print_r($obj_egreso);exit;
 
 		$obj_cliente = $obj_egreso->cliente;
 		$obj_vendedor = $obj_egreso->vendedor;
 		unset($obj_cliente->infocontacto_collection, $obj_cliente->vendedor, $obj_vendedor->infocontacto_collection, $obj_cliente->flete, $obj_egreso->egresoentrega, $obj_egreso->cliente, $obj_egreso->vendedor);
 
-		print_r($obj_egreso);exit;
 	}
 
 	function balance($array_balances, $pagocomisiones_collection, $periodo, $obj_configuracionbalance, $vehiculocombustible_collection, $producto_collection, $productomarca_collection, $salario_collection, $ganancia_vendedor_dia, $creditoproveedordetalle_collection) {
