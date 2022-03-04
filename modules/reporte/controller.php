@@ -1185,7 +1185,8 @@ class ReporteController {
 		}
 
 		$porcentaje_ganancia_total = $ganancia_total * 100 / $importe_total;
-		$array_valores = array('{ganancia_total}'=>round($ganancia_total, 2), '{porcentaje_ganancia_total}'=>round($porcentaje_ganancia_total, 2));
+		$array_valores = array('{ganancia_total}'=>number_format($ganancia_total, 2, ',', '.'), 
+							   '{porcentaje_ganancia_total}'=>number_format($porcentaje_ganancia_total, 2, ',', '.'));
 		
 		$this->view->traer_venta_ajax($em, $egresodetalle_collection, $array_valores);
 	}
