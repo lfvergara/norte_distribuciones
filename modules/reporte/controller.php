@@ -2760,7 +2760,7 @@ class ReporteController {
 
 		$libro_iva_compras = LibroIvaCompras::get_libro_iva_compras($desde, $hasta);
 		$subtitulo = "LIBRO IVA COMPRAS: {$desde} - {$hasta}";
-		$array_encabezados = array('Fecha', 'Cla', 'Comprobante', 'Proveedor', 'CUIT', 'Neto', 'Exento', 'I.V.A.', 'IVa D/10.5', 'IVA D/27', 'Imp.Internos', 'Ret.IVA', 'Ret.IIBB', 'Per.IVA', 'Per.IIBB', 'Per.GAN', 'C.No Gravado', 'Imp TEM', 'Per IIBB', 'CF', 'Total');
+		$array_encabezados = array('Fecha', 'Cla', 'Comprobante', 'Proveedor', 'CUIT', 'Neto', 'Exento', 'I.V.A.', 'IVa D/10.5', 'IVA D/27', 'Imp.Internos', 'Ret.IVA', 'Ret.IIBB', 'Per.IVA', 'Per.IIBB', 'Per.GAN', 'C.No Gravado', 'Imp TEM', 'Per IIBB CF', 'Total');
 		$array_exportacion = array();
 		$array_exportacion[] = $array_encabezados;
 		$total_neto = 0;
