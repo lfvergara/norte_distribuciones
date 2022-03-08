@@ -2753,7 +2753,7 @@ class ReporteController {
 	function generar_libro_iva_compras() {
 		SessionHandler()->check_session();
 		require_once 'core/helpers/libroIVAVentas.php';
-		require_once "tools/excelreport.php";
+		//require_once "tools/excelreport.php";
 		//PARAMETROS
 		$desde = filter_input(INPUT_POST, 'desde');
 		$hasta = filter_input(INPUT_POST, 'hasta');
