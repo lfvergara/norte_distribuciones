@@ -2824,8 +2824,8 @@ class ReporteController {
 		$array_exportacion[] = array('', '', '', 'Neto', $total_neto, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 		$array_exportacion[] = array('', '', '', 'Exento', $total_exento, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 		$array_exportacion[] = array('', '', '', 'I.v.a.', $total_iva, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-		$array_exportacion[] = array('', '', '', 'Iva D/10.5', $total_iva10, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
-		$array_exportacion[] = array('', '', '', 'Iva D/27', $total_iva27, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', 'Iva D/10.5', $total_iva_10, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', 'Iva D/27', $total_iva_27, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 		$array_exportacion[] = array('', '', '', 'Impuestos', $total_impint, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 		$array_exportacion[] = array('', '', '', 'Retencion Iva', $total_retiva, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 		$array_exportacion[] = array('', '', '', 'Retencion IIBB', $total_retiibb, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
