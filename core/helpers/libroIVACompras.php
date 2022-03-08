@@ -5,6 +5,7 @@ class LibroIvaCompras {
 					date_format(i.fecha, '%d/%m/%Y') AS FECHA,
 				    'FT' AS CLA,
 				    CONCAT(tf.nomenclatura, ' ', LPAD(i.punto_venta, 5, 0), '-', LPAD(i.numero_factura, 8, 0)) AS COMPROBANTE,
+				    p.razon_social AS PROVEEDOR,
 				    p.documento AS CUIT,
 				    i.costo_total AS NETO,
 				    '0' AS EXENTO,

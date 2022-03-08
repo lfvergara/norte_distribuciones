@@ -2798,6 +2798,7 @@ class ReporteController {
 			$array_temp = array($valor["FECHA"]
 								, $valor["CLA"]
 								, $valor["COMPROBANTE"]
+								, $valor["PROVEEDOR"]
 								, $valor["CUIT"]
 								, $valor["NETO"]
 								, $valor["EXENTO"]
