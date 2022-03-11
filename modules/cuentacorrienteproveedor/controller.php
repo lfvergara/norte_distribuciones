@@ -20,9 +20,9 @@ class CuentaCorrienteProveedorController {
 
 	function panel() {
     	SessionHandler()->check_session();
-    	$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT ROUND(SUM(dccp.importe),2) FROM
+    	$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT FORMAT((SUM(dccp.importe)), 2,'de_DE') FROM
     			   cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 1 AND dccp.proveedor_id = ccp.proveedor_id) AS DEUDA,
-				   (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND
+				   (SELECT FORMAT((SUM(dccp.importe)), 2,'de_DE') FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND
 				   dccp.proveedor_id = ccp.proveedor_id) AS INGRESO";
 		$from = "cuentacorrienteproveedor ccp INNER JOIN proveedor p ON ccp.proveedor_id = p.proveedor_id";
 		$groupby = "ccp.proveedor_id";
