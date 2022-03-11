@@ -20,13 +20,18 @@ class CuentaCorrienteProveedorController {
 
 	function panel() {
     	SessionHandler()->check_session();
-    	$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT FORMAT((SUM(dccp.importe)), 2,'de_DE') FROM
+    	$select = "ccp.proveedor_id AS PID, p.razon_social AS PROVEEDOR, (SELECT ROUND(SUM(dccp.importe),2) FROM
     			   cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 1 AND dccp.proveedor_id = ccp.proveedor_id) AS DEUDA,
-				   (SELECT FORMAT((SUM(dccp.importe)), 2,'de_DE') FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND
+				   (SELECT ROUND(SUM(dccp.importe),2) FROM cuentacorrienteproveedor dccp WHERE dccp.tipomovimientocuenta = 2 AND
 				   dccp.proveedor_id = ccp.proveedor_id) AS INGRESO";
 		$from = "cuentacorrienteproveedor ccp INNER JOIN proveedor p ON ccp.proveedor_id = p.proveedor_id";
 		$groupby = "ccp.proveedor_id";
 		$cuentacorriente_collection = CollectorCondition()->get('CuentaCorrienteProveedor', NULL, 4, $from, $select, $groupby);
+		foreach ($cuentacorriente_collection as $clave=>$valor) {
+			$cuentacorriente_collection[$clave]['DEUDA'] = number_format($valor['DEUDA'], 2, ',', '.');
+			$cuentacorriente_collection[$clave]['INGRESO'] = number_format($valor['INGRESO'], 2, ',', '.');
+		}
+
 
 		$select = "ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 1 THEN ccp.importe ELSE 0 END),2) AS TDEUDA,
 				   ROUND(SUM(CASE WHEN ccp.tipomovimientocuenta = 2 THEN ccp.importe ELSE 0 END),2) AS TINGRESO";
