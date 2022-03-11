@@ -815,3 +815,35 @@ CREATE TABLE IF NOT EXISTS almacen (
 ALTER TABLE `usuario` ADD `almacen` INT NULL DEFAULT '1' AFTER `nivel`, ADD INDEX (`almacen`);
 ALTER TABLE `usuario` ADD FOREIGN KEY (`almacen`) REFERENCES `almacen`(`almacen_id`) ON DELETE SET NULL ON UPDATE RESTRICT;
 ALTER TABLE `stock` ADD `almacen_id` INT NULL DEFAULT '1' AFTER `producto_id`, ADD INDEX (`almacen_id`);
+
+CREATE TABLE IF NOT EXISTS cierrehojaruta (
+    cierrehojaruta_id INT(11) NOT NULL 
+        AUTO_INCREMENT PRIMARY KEY
+    , fecha DATE
+    , hora TIME
+    , rendicion FLOAT
+    , hojaruta_id INT(11)
+    , cobrador INT(11)
+    , INDEX (cobrador)
+    , FOREIGN KEY (cobrador)
+        REFERENCES cobrador (cobrador_id)
+        ON DELETE SET NULL
+) ENGINE=InnoDb;
+
+CREATE TABLE IF NOT EXISTS detallecierrehojaruta (
+    detallecierrehojaruta_id INT(11) NOT NULL 
+        AUTO_INCREMENT PRIMARY KEY
+    , importe FLOAT
+    , egreso_id INT(11)
+    , cierrehojaruta_id INT(11)
+    , ingresotipopago INT(11)
+    , INDEX (ingresotipopago)
+    , FOREIGN KEY (ingresotipopago)
+        REFERENCES ingresotipopago (ingresotipopago_id)
+        ON DELETE SET NULL
+    , estadoentrega INT(11)
+    , INDEX (estadoentrega)
+    , FOREIGN KEY (estadoentrega)
+        REFERENCES estadoentrega (estadoentrega_id)
+        ON DELETE SET NULL
+) ENGINE=InnoDb;
