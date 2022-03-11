@@ -528,8 +528,7 @@ class HojaRutaController {
 		$chrm->cobrador = $cobrador_id;
 		$chrm->save();
 		$cierrehojaruta_id = $chrm->cierrehojaruta_id;
-		print_r($cierrehojaruta_id);exit;
-
+		
 		$array_egreso_ids = array();
 		$rendicion = 0;
 		foreach ($egreso_estadoentrega_array as $clave=>$valor) {
