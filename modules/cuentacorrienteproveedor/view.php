@@ -16,7 +16,7 @@ class CuentaCorrienteProveedorView extends View {
 			$class = ($cuenta >= 0) ? 'info' : 'danger';
 			$cuenta = abs($cuenta);
 			$balance_temp = $balance_temp + $cuenta;
-			$cuentacorriente_collection[$clave]['CUENTA'] = ($cuenta > 0.5) ? $cuenta : 0;
+			$cuentacorriente_collection[$clave]['CUENTA'] = ($cuenta > 0.5) ? number_format($cuenta, 2, ',', '.') : 0;
 			$cuentacorriente_collection[$clave]['CLASS'] = $class;
 
 		}
