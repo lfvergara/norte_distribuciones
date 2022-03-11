@@ -527,7 +527,8 @@ class HojaRutaController {
 		$chrm->hojaruta_id = $hojaruta_id;
 		$chrm->cobrador = $cobrador_id;
 		$chrm->save();
-		$cierrehojaruta = $chrm->cierrehojaruta_id;
+		$cierrehojaruta_id = $chrm->cierrehojaruta_id;
+		print_r($cierrehojaruta_id);exit;
 
 		$array_egreso_ids = array();
 		$rendicion = 0;
