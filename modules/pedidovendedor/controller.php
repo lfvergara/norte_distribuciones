@@ -878,6 +878,7 @@ class PedidoVendedorController {
 			$costo_producto = $egreso['costo'];
 			$valor_descuento = $egreso['importe_descuento'];
 			$importe = $egreso['costo_total'];
+			$descuento = $egreso['descuento'];
 
 			$pm = new Producto();
 			$pm->producto_id = $producto_id;
@@ -888,33 +889,48 @@ class PedidoVendedorController {
 			$flete = $pm->flete;
 			$porcentaje_ganancia = $pm->porcentaje_ganancia;
 			
+			//PRECIO NETO
 			$valor_neto = $neto + ($iva * $neto / 100);
 			$valor_neto = $valor_neto + ($flete * $valor_neto / 100);						
+			//PRECIO VENTA
+			$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
+			
+			//IMPORTE NETO
 			$total_neto = $valor_neto * $cantidad;
-			$total_pvp = $costo_producto * $cantidad;
+			//IMPORTE VENTA
+			$total_pvp = $pvp * $cantidad;
+
+			//DESCUENTO
+			$valor_descuento_recalculado = $descuento * $total_pvp / 100;
+
+			//GANANCIA FINAL
 			$ganancia = round(($total_pvp - $total_neto),2);
-			$ganancia_final = $ganancia - $valor_descuento;
+			$ganancia_final = $ganancia - $valor_descuento_recalculado;
 			$ganancia_final = round($ganancia_final, 2);
+
+			//IMPORTE FINAL
+			$importe_final = $total_pvp - $valor_descuento_recalculado;
+			$importe_final = round($importe_final, 2);
 
 			$edm = new EgresoDetalle();
 			$edm->codigo_producto = $egreso['codigo'];
 			$edm->descripcion_producto = $egreso['descripcion'];
 			$edm->cantidad = $cantidad;
-			$edm->valor_descuento = $valor_descuento;
-			$edm->descuento = $egreso['descuento'];
+			$edm->valor_descuento = round($valor_descuento_recalculado, 2);
+			$edm->descuento = $descuento;
 			$edm->neto_producto = $neto;
-			$edm->costo_producto = $costo_producto;
-			$edm->iva = $egreso['iva'];
-			$edm->importe = $importe;
+			$edm->costo_producto = round($pvp, 2);
+			$edm->iva = $iva;
+			$edm->importe = $importe_final;
 			$edm->valor_ganancia = $ganancia_final;
-			$edm->producto_id = $egreso['producto_id'];
+			$edm->producto_id = $producto_id;
 			$edm->egreso_id = $egreso_id;
 			$edm->egresodetalleestado = 1;
 			$edm->flete_producto = $flete;
 			$edm->save();
 			$egresodetalle_ids[] = $edm->egresodetalle_id;
 
-			$importe_control = $importe_control + $importe;
+			$importe_control = $importe_control + $importe_final;
 		}
 
 		$select = "ed.producto_id AS PRODUCTO_ID, ed.codigo_producto AS CODIGO, ed.cantidad AS CANTIDAD";
