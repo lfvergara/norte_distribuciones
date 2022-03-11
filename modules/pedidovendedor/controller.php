@@ -499,17 +499,40 @@ class PedidoVendedorController {
 			$descuento = $valor['DESCUENTO'];
 			$iva = $valor['IVA'];
 
-			$costo_flete = $costo + (($costo * $flete) / 100);
-			$costo_iva = (($costo_flete * $iva) / 100) + $costo_flete;
-			$valor_ganancia = $costo_iva * $ganancia / 100;
-			$valor_venta = $costo_iva + $valor_ganancia;
+			$pm = new Producto();
+			$pm->producto_id = $producto_id;
+			$pm->get();
 
-			$cantidad_total = $valor_venta * $cantidad;
-        	$importe_descuento = $cantidad_total * $descuento / 100;
-        	$importe_final = round(($cantidad_total - $importe_descuento), 2);
+			$iva = $pm->iva;
+			$neto = $pm->costo;
+			$flete = $pm->flete;
+			$porcentaje_ganancia = $pm->porcentaje_ganancia;
+			
+			//PRECIO NETO
+			$valor_neto = $neto + ($iva * $neto / 100);
+			$valor_neto = $valor_neto + ($flete * $valor_neto / 100);						
+			//PRECIO VENTA
+			$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
+			
+			//IMPORTE NETO
+			$total_neto = $valor_neto * $cantidad;
+			//IMPORTE VENTA
+			$total_pvp = $pvp * $cantidad;
 
-        	$importe_total_control = round(($importe_total_control + $importe_final),2);
+			//DESCUENTO
+			$valor_descuento_recalculado = $descuento * $total_pvp / 100;
+
+			//GANANCIA FINAL
+			$ganancia = round(($total_pvp - $total_neto),2);
+			$ganancia_final = $ganancia - $valor_descuento_recalculado;
+			$ganancia_final = round($ganancia_final, 2);
+
+			//IMPORTE FINAL
+			$importe_final = $total_pvp - $valor_descuento_recalculado;
+			$importe_final = round($importe_final, 2);
+
         	$pedidovendedordetalle_collection[$clave]['IMPORTE'] = $importe_final;
+        	$pedidovendedordetalle_collection[$clave]['VD'] = $valor_descuento_recalculado;
 
         	$select = "MAX(s.stock_id) AS STOCK_ID";
 			$from = "stock s";
@@ -529,6 +552,8 @@ class PedidoVendedorController {
 			} else {
 				$pedidovendedordetalle_collection[$clave]["CLASS_ROW"] = '';
 			}
+
+			$importe_total_control = $importe_total_control + $importe_final;
 		}
 
 		if ($importe_total != $importe_total_control) {
