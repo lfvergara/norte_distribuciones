@@ -33,7 +33,7 @@ class CierreHojaRutaController {
     	$from = "detallecierrehojaruta dchr INNER JOIN ingresotipopago ON dchr.ingresotipopago = itp.ingresotipopago_id INNER JOIN estadoentrega ee ON dchr.estadoentrega = ee.estadoentrega_id INNER JOIN egreso e ON dchr.egreso_id = e.egreso_id LEFT JOIN egrosafip eafip ON e.egreso_id = eafip.egreso_id";
     	$where = "dchr.cierrehojaruta_id = {$cierrehojaruta_id}";
     	$detallecierrehojaruta_collection = CollectorCondition()->get('DetalleCierreHojaRuta', $where, 4, $from, $select);
-
+    	print_r($detallecierrehojaruta_collection);exit;
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
 	}	
 }
