@@ -12,6 +12,17 @@ class CierreHojaRutaView extends View {
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
+	}
+
+	function consultar($detallecierrehojaruta_collection, $obj_cierrehojaruta) {
+		$gui = file_get_contents("static/modules/cierrehojaruta/consultar.html");
+		$gui_tbl_detallecierrehojaruta = file_get_contents("static/modules/cierrehojaruta/tbl_detallecierrehojaruta.html");
+		$gui_tbl_detallecierrehojaruta = $this->render_regex_dict('TBL_DETALLECIERREHOJARUTA', $gui_tbl_detallecierrehojaruta, $detallecierrehojaruta_collection);
+
+		$render = str_replace('{tbl_detallecierrehojaruta}', $gui_tbl_detallecierrehojaruta, $gui);
+		$render = $this->render_breadcrumb($render);
+		$template = $this->render_template($render);
+		print $template;
 	}	
 }
 ?>
