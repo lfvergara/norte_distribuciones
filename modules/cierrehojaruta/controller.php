@@ -49,7 +49,7 @@ class CierreHojaRutaController {
     	$hasta = filter_input(INPUT_POST, 'hasta');
     	$cobrador = filter_input(INPUT_POST, 'cobrador');
 
-    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, chr.rendicion AS RENDICION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
+    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, round(chr.rendicion,2) AS RENDICION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
     	$from = "cierrehojaruta chr INNER JOIN cobrador c ON chr.cobrador = c.cobrador_id";
     	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' AND chr.cobrador = {$cobrador} ORDER BY chr.cierrehojaruta_id DESC";
     	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
