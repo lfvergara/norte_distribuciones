@@ -53,6 +53,8 @@ class CierreHojaRutaController {
     	$from = "cierrehojaruta chr INNER JOIN cobrador c ON chr.cobrador = c.cobrador_id";
     	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' AND chr.cobrador = {$cobrador} ORDER BY chr.cierrehojaruta_id DESC";
     	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
+    	$rendicion_total = 0;
+    	foreach ($cierrehojaruta_collection as $clave=>$valor) $rendicion_total = $rendicion_total + $valor['RENDICION'];
     	
     	$cobrador_collection = Collector()->get('Cobrador');
     	foreach ($cobrador_collection as $clave=>$valor) {
@@ -62,6 +64,7 @@ class CierreHojaRutaController {
     	$cm = new Cobrador();
     	$cm->cobrador_id = $cobrador;
     	$cm->get();
+    	$cm->rendicion_total = $rendicion_total;
 
     	$this->view->buscar($cierrehojaruta_collection, $cobrador_collection, $cm);
 	}	
