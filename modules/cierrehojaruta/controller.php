@@ -56,7 +56,7 @@ class CierreHojaRutaController {
     	$rendicion_total = 0;
     	foreach ($cierrehojaruta_collection as $clave=>$valor) {
     		$rendicion_total = $rendicion_total + $valor['RENDICION'];
-    		$cierrehojaruta_collection[$clave]['RENDICION'] = number_format($valor['RENDICION'], 2, ',', '.');
+    		$cierrehojaruta_collection[$clave]['RENDICION'] = number_format($cierrehojaruta_collection[$clave]['RENDICION'], 2, ',', '.');
     	}
     	
     	$cobrador_collection = Collector()->get('Cobrador');
