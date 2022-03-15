@@ -20,6 +20,7 @@ class CierreHojaRutaView extends View {
 		$gui_tbl_detallecierrehojaruta = $this->render_regex_dict('TBL_DETALLECIERREHOJARUTA', $gui_tbl_detallecierrehojaruta, $detallecierrehojaruta_collection);
 
 		$obj_cierrehojaruta->rendicion = number_format($obj_cierrehojaruta->rendicion, 2, ',', '.');
+		$obj_cierrehojaruta->fecha = $this->reacomodar_fecha($obj_cierrehojaruta->fecha);
 		$obj_cierrehojaruta = $this->set_dict($obj_cierrehojaruta);
 
 		$render = str_replace('{tbl_detallecierrehojaruta}', $gui_tbl_detallecierrehojaruta, $gui);
