@@ -20,7 +20,13 @@ class CierreHojaRutaController {
     	$from = "cierrehojaruta chr INNER JOIN cobrador c ON chr.cobrador = c.cobrador_id";
     	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' ORDER BY chr.cierrehojaruta_id DESC";
     	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
-    	$this->view->panel($cierrehojaruta_collection);
+    	
+    	$cobrador_collection = CollectorCondition()->get('Cobrador');
+    	foreach ($cobrador_collection as $clave=>$valor) {
+    		if ($valor->flete_id == 0 OR $valor->oculto == 1) unset($cobrador_collection[$clave]);
+    	}
+
+    	$this->view->panel($cierrehojaruta_collection, $cobrador_collection);
 	}
 
 	function consultar($arg) {
