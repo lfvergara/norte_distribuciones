@@ -3,6 +3,7 @@ require_once "modules/cierrehojaruta/model.php";
 require_once "modules/cierrehojaruta/view.php";
 require_once "modules/detallecierrehojaruta/model.php";
 require_once "modules/hojaruta/model.php";
+require_once "modules/cobrador/model.php";
 
 
 class CierreHojaRutaController {
