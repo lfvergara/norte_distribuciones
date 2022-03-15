@@ -26,6 +26,7 @@ class CierreHojaRutaController {
     	foreach ($cobrador_collection as $clave=>$valor) {
     		if ($valor->flete_id == 0 OR $valor->oculto == 1) unset($cobrador_collection[$clave]);
     	}
+    	print_r($cobrador_collection);exit;
 
     	$this->view->panel($cierrehojaruta_collection, $cobrador_collection);
 	}
