@@ -49,12 +49,15 @@ class CierreHojaRutaController {
     	$hasta = filter_input(INPUT_POST, 'hasta');
     	$cobrador = filter_input(INPUT_POST, 'cobrador');
 
-    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, FORMAT(chr.rendicion, 2,'de_DE') AS RENDICION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
+    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, chr.rendicion AS RENDICION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
     	$from = "cierrehojaruta chr INNER JOIN cobrador c ON chr.cobrador = c.cobrador_id";
     	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' AND chr.cobrador = {$cobrador} ORDER BY chr.cierrehojaruta_id DESC";
     	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
     	$rendicion_total = 0;
-    	foreach ($cierrehojaruta_collection as $clave=>$valor) $rendicion_total = $rendicion_total + $valor['RENDICION'];
+    	foreach ($cierrehojaruta_collection as $clave=>$valor) {
+    		$rendicion_total = $rendicion_total + $valor['RENDICION'];
+    		$cierrehojaruta_collection[$clave]['RENDICION'] = number_format($valor['RENDICION'], 2, ',', '.');
+    	}
     	
     	$cobrador_collection = Collector()->get('Cobrador');
     	foreach ($cobrador_collection as $clave=>$valor) {
@@ -64,7 +67,7 @@ class CierreHojaRutaController {
     	$cm = new Cobrador();
     	$cm->cobrador_id = $cobrador;
     	$cm->get();
-    	$cm->rendicion_total = $rendicion_total;
+    	$cm->rendicion_total = number_format($rendicion_total, 2, ',', '.');
 
     	$this->view->buscar($cierrehojaruta_collection, $cobrador_collection, $cm);
 	}	
