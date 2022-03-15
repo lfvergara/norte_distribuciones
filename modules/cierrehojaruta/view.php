@@ -8,7 +8,7 @@ class CierreHojaRutaView extends View {
 		$gui_slt_cobrador = file_get_contents("static/common/slt_cobrador.html");
 		$gui_tbl_cierrehojaruta = file_get_contents("static/modules/cierrehojaruta/tbl_cierrehojaruta.html");
 
-		$cobrador_collection = $this->order_collection_objects($cobrador_collection, 'denominacion', SORT_ASC);
+		$cobrador_collection = $this->order_collection_objects($cobrador_collection, 'denominacion', 'SORT_ASC');
 		$gui_slt_cobrador = $this->render_regex('SLT_COBRADOR', $gui_slt_cobrador, $cobrador_collection);
 		$gui_tbl_cierrehojaruta = $this->render_regex_dict('TBL_CIERREHOJARUTA', $gui_tbl_cierrehojaruta, $cierrehojaruta_collection);
 		$render = str_replace('{tbl_cierrehojaruta}', $gui_tbl_cierrehojaruta, $gui);
