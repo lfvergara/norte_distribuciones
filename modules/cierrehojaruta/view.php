@@ -19,7 +19,10 @@ class CierreHojaRutaView extends View {
 		$gui_tbl_detallecierrehojaruta = file_get_contents("static/modules/cierrehojaruta/tbl_detallecierrehojaruta.html");
 		$gui_tbl_detallecierrehojaruta = $this->render_regex_dict('TBL_DETALLECIERREHOJARUTA', $gui_tbl_detallecierrehojaruta, $detallecierrehojaruta_collection);
 
+		$obj_cierrehojaruta = $this->set_dict($obj_cierrehojaruta);
+
 		$render = str_replace('{tbl_detallecierrehojaruta}', $gui_tbl_detallecierrehojaruta, $gui);
+		$render = $this->render($obj_cierrehojaruta, $render);
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
