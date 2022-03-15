@@ -41,6 +41,29 @@ class CierreHojaRutaController {
     	$where = "dchr.cierrehojaruta_id = {$cierrehojaruta_id}";
     	$detallecierrehojaruta_collection = CollectorCondition()->get('DetalleCierreHojaRuta', $where, 4, $from, $select);
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
+	}
+
+	function buscar() {
+    	SessionHandler()->check_session();
+    	$desde = filter_input(INPUT_POST, 'desde');
+    	$hasta = filter_input(INPUT_POST, 'hasta');
+    	$cobrador = filter_input(INPUT_POST, 'cobrador');
+
+    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, FORMAT(chr.rendicion, 2,'de_DE') AS RENDICION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
+    	$from = "cierrehojaruta chr INNER JOIN cobrador c ON chr.cobrador = c.cobrador_id";
+    	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' AND chr.cobrador = {$cobrador} ORDER BY chr.cierrehojaruta_id DESC";
+    	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
+    	
+    	$cobrador_collection = Collector()->get('Cobrador');
+    	foreach ($cobrador_collection as $clave=>$valor) {
+    		if ($valor->flete_id == 0 OR $valor->oculto == 1) unset($cobrador_collection[$clave]);
+    	}
+
+    	$cm = new Cobrador();
+    	$cm->cobrador_id = $cobrador;
+    	$cm->get();
+
+    	$this->view->buscar($cierrehojaruta_collection, $cobrador_collection, $cm);
 	}	
 }
 ?>
