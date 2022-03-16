@@ -691,18 +691,18 @@ class EgresoController {
 
 			//GANANCIA FINAL
 			$ganancia = round(($total_pvp - $total_neto),2);
-			$ganancia_final = $ganancia - $valor_descuento;
+			$ganancia_final = $ganancia - $valor_descuento_recalculado;
 			$ganancia_final = round($ganancia_final, 2);
 
 			//IMPORTE FINAL
-			$importe_final = $total_pvp - $valor_descuento;
+			$importe_final = $total_pvp - $valor_descuento_recalculado;
 			$importe_final = round($importe_final, 2);
 
 			$edm = new EgresoDetalle();
 			$edm->codigo_producto = $egreso['codigo'];
 			$edm->descripcion_producto = $egreso['descripcion'];
 			$edm->cantidad = $cantidad;
-			$edm->valor_descuento = round($valor_descuento, 2);
+			$edm->valor_descuento = round($valor_descuento_recalculado, 2);
 			$edm->descuento = $descuento;
 			$edm->neto_producto = $neto;
 			$edm->costo_producto = round($costo_producto, 2);
