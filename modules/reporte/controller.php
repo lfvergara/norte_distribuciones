@@ -1844,7 +1844,7 @@ class ReporteController {
 		//GANANCIA DIARIA
 		$select = "v.vendedor_id, FORMAT((SUM(ed.valor_ganancia)), 2,'de_DE') AS GANANCIA, CONCAT(v.apellido, ' ', v.nombre) AS VENDEDOR";
 		$from = "egreso e INNER JOIN egresodetalle ed ON e.egreso_id = ed.egreso_id INNER JOIN cliente c ON e.cliente = c.cliente_id INNER JOIN vendedor v ON e.vendedor = v.vendedor_id";
-		$where = "e.fecha = '{$fecha_sys}' AND c.impacto_ganancia = 1";
+		$where = "e.fecha BETWEEN '{$desde}' AND '{$hasta}' AND c.impacto_ganancia = 1";
 		$groupby = "v.vendedor_id";
 		$ganancia_vendedor_dia = CollectorCondition()->get('Egreso', $where, 4, $from, $select, $groupby);
 		$ganancia_vendedor_dia = (is_array($ganancia_vendedor_dia) AND !empty($ganancia_vendedor_dia)) ? $ganancia_vendedor_dia : array();
