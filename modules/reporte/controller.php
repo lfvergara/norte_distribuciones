@@ -2716,8 +2716,9 @@ class ReporteController {
 		$hasta = '2022-02-28';
 		$libro_iibb_ventas = LibroIIBBVentas::get_libro_iibb_ventas($desde, $hasta);
 
+		$directorio = URL_PRIVATE . "percepcion/";
 		$archivo = 'SAP-LARIOJA';
-		$fp = fopen($archivo, "a" )or die("Unable to open file!");
+		$fp = fopen($directorio . $archivo, "a" )or die("Unable to open file!");
 
 		foreach ($libro_iibb_ventas as $clave=>$valor) {
 			$linea = '';
