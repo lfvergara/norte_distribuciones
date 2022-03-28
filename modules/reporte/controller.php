@@ -2712,10 +2712,7 @@ class ReporteController {
 		$desde = filter_input(INPUT_POST, 'desde');
 		$hasta = filter_input(INPUT_POST, 'hasta');
 
-		$desde = '2022-02-01';
-		$hasta = '2022-02-28';
 		$libro_iibb_ventas = LibroIIBBVentas::get_libro_iibb_ventas($desde, $hasta);
-
 		$directorio = URL_PRIVATE . "percepcion/";
 		$archivo = 'SAP-LARIOJA.txt';
 		$fp = fopen($directorio . $archivo, "a" )or die("Unable to open file!");
@@ -2736,7 +2733,7 @@ class ReporteController {
 		header('Content-Length: ' . filesize($directorio . $archivo));
 		header("Content-Type: text/plain");
 		readfile($directorio . $archivo);
-		unlink($directorio . $archivo);
+		
 		exit;
 	}
 
