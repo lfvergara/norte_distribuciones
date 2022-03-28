@@ -2708,7 +2708,7 @@ class ReporteController {
 	function generar_libro_iibb_ventas() {
 		SessionHandler()->check_session();
 		require_once 'core/helpers/libroIIBBVentas.php';
-		
+		/*
 		//PARAMETROS
 		$desde = filter_input(INPUT_POST, 'desde');
 		$hasta = filter_input(INPUT_POST, 'hasta');
@@ -2735,6 +2735,7 @@ class ReporteController {
 		header('Content-Length: ' . filesize($archivo));
 		header("Content-Type: text/plain");
 		readfile($archivo);
+		*/
 		exit;
 	}
 
