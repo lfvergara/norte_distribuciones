@@ -2735,7 +2735,7 @@ class ReporteController {
 		header('Pragma: public');
 		header('Content-Length: ' . filesize($directorio . $archivo));
 		header("Content-Type: text/plain");
-		readfile($archivo);
+		readfile($directorio . $archivo);
 		
 		exit;
 	}
