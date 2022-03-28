@@ -2725,8 +2725,8 @@ class ReporteController {
 			fwrite($fp, $linea);	
 		}
 
-		/*
 		fclose($fp);
+		/*
 		header('Content-Description: File Transfer');
 		header('Content-Disposition: attachment; filename='.$archivo;
 		header('Expires: 0');
