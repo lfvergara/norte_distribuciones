@@ -11,7 +11,7 @@ class LibroIIBBVentas {
 				    LPAD((round((e.importe_total / 1.22), 2)), 13, ' ') AS BASE_IMPONIBLE,
 				    LPAD('1.00', 6, ' ') AS ALICUOTA,
 				    LPAD((round((1 * (e.importe_total / 1.22) / 100), 2)), 13, ' ') AS PERCEPCION,
-				    LPAD(eafip.numero, 8, 0) AS COMPROBANTE
+				    LPAD(eafip.numero_factura, 8, 0) AS COMPROBANTE
 				FROM 
 					egreso e INNER JOIN cliente c ON e.cliente = c.cliente_id INNER JOIN				    
 				    egresoafip eafip ON e.egreso_id = eafip.egreso_id
