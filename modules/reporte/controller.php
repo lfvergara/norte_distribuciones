@@ -2723,7 +2723,8 @@ class ReporteController {
 		foreach ($libro_iibb_ventas as $clave=>$valor) {
 			$linea = '';
 			$linea = $valor['DOC'] . $valor['IIBB'] . $valor['CLIENTE'] . $valor['DOMICILIO'] . $valor['FECHA'] . $valor['IMPORTE_TOTAL'] . $valor['BASE_IMPONIBLE'] . $valor['ALICUOTA'] . $valor['PERCEPCION'];
-			fwrite($fp, $linea);	
+			fwrite($fp, $linea);
+			fwrite($fp, "\r\n");
 		}
 
 		fclose($fp);
