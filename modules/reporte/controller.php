@@ -2717,7 +2717,7 @@ class ReporteController {
 		$libro_iibb_ventas = LibroIIBBVentas::get_libro_iibb_ventas($desde, $hasta);
 
 		$directorio = URL_PRIVATE . "percepcion/";
-		$archivo = 'SAP-LARIOJA';
+		$archivo = 'SAP-LARIOJA.txt';
 		$fp = fopen($directorio . $archivo, "a" )or die("Unable to open file!");
 
 		foreach ($libro_iibb_ventas as $clave=>$valor) {
