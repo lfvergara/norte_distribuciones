@@ -35,6 +35,7 @@ class Cliente extends StandardObject {
         $this->oculto = 0;
 		$this->ordenentrega = 0;
 		$this->entregaminima = 0;		
+        $this->ingresosbrutos = 0;       
 		$this->observacion = '';
         $this->provincia = $provincia;
         $this->documentotipo = $documentotipo;
