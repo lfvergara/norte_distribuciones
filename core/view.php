@@ -17,16 +17,18 @@ abstract class View {
         $user_id = $_SESSION["data-login-" . APP_ABREV]["usuario-usuario_id"];
         $configuracionmenu = $_SESSION["data-login-" . APP_ABREV]["usuario-configuracionmenu"];
 
+        /*
         if ($user_id == 13 OR $user_id == 31) {
           $display_balance = 'none';
-        }else {
+        } else {
           $display_balance = ($user_level == 1) ? 'none' : 'block';
         }
+        */
 
         $display_operador = ($user_level == 1) ? 'none' : 'block';
         $sidebar = $this->render_menu($configuracionmenu);
         $sidebar = str_replace('{display_operador}', $display_operador, $sidebar);
-        $sidebar = str_replace('{display_balance}', $display_balance, $sidebar);
+        //$sidebar = str_replace('{display_balance}', $display_balance, $sidebar);
 
         $dict = array("{app_nombre}"=>APP_TITTLE,
                       "{app_version}"=>APP_VERSION,

@@ -623,6 +623,95 @@
         </div>
     </div>
 </div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel hidden-print" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%; background: #d9534f; color: #FFF;">
+            <div class="x_title" style="padding-left: 2%;">
+                <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Libro IVA Ventas</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class=" form">
+                    <form class="form" id="formulario_guardar" method="post" action="{url_app}/reporte/generar_libro_iva_ventas">
+                        <div class="form-group col-lg-6">
+                            <label>Desde</label>
+                            <input type="date" class="form-control" id="desde" name="desde" required>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Hasta</label>
+                            <input type="date" class="form-control" id="hasta" name="hasta" required>
+                        </div>
+                        <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                            <button class="btn btn-xs btn-primary" type="submit" style="width: 100%; background: #2a8a2a; border-color: #2a8a2a;"> <i class="fa fa-download"></i> Generar </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel hidden-print" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%; background: #d9534f; color: #FFF;">
+            <div class="x_title" style="padding-left: 2%;">
+                <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Libro IVA Compras</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class=" form">
+                    <form class="form" id="formulario_guardar" method="post" action="{url_app}/reporte/generar_libro_iva_compras">
+                        <div class="form-group col-lg-6">
+                            <label>Desde</label>
+                            <input type="date" class="form-control" id="desde" name="desde" required>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Hasta</label>
+                            <input type="date" class="form-control" id="hasta" name="hasta" required>
+                        </div>
+                        <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                            <button class="btn btn-xs btn-primary" type="submit" style="width: 100%; background: #2a8a2a; border-color: #2a8a2a;"> <i class="fa fa-download"></i> Generar </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel hidden-print" style="padding-left: 0px; padding-right: 0px; margin-bottom: 2%; background: #d9534f; color: #FFF;">
+            <div class="x_title" style="padding-left: 2%;">
+                <h2><i class="fa fa-search"></i>&nbsp;&nbsp; Libro IIBB Ventas</h2>
+                <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a></li>
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class=" form">
+                    <form class="form" id="formulario_guardar" method="post" action="{url_app}/reporte/generar_libro_iibb_ventas">
+                        <div class="form-group col-lg-6">
+                            <label>Desde</label>
+                            <input type="date" class="form-control" id="desde" name="desde" required>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>Hasta</label>
+                            <input type="date" class="form-control" id="hasta" name="hasta" required>
+                        </div>
+                        <div class="form-group col-lg-12" style="margin-top: 2%;" align="right">
+                            <button class="btn btn-xs btn-primary" type="submit" style="width: 100%; background: #2a8a2a; border-color: #2a8a2a;"> <i class="fa fa-download"></i> Generar </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Datatables -->
 <script src="{url_static}vendors/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="{url_static}vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
