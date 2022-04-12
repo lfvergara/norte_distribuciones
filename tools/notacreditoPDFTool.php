@@ -31,7 +31,7 @@ class NotaCreditoPDF extends View {
         $obj_cliente = $this->set_dict($obj_cliente);
 
         $notascreditodetalle_collection = (is_array($notascreditodetalle_collection)) ? $notascreditodetalle_collection : array();
-        $new_array = array_chunk($notascreditodetalle_collection, 14);
+        $new_array = array_chunk($notascreditodetalle_collection, 12);
         $contenido = '';
         foreach ($new_array as $notascreditodetalle_array) {
             $gui_notacreditoNC = file_get_contents("static/common/plantillas_facturas/notacreditoNC.html");
