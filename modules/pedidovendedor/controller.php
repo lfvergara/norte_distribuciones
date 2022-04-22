@@ -528,6 +528,7 @@ class PedidoVendedorController {
 			$total_neto = $valor_neto * $cantidad;
         	//$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			//IMPORTE VENTA
+			print_r($pvp_factura);exit;
 			$total_pvp = $pvp_factura * $cantidad;
 
 			//DESCUENTO
@@ -537,7 +538,6 @@ class PedidoVendedorController {
 			$ganancia = round(($total_pvp - $total_neto),2);
 			$ganancia_final = $ganancia - $valor_descuento_recalculado;
 			$ganancia_final = round($ganancia_final, 2);
-			print_r($total_pvp);exit;
 			//IMPORTE FINAL
 			$importe_final = $total_pvp - $valor_descuento_recalculado;
 			$importe_final = round($importe_final, 2);
