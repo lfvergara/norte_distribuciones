@@ -958,19 +958,11 @@ class PedidoVendedorController {
 			$valor_neto = $valor_neto + ($flete * $valor_neto / 100);						
 			//PRECIO VENTA
 			$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
-
-			//PRECIO VENTA AL MOMENTO DE LA FACTURACIÓN
-			$valor_por_listaprecio = $porcentaje_listaprecio * $costo_producto / 100;
-			if ($condicion_listaprecio == '+') {
-				$pvp_factura = $costo_producto + $valor_por_listaprecio;						
-			} elseif ($condicion_listaprecio == '-') {
-				$pvp_factura = $costo_producto - $valor_por_listaprecio;
-			}
 			
 			//IMPORTE NETO
 			$total_neto = $valor_neto * $cantidad;
 			//IMPORTE VENTA
-			$total_pvp = $pvp_factura * $cantidad;
+			$total_pvp = $costo_producto * $cantidad;
 
 			//DESCUENTO
 			$valor_descuento_recalculado = $descuento * $total_pvp / 100;
@@ -991,7 +983,7 @@ class PedidoVendedorController {
 			$edm->valor_descuento = round($valor_descuento_recalculado, 2);
 			$edm->descuento = $descuento;
 			$edm->neto_producto = $neto;
-			$edm->costo_producto = round($pvp_factura, 2);
+			$edm->costo_producto = round($costo_producto, 2);
 			$edm->iva = $iva;
 			$edm->importe = $importe_final;
 			$edm->valor_ganancia = $ganancia_final;
