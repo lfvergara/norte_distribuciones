@@ -715,7 +715,7 @@ class EgresoController {
 			$edm->valor_descuento = round($valor_descuento_recalculado, 2);
 			$edm->descuento = $descuento;
 			$edm->neto_producto = $neto;
-			$edm->costo_producto = round($costo_producto, 2);
+			$edm->costo_producto = round($pvp_factura, 2);
 			$edm->iva = $iva;
 			$edm->importe = $importe_final;
 			$edm->valor_ganancia = $ganancia_final;
