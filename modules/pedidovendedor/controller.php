@@ -520,14 +520,13 @@ class PedidoVendedorController {
 			$valor_por_listaprecio = $porcentaje_listaprecio * $pvp / 100;
 			if ($condicion_listaprecio == '+') {
 				$pvp_factura = $pvp + $valor_por_listaprecio;						
-        		$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			} elseif ($condicion_listaprecio == '-') {
 				$pvp_factura = $pvp - $valor_por_listaprecio;
-        		$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			}
 			
 			//IMPORTE NETO
 			$total_neto = $valor_neto * $cantidad;
+        	//$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			//IMPORTE VENTA
 			$total_pvp = $pvp_factura * $cantidad;
 
