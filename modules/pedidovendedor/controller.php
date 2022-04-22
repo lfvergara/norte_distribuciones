@@ -517,11 +517,11 @@ class PedidoVendedorController {
 			$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
 
 			//PRECIO VENTA AL MOMENTO DE LA FACTURACIÓN
-			$valor_por_listaprecio = $porcentaje_listaprecio * $costo_producto / 100;
+			$valor_por_listaprecio = $porcentaje_listaprecio * $pvp / 100;
 			if ($condicion_listaprecio == '+') {
-				$pvp_factura = $costo_producto + $valor_por_listaprecio;						
+				$pvp_factura = $pvp + $valor_por_listaprecio;						
 			} elseif ($condicion_listaprecio == '-') {
-				$pvp_factura = $costo_producto - $valor_por_listaprecio;
+				$pvp_factura = $pvp - $valor_por_listaprecio;
 			}
 			
 			//IMPORTE NETO
