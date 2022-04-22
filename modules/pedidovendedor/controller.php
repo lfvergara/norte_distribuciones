@@ -526,9 +526,9 @@ class PedidoVendedorController {
 			
 			//IMPORTE NETO
 			$total_neto = $valor_neto * $cantidad;
-        	//$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			//IMPORTE VENTA
-			print_r($pvp_factura);exit;
+			
+        	$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			$total_pvp = $pvp_factura * $cantidad;
 
 			//DESCUENTO
