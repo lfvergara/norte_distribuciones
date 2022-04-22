@@ -520,8 +520,10 @@ class PedidoVendedorController {
 			$valor_por_listaprecio = $porcentaje_listaprecio * $pvp / 100;
 			if ($condicion_listaprecio == '+') {
 				$pvp_factura = $pvp + $valor_por_listaprecio;						
+        		$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			} elseif ($condicion_listaprecio == '-') {
 				$pvp_factura = $pvp - $valor_por_listaprecio;
+        		$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 			}
 			
 			//IMPORTE NETO
@@ -543,7 +545,6 @@ class PedidoVendedorController {
 
         	$pedidovendedordetalle_collection[$clave]['IMPORTE'] = $importe_final;
         	$pedidovendedordetalle_collection[$clave]['VD'] = $valor_descuento_recalculado;
-        	//$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 
         	$select = "MAX(s.stock_id) AS STOCK_ID";
 			$from = "stock s";
