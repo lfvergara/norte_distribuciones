@@ -493,7 +493,7 @@ class PedidoVendedorController {
 		$importe_total_control = 0;
 		$flag_error = 0;
 		foreach ($pedidovendedordetalle_collection as $clave=>$valor) {
-        	$producto_id = $valor['PRODUCTO'];
+			$producto_id = $valor['PRODUCTO'];
 			$costo = $valor['COSTO'];
 			$flete = $valor['FLETE'];
 			$ganancia = $valor['VALGAN'];
@@ -527,7 +527,8 @@ class PedidoVendedorController {
 			//IMPORTE NETO
 			$total_neto = $valor_neto * $cantidad;
 			//IMPORTE VENTA
-			$total_pvp = $pvp_factura * $cantidad;			
+			
+			$total_pvp = $pvp_factura * $cantidad;
 
 			//DESCUENTO
 			$valor_descuento_recalculado = $descuento * $total_pvp / 100;
@@ -540,6 +541,7 @@ class PedidoVendedorController {
 			$importe_final = $total_pvp - $valor_descuento_recalculado;
 			$importe_final = round($importe_final, 2);
 
+        	$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
         	$pedidovendedordetalle_collection[$clave]['IMPORTE'] = $importe_final;
         	$pedidovendedordetalle_collection[$clave]['VD'] = $valor_descuento_recalculado;
 
