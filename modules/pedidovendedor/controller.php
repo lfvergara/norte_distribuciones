@@ -543,6 +543,7 @@ class PedidoVendedorController {
 
         	$pedidovendedordetalle_collection[$clave]['IMPORTE'] = $importe_final;
         	$pedidovendedordetalle_collection[$clave]['VD'] = $valor_descuento_recalculado;
+        	$pedidovendedordetalle_collection[$clave]['COSTO'] = $pvp_factura;
 
         	$select = "MAX(s.stock_id) AS STOCK_ID";
 			$from = "stock s";
