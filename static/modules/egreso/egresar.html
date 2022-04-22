@@ -296,10 +296,11 @@
     }
 
     function seleccionarProducto(producto_id) {
+        cliente_id = document.getElementById('cliente').value;
         ini_producto_id = producto_id;
         document.getElementById('producto').value = producto_id;
         var form_producto = $.ajax({
-            url: '{url_app}/egreso/traer_formulario_producto_ajax/' + producto_id,
+            url: '{url_app}/egreso/traer_formulario_producto_ajax/' + producto_id + "@" + cliente_id,
                 dataType: 'text',
                 async: false
         }).responseText;
