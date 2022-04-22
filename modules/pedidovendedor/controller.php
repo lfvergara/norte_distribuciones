@@ -467,6 +467,8 @@ class PedidoVendedorController {
 		$cm = new Cliente();
 		$cm->cliente_id = $cliente_id;
 		$cm->get();
+		$condicion_listaprecio = $cm->listaprecio->condicion;
+		$porcentaje_listaprecio = $cm->listaprecio->porcentaje;
 
 		$select = "p.producto_id AS PRODUCTO_ID, CONCAT(pm.denominacion, ' ', p.denominacion) AS DENOMINACION, pc.denominacion AS CATEGORIA, p.codigo AS CODIGO, p.stock_minimo AS STMINIMO, p.stock_ideal AS STIDEAL, p.costo as COSTO, p.iva AS IVA, p.porcentaje_ganancia AS GANANCIA, (((p.costo * p.porcentaje_ganancia)/100)+p.costo) AS VENTA";
 		$from = "producto p INNER JOIN productocategoria pc ON p.productocategoria = pc.productocategoria_id INNER JOIN productomarca pm ON p.productomarca = pm.productomarca_id INNER JOIN productounidad pu ON p.productounidad = pu.productounidad_id LEFT JOIN productodetalle pd ON p.producto_id = pd.producto_id LEFT JOIN proveedor prv ON pd.proveedor_id = prv.proveedor_id";
@@ -513,11 +515,19 @@ class PedidoVendedorController {
 			$valor_neto = $valor_neto + ($flete * $valor_neto / 100);						
 			//PRECIO VENTA
 			$pvp = $valor_neto + ($porcentaje_ganancia * $valor_neto / 100);
+
+			//PRECIO VENTA AL MOMENTO DE LA FACTURACIÓN
+			$valor_por_listaprecio = $porcentaje_listaprecio * $costo_producto / 100;
+			if ($condicion_listaprecio == '+') {
+				$pvp_factura = $costo_producto + $valor_por_listaprecio;						
+			} elseif ($condicion_listaprecio == '-') {
+				$pvp_factura = $costo_producto - $valor_por_listaprecio;
+			}
 			
 			//IMPORTE NETO
 			$total_neto = $valor_neto * $cantidad;
 			//IMPORTE VENTA
-			$total_pvp = $pvp * $cantidad;
+			$total_pvp = $pvp_factura * $cantidad;
 
 			//DESCUENTO
 			$valor_descuento_recalculado = $descuento * $total_pvp / 100;
