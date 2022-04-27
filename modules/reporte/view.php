@@ -263,13 +263,14 @@ class ReporteView extends View {
 		print $template;
 	}
 
-	function reportes($sum_importe_producto, $sum_cantidad_producto, $vendedor_collection, $producto_collection, $gastocategoria_collection, $productomarca_collection, $proveedor_collection,$user_level,$clientes_collection) {
+	function reportes($sum_importe_producto, $sum_cantidad_producto, $vendedor_collection, $producto_collection, $gastocategoria_collection, $productomarca_collection, $proveedor_collection,$user_level,$clientes_collection, $almacen_collection) {
 		$gui = file_get_contents("static/modules/reporte/reportes.html");
 		$tbl_proveedor = file_get_contents("static/modules/reporte/tbl_proveedor.html");
 		$tbl_productos = file_get_contents("static/modules/reporte/tbl_productos_array.html");
 		$tbl_productomarcas = file_get_contents("static/modules/reporte/tbl_productomarcas.html");
 		$tbl_vendedor = file_get_contents("static/modules/reporte/tbl_vendedor.html");
 
+		$slt_almacen = file_get_contents("static/common/slt_almacen.html");
 		$tbl_producto = file_get_contents("static/modules/reporte/tbl_producto_array.html");
 		$tbl_productomarca = file_get_contents("static/modules/reporte/tbl_productomarca.html");
 		$slt_productomarca = file_get_contents("static/common/slt_productomarca.html");
@@ -277,6 +278,7 @@ class ReporteView extends View {
 		$tbl_sum_importe_producto = file_get_contents("static/modules/reporte/tbl_sum_importe_producto.html");
 		$tbl_sum_cantidad_producto = file_get_contents("static/modules/reporte/tbl_sum_cantidad_producto.html");
 		
+		$slt_almacen = $this->render_regex('SLT_ALMACEN', $slt_almacen, $almacen_collection);
 		$tbl_producto = $this->render_regex_dict('TBL_PRODUCTO', $tbl_producto, $producto_collection);
 		$tbl_productomarca = $this->render_regex('TBL_PRODUCTOMARCA', $tbl_productomarca, $productomarca_collection);
 		$slt_productomarca = $this->render_regex('SLT_PRODUCTOMARCA', $slt_productomarca, $productomarca_collection);
@@ -336,6 +338,7 @@ class ReporteView extends View {
 		$render = str_replace('{tbl_vendedor}', $tbl_vendedor, $render);
 		$render = str_replace('{tbl_proveedor}', $tbl_proveedor, $render);
 		$render = str_replace('{slt_vendedor}', $gui_slt_vendedor, $render);
+		$render = str_replace('{slt_almacen}', $slt_almacen, $render);
 		$render = str_replace('{tbl_productos}', $tbl_productos, $render);
 		$render = str_replace('{tbl_productomarcas}', $tbl_productomarcas, $render);
 		$render = $this->render_breadcrumb($render);
