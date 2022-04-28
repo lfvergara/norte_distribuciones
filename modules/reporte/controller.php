@@ -2802,12 +2802,74 @@ class ReporteController {
 		$total_iva_21 = 0;
 		$total_iva_10 = 0;
 		$total = 0;
+		$total_impneto_gravado = 0;
+		$total_exento = 0;
+		$total_iibb = 0;
+		$total_final = 0;
+		
+		$total_ri = 0;
+		$total_cf = 0;
+		$total_mo = 0;
+		$total_ex = 0;
+		$total_netogravado_ri = 0;
+		$total_netogravado_cf = 0;
+		$total_netogravado_mo = 0;
+		$total_netogravado_ex = 0;
+		$total_exento_ri = 0;
+		$total_exento_cf = 0;
+		$total_exento_mo = 0;
+		$total_exento_ex = 0;
+		$total_21_ri = 0;
+		$total_21_cf = 0;
+		$total_21_mo = 0;
+		$total_21_ex = 0;
+		$total_10_ri = 0;
+		$total_10_cf = 0;
+		$total_10_mo = 0;
+		$total_10_ex = 0;
 		foreach ($libro_iva_ventas as $clave=>$valor) {
+			$ing_brutos = round((1 * $valor["IMP_NETO_GRAVADO"] / 100), 2);
+
 			$total_iva = $total_iva + $valor["IVA"];
 			$total_iva_21 = $total_iva_21 + $valor["IVA21"];
 			$total_iva_10 = $total_iva_10 + $valor["IVA10"];
 			$total = $total_iva_10 + $valor["IMP_TOTAL"];
-			$ing_brutos = round((1 * $valor["IMP_NETO_GRAVADO"] / 100), 2);
+			$total_final = $total_final + $valor["IMP_TOTAL"];
+			$total_iibb = $total_iibb + $ing_brutos;
+			$total_impneto_gravado = $total_impneto_gravado + $valor["IMP_NETO_GRAVADO"];
+			$total_exento = $total_exento + $valor["IMP_OP_EXENTAS"];
+
+			switch ($valor["TIPO_RESPONSABILIDAD"]) {
+				case 'RI':
+					$total_ri = $total_ri + $valor["IMP_TOTAL"];
+					$total_netogravado_ri = $total_netogravado_ri + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_ri = $total_exento_ri + $valor["IMP_NETO_GRAVADO"];
+					$total_21_ri = $total_21_ri + $valor["IVA21"];
+					$total_10_ri = $total_10_ri + $valor["IVA10"];
+					break;
+				case 'M':
+					$total_mo = $total_mo + $valor["IMP_TOTAL"];
+					$total_netogravado_mo = $total_netogravado_mo + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_mo = $total_exento_mo + $valor["IMP_NETO_GRAVADO"];
+					$total_21_mo = $total_21_mo + $valor["IVA21"];
+					$total_10_mo = $total_10_mo + $valor["IVA10"];
+					break
+				case 'CF':
+					$total_cf = $total_cf + $valor["IMP_TOTAL"];
+					$total_netogravado_cf = $total_netogravado_cf + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_cf = $total_exento_cf + $valor["IMP_NETO_GRAVADO"];
+					$total_21_cf = $total_21_cf + $valor["IVA21"];
+					$total_10_cf = $total_10_cf + $valor["IVA10"];
+					break
+				case 'EX':
+					$total_ex = $total_ex + $valor["IMP_TOTAL"];
+					$total_netogravado_ex = $total_netogravado_ex + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_ex = $total_exento_ex + $valor["IMP_NETO_GRAVADO"];
+					$total_21_ex = $total_21_ex + $valor["IVA21"];
+					$total_10_ex = $total_10_ex + $valor["IVA10"];
+					break
+			}
+
 			$array_temp = array();
 			$array_temp = array(
 						  $valor["FECHA"]
@@ -2828,7 +2890,30 @@ class ReporteController {
 			$array_exportacion[] = $array_temp;
 		}
 
-		$array_exportacion[] = array('', '', '', '', '', '', '', '', '', $total_iva, $total_iva_21, $total_iva_10, '');
+		$array_exportacion[] = array('', '', '', '', '', '', $total_impneto_gravado, $total_exento, $total_iva_21, $total_iva_10, '0', $total_iibb, '0', $total_final);
+
+		$array_exportacion[] = array('', '', '', '', '', '', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', '', '', '', '', '', '', '', '', '', '');
+
+		$array_exportacion[] = array('', '', '', '', 'Neto', $total_impneto_gravado, '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Exento', $total_exento, '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'I.v.a.', $total_iva_21, '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'I.v.a. Otros', $total_iva_10, '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Impuestos', '0', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Per. IIBB', $total_iibb, '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Per. GANA', '0', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Total General', $total_final, '', '', '', '', '', '', '', '');
+
+		$array_exportacion[] = array('', '', '', '', '', '', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', '', '', '', '', '', '', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Resúmen por Responsabilidad', 'Neto Gravado', 'Exento', 'I.v.a. 21%', 'I.v.a. 10%', 'Total', '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Responsable Inscrito', $total_netogravado_ri, $total_exento_ri, $total_21_ri, $total_10_ri, $total_ri, '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Consumidor Final', $total_netogravado_cf, $total_exento_cf, $total_21_cf, $total_10_cf, $total_cf, '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Exento', $total_netogravado_ex, $total_exento_ex, $total_21_ex, $total_10_ex, $total_ex, '', '', '', '');
+		$array_exportacion[] = array('', '', '', '', 'Monotributo', $total_netogravado_mo, $total_exento_mo, $total_21_mo, $total_10_mo, $total_mo, '', '', '', '');
+		
+
+
 		ExcelReport()->extraer_informe_conjunto($subtitulo, $array_exportacion);
 		exit;
 	}
