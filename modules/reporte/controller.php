@@ -2740,7 +2740,7 @@ class ReporteController {
 		exit;
 	}
 
-	function generar_libro_iva_ventas() {
+	function bk_generar_libro_iva_ventas() {
 		SessionHandler()->check_session();
 		require_once 'core/helpers/libroIVAVentas.php';
 		require_once "tools/excelreport.php";
@@ -2777,6 +2777,54 @@ class ReporteController {
 						, $valor["IVA21"]
 						, $valor["IVA10"]
 						, $valor["IMP_TOTAL"]);
+			$array_exportacion[] = $array_temp;
+		}
+
+		$array_exportacion[] = array('', '', '', '', '', '', '', '', '', $total_iva, $total_iva_21, $total_iva_10, '');
+		ExcelReport()->extraer_informe_conjunto($subtitulo, $array_exportacion);
+		exit;
+	}
+
+	function generar_libro_iva_ventas() {
+		SessionHandler()->check_session();
+		require_once 'core/helpers/libroIVAVentas.php';
+		require_once "tools/excelreport.php";
+		//PARAMETROS
+		$desde = filter_input(INPUT_POST, 'desde');
+		$hasta = filter_input(INPUT_POST, 'hasta');
+
+		$libro_iva_ventas = LibroIvaVentas::get_libro_iva_ventas($desde, $hasta);
+		$subtitulo = "LIBRO IVA VENTAS: {$desde} - {$hasta}";
+		$array_encabezados = array('FECHA', 'TIPO', 'COMPROBANTE NÚMERO', 'NOMBRE Y APELLIDO RAZÓN SOCIAL', 'CAT', 'CUIT', 'IMP. NETO GRAVADO', 'IMP. OP. EXENTAS', 'IVA21', 'IVA10', 'IMP INTERNO', 'PER ING BRUTOS', 'PER GANANCIA', 'TOTAL');
+		$array_exportacion = array();
+		$array_exportacion[] = $array_encabezados;
+		$total_iva = 0;
+		$total_iva_21 = 0;
+		$total_iva_10 = 0;
+		$total = 0;
+		foreach ($libro_iva_ventas as $clave=>$valor) {
+			$total_iva = $total_iva + $valor["IVA"];
+			$total_iva_21 = $total_iva_21 + $valor["IVA21"];
+			$total_iva_10 = $total_iva_10 + $valor["IVA10"];
+			$total = $total_iva_10 + $valor["IMP_TOTAL"];
+			$ing_brutos = round((1 * $valor["IMP_NETO_GRAVADO"] / 100), 2);
+			$array_temp = array();
+			$array_temp = array(
+						  $valor["FECHA"]
+						, $valor["TIPOFACTURA"]
+						, $valor["COMPROBANTE"]
+						, $valor["RECEPTOR"]
+						, $valor["TIPO_RESPONSABILIDAD"]
+						, $valor["DOC_RECEPTOR"]
+						, $valor["IMP_NETO_GRAVADO"]
+						, $valor["IMP_OP_EXENTAS"]
+						, $valor["IVA21"]
+						, $valor["IVA10"]
+						, '0'
+						, $ing_brutos
+						, '0'
+						, $valor["IMP_TOTAL"]);
+						
 			$array_exportacion[] = $array_temp;
 		}
 

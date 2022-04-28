@@ -4,17 +4,10 @@ class LibroIvaVentas {
 	    $sql = "(SELECT 
 					e.egreso_id AS ID,
 					date_format(e.fecha, '%d/%m/%Y') AS FECHA,
-					'FT' AS TIPOFACTURA,
-					CONCAT(tf.nomenclatura, '. ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) AS COMPROBANTE,
+				    CONCAT(tf.afip_id, ' - Factura ', tf.nomenclatura) AS TIPOFACTURA,
 				    eafip.punto_venta AS PTO_VENTA,
 				    eafip.numero_factura AS NRO_DESDE,
 				    c.documento AS DOC_RECEPTOR,
-				    CASE ci.condicioniva_id
-				    	WHEN 1 THEN 'RI'
-				    	WHEN 2 THEN 'M'
-				    	WHEN 3 THEN 'CF'
-				    	WHEN 4 THEN 'EX'
-				    END AS TIPO_RESPONSABILIDAD,
 				    c.razon_social AS RECEPTOR,
 				    ROUND((SELECT 
 							ROUND((SUM(ed.importe) / (ed.iva / 100 + 1)),2)
@@ -124,8 +117,7 @@ class LibroIvaVentas {
 					egreso e INNER JOIN
 				    egresoafip eafip ON e.egreso_id = eafip.egreso_id INNER JOIN
 				    tipofactura tf ON eafip.tipofactura = tf.tipofactura_id INNER JOIN
-				    cliente c ON e.cliente = c.cliente_id INNER JOIN
-				    condicioniva ci ON c.condicioniva = ci.condicioniva_id
+				    cliente c ON e.cliente = c.cliente_id
 				WHERE 
 					e.fecha BETWEEN ? AND ?
 				ORDER BY
@@ -133,18 +125,11 @@ class LibroIvaVentas {
 			UNION
 				(SELECT 
 					nc.notacredito_id AS ID,
-					date_format(nc.fecha, '%d/%m/%Y') AS FECHA,
-				    'NC' AS TIPOFACTURA,
-				    CONCAT(tf.nomenclatura, '. ', LPAD(nc.punto_venta, 4, 0), '-', LPAD(nc.numero_factura, 8, 0)) AS COMPROBANTE,
+					nc.fecha AS FECHA,
+				    CONCAT(tf.afip_id, ' - Nota Crédito ', tf.nomenclatura) AS TIPOFACTURA,
 				    nc.punto_venta AS PTO_VENTA,
 				    nc.numero_factura AS NRO_DESDE,
 				    c.documento AS DOC_RECEPTOR,
-				    CASE ci.condicioniva_id
-				    	WHEN 1 THEN 'RI'
-				    	WHEN 2 THEN 'M'
-				    	WHEN 3 THEN 'CF'
-				    	WHEN 4 THEN 'EX'
-				    END AS TIPO_RESPONSABILIDAD,
 				    c.razon_social AS RECEPTOR,
 				    ROUND((SELECT 
 						ROUND((SUM(ncd.importe) / (ncd.iva / 100 + 1)),2)
@@ -258,8 +243,7 @@ class LibroIvaVentas {
 					notacredito nc INNER JOIN
 				    egreso e ON nc.egreso_id = e.egreso_id INNER JOIN
 				    tipofactura tf ON nc.tipofactura = tf.tipofactura_id INNER JOIN
-				    cliente c ON e.cliente = c.cliente_id INNER JOIN
-				    condicioniva ci ON c.condicioniva = ci.condicioniva_id
+				    cliente c ON e.cliente = c.cliente_id
 				WHERE 
 					nc.emitido_afip = 1 AND
 					nc.fecha BETWEEN ? AND ?
