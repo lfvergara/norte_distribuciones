@@ -2843,28 +2843,28 @@ class ReporteController {
 				case 'RI':
 					$total_ri = $total_ri + $valor["IMP_TOTAL"];
 					$total_netogravado_ri = $total_netogravado_ri + $valor["IMP_NETO_GRAVADO"];
-					$total_exento_ri = $total_exento_ri + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_ri = $total_exento_ri + $valor["IMP_OP_EXENTAS"];
 					$total_21_ri = $total_21_ri + $valor["IVA21"];
 					$total_10_ri = $total_10_ri + $valor["IVA10"];
 					break;
 				case 'M':
 					$total_mo = $total_mo + $valor["IMP_TOTAL"];
 					$total_netogravado_mo = $total_netogravado_mo + $valor["IMP_NETO_GRAVADO"];
-					$total_exento_mo = $total_exento_mo + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_mo = $total_exento_mo + $valor["IMP_OP_EXENTAS"];
 					$total_21_mo = $total_21_mo + $valor["IVA21"];
 					$total_10_mo = $total_10_mo + $valor["IVA10"];
 					break;
 				case 'CF':
 					$total_cf = $total_cf + $valor["IMP_TOTAL"];
 					$total_netogravado_cf = $total_netogravado_cf + $valor["IMP_NETO_GRAVADO"];
-					$total_exento_cf = $total_exento_cf + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_cf = $total_exento_cf + $valor["IMP_OP_EXENTAS"];
 					$total_21_cf = $total_21_cf + $valor["IVA21"];
 					$total_10_cf = $total_10_cf + $valor["IVA10"];
 					break;
 				case 'EX':
 					$total_ex = $total_ex + $valor["IMP_TOTAL"];
 					$total_netogravado_ex = $total_netogravado_ex + $valor["IMP_NETO_GRAVADO"];
-					$total_exento_ex = $total_exento_ex + $valor["IMP_NETO_GRAVADO"];
+					$total_exento_ex = $total_exento_ex + $valor["IMP_OP_EXENTAS"];
 					$total_21_ex = $total_21_ex + $valor["IVA21"];
 					$total_10_ex = $total_10_ex + $valor["IVA10"];
 					break;
