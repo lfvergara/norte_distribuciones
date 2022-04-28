@@ -2853,21 +2853,21 @@ class ReporteController {
 					$total_exento_mo = $total_exento_mo + $valor["IMP_NETO_GRAVADO"];
 					$total_21_mo = $total_21_mo + $valor["IVA21"];
 					$total_10_mo = $total_10_mo + $valor["IVA10"];
-					break
+					break;
 				case 'CF':
 					$total_cf = $total_cf + $valor["IMP_TOTAL"];
 					$total_netogravado_cf = $total_netogravado_cf + $valor["IMP_NETO_GRAVADO"];
 					$total_exento_cf = $total_exento_cf + $valor["IMP_NETO_GRAVADO"];
 					$total_21_cf = $total_21_cf + $valor["IVA21"];
 					$total_10_cf = $total_10_cf + $valor["IVA10"];
-					break
+					break;
 				case 'EX':
 					$total_ex = $total_ex + $valor["IMP_TOTAL"];
 					$total_netogravado_ex = $total_netogravado_ex + $valor["IMP_NETO_GRAVADO"];
 					$total_exento_ex = $total_exento_ex + $valor["IMP_NETO_GRAVADO"];
 					$total_21_ex = $total_21_ex + $valor["IVA21"];
 					$total_10_ex = $total_10_ex + $valor["IVA10"];
-					break
+					break;
 			}
 
 			$array_temp = array();
