@@ -3387,9 +3387,10 @@ class ReporteController {
 
 		$fecha = date('Y-m-d');
 		$almacen_id = filter_input(INPUT_POST, 'almacen');
+		$proveedor_id = filter_input(INPUT_POST, 'proveedor');
 		$select = "s.producto_id AS PROD_ID";
-		$from = "stock s";
-		$where = "s.almacen_id = {$almacen_id}";
+		$from = "stock s INNER JOIN producto p ON s.producto_id = p.producto_id INNER JOIN productodetalle pd ON p.producto_id = pd.producto_id";
+		$where = "s.almacen_id = {$almacen_id} AND pd.proveedor_id = {$proveedor_id}";
 		$groupby = "s.producto_id";
 		$productoid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
 		$stock_valorizado = 0;
