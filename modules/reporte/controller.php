@@ -3381,7 +3381,7 @@ class ReporteController {
 		exit;
 	}
 
-	function  descargar_stock() {
+	function  descargar_stock_proveedor() {
 		SessionHandler()->check_session();
 		require_once "tools/excelreport.php";
 
@@ -3391,6 +3391,75 @@ class ReporteController {
 		$select = "s.producto_id AS PROD_ID";
 		$from = "stock s INNER JOIN producto p ON s.producto_id = p.producto_id INNER JOIN productodetalle pd ON p.producto_id = pd.producto_id";
 		$where = "s.almacen_id = {$almacen_id} AND pd.proveedor_id = {$proveedor_id}";
+		$groupby = "s.producto_id";
+		$productoid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
+		$stock_valorizado = 0;
+		if ($productoid_collection == 0 || empty($productoid_collection) || !is_array($productoid_collection)) {
+			$stock_collection = array();
+		} else {
+			$producto_ids = array();
+			foreach ($productoid_collection as $producto_id) $producto_ids[] = $producto_id['PROD_ID'];
+			$producto_ids = implode(',', $producto_ids);
+
+			$select = "MAX(s.stock_id) AS STOCK_ID";
+			$from = "stock s";
+			$where = "s.producto_id IN ({$producto_ids}) AND s.almacen_id = {$almacen_id}";
+			$groupby = "s.producto_id";
+			$stockid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
+
+			$stock_collection = array();
+			foreach ($stockid_collection as $stock_id) {
+				$this->model = new Stock();
+				$this->model->stock_id = $stock_id['STOCK_ID'];
+				$this->model->get();
+
+				$pm = new Producto();
+				$pm->producto_id = $this->model->producto_id;
+				$pm->get();
+
+				if ($pm->oculto == 0) {
+					$costo_iva = (($pm->costo * $pm->iva) / 100) + $pm->costo;
+					$valor_stock_producto = round(($costo_iva * $this->model->cantidad_actual),2);
+					$stock_valorizado = $stock_valorizado + $valor_stock_producto;
+					
+					$class_stm = ($this->model->cantidad_actual < $pm->stock_minimo) ? 'danger' : 'success';
+					$this->model->producto = $pm;
+					$this->model->valor_stock = number_format($valor_stock_producto, 2, ',', '.');
+					$this->model->class_stm = $class_stm;
+					$this->model->mensaje_stm = $mensaje_stm;
+					unset($this->model->producto_id);
+					$stock_collection[] = $this->model;
+				}
+			}
+		}
+
+		$subtitulo = "Stock a la fecha {$fecha}";
+		$array_encabezados = array('CODIGO','MARCA', 'PRODUCTO', 'STOCK', 'PRECIO VENTA');
+		$array_exportacion[] = $array_encabezados;
+		foreach ($stock_collection as $clave=>$valor) {
+			$array_temp = array($valor->producto->codigo
+								, $valor->producto->productomarca->denominacion
+								, $valor->producto->denominacion
+								, $valor->cantidad_actual
+								, $valor->producto->precio_venta);
+			$array_exportacion[] = $array_temp;
+
+		}
+
+		ExcelReport()->extraer_informe_conjunto($subtitulo, $array_exportacion);
+		exit;
+	}
+
+	function  descargar_stock_marca() {
+		SessionHandler()->check_session();
+		require_once "tools/excelreport.php";
+
+		$fecha = date('Y-m-d');
+		$almacen_id = filter_input(INPUT_POST, 'almacen');
+		$productomarca_id = filter_input(INPUT_POST, 'productomarca');
+		$select = "s.producto_id AS PROD_ID";
+		$from = "stock s INNER JOIN producto p ON s.producto_id = p.producto_id";
+		$where = "s.almacen_id = {$almacen_id} AND p.productomarca = {$productomarca_id}";
 		$groupby = "s.producto_id";
 		$productoid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
 		$stock_valorizado = 0;
