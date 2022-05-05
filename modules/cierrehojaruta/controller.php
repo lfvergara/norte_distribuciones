@@ -65,7 +65,7 @@ class CierreHojaRutaController {
 
 			if (is_array($notacredito) AND !empty($notacredito)) {
 				$importe_notacredito = $notacredito[0]['IMPORTETOTAL'];
-				$detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] = $egreso_collection[$clave]['EGRIMPTOT'] - $importe_notacredito;
+				$detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] = $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] - $importe_notacredito;
 			} 
     	}
 
