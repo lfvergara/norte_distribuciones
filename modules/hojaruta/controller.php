@@ -511,6 +511,7 @@ class HojaRutaController {
 		$cobrador_id = $var[0];
 
 		$hojaruta_id = filter_input(INPUT_POST, 'hojaruta_id');
+		$monto_total_facturacion = filter_input(INPUT_POST, 'monto_total_facturacion');
 		$this->model->hojaruta_id = $hojaruta_id;
 		$this->model->get();
 
@@ -524,6 +525,7 @@ class HojaRutaController {
 		$chrm->fecha = date('Y-m-d');
 		$chrm->hora = date('H:i:s');
 		$chrm->rendicion = 0;
+		$chrm->facturacion = round($monto_total_facturacion, 2);
 		$chrm->hojaruta_id = $hojaruta_id;
 		$chrm->cobrador = $cobrador_id;
 		$chrm->save();

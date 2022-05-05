@@ -9,6 +9,7 @@ class CierreHojaRuta extends StandardObject {
 		$this->fecha = '';
 		$this->hora = '';
 		$this->rendicion = 0.00;
+		$this->facturacion = 0.00;
 		$this->hojaruta_id = 0;
 		$this->cobrador = $cobrador;
 	}
