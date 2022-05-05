@@ -59,7 +59,7 @@ class CierreHojaRutaController {
     	$egreso_ids = array();
     	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
     		$egreso_id = $valor['EGRESOID'];
-    		if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
+    		//if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
     		$importe_total_egreso = $valor['EGRIMPTOT'];
 
     		$select = "nc.importe_total AS IMPORTETOTAL";
