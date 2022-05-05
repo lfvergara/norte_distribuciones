@@ -17,7 +17,7 @@ class CierreHojaRutaController {
     	SessionHandler()->check_session();
     	$desde = date('Y-m');
     	$hasta = date('Y-m-d');
-    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, FORMAT(chr.rendicion, 2,'de_DE') AS RENDICION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
+    	$select = "chr.cierrehojaruta_id AS CHRID, CONCAT(date_format(chr.fecha, '%d/%m/%Y'), ' ', chr.hora) AS FECHA, FORMAT(chr.rendicion, 2,'de_DE') AS RENDICION, FORMAT(chr.facturacion, 2,'de_DE') AS FACTURACION, chr.hojaruta_id AS HOJARUTA, c.denominacion AS FLETE";
     	$from = "cierrehojaruta chr INNER JOIN cobrador c ON chr.cobrador = c.cobrador_id";
     	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' ORDER BY chr.cierrehojaruta_id DESC";
     	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
@@ -56,10 +56,8 @@ class CierreHojaRutaController {
 
     	$rendicion_final = 0;
     	$valor_mercaderia_entregada_final = 0;
-    	//$egreso_ids = array();
     	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
     		$egreso_id = $valor['EGRESOID'];
-    		//if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
     		$importe_total_egreso = $valor['EGRIMPTOT'];
 
     		$select = "nc.importe_total AS IMPORTETOTAL";
@@ -87,9 +85,7 @@ class CierreHojaRutaController {
 			$valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final + $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'];
     	}
 
-		//$egreso_ids = implode(',', $egreso_ids);
-		
-    	$this->model->rendicion_final = $rendicion_final;
+		$this->model->rendicion_final = $rendicion_final;
     	$this->model->valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final;
 
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
