@@ -103,9 +103,12 @@ class CierreHojaRutaController {
     	$where = "chr.fecha BETWEEN '{$desde}-01' AND '{$hasta}' AND chr.cobrador = {$cobrador} ORDER BY chr.cierrehojaruta_id DESC";
     	$cierrehojaruta_collection = CollectorCondition()->get('CierreHojaRuta', $where, 4, $from, $select);
     	$rendicion_total = 0;
+    	$facturacion_total = 0;
     	foreach ($cierrehojaruta_collection as $clave=>$valor) {
     		$rendicion_total = $rendicion_total + $valor['RENDICION'];
     		$cierrehojaruta_collection[$clave]['RENDICION'] = number_format($cierrehojaruta_collection[$clave]['RENDICION'], 2, ',', '.');
+    		$facturacion_total = $facturacion_total + $valor['FACTURACION'];
+    		$cierrehojaruta_collection[$clave]['FACTURACION'] = number_format($cierrehojaruta_collection[$clave]['FACTURACION'], 2, ',', '.');
     	}
     	
     	$cobrador_collection = Collector()->get('Cobrador');
