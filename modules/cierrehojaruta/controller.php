@@ -50,16 +50,16 @@ class CierreHojaRutaController {
 		$this->model->get();
 
 		$select = "dchr.detallecierrehojaruta_id AS DCHRID, itp.denominacion AS TIPOPAGO, ee.denominacion AS ESTADOENTREGA, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA, dchr.importe AS IMPORTE, e.egreso_id AS EGRESOID, e.importe_total AS EGRIMPTOT, e.condicionpago AS CONPAG";
-    	$from = "detallecierrehojaruta dchr INNER JOIN ingresotipopago itp ON dchr.ingresotipopago = itp.ingresotipopago_id INNER JOIN estadoentrega ee ON dchr.estadoentrega = ee.estadoentrega_id INNER JOIN egreso e ON dchr.egreso_id = e.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+    	$from = "detallecierrehojaruta dchr LEFT JOIN ingresotipopago itp ON dchr.ingresotipopago = itp.ingresotipopago_id LEFT JOIN estadoentrega ee ON dchr.estadoentrega = ee.estadoentrega_id LEFT JOIN egreso e ON dchr.egreso_id = e.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
     	$where = "dchr.cierrehojaruta_id = {$cierrehojaruta_id}";
     	$detallecierrehojaruta_collection = CollectorCondition()->get('DetalleCierreHojaRuta', $where, 4, $from, $select);
 
     	$rendicion_final = 0;
     	$valor_mercaderia_entregada_final = 0;
-    	$egreso_ids = array();
+    	//$egreso_ids = array();
     	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
     		$egreso_id = $valor['EGRESOID'];
-    		if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
+    		//if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
     		$importe_total_egreso = $valor['EGRIMPTOT'];
 
     		$select = "nc.importe_total AS IMPORTETOTAL";
@@ -87,7 +87,8 @@ class CierreHojaRutaController {
 			$valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final + $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'];
     	}
 
-		$egreso_ids = implode(',', $egreso_ids);
+		//$egreso_ids = implode(',', $egreso_ids);
+		
     	$this->model->rendicion_final = $rendicion_final;
     	$this->model->valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final;
 
