@@ -74,7 +74,13 @@ class CierreHojaRutaController {
 			if ($detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] == 0) {
 				$detallecierrehojaruta_collection[$clave]['IMPORTE'] = 0;
 			}
+
+			$rendicion_final = $rendicion_final + $detallecierrehojaruta_collection[$clave]['IMPORTE'];
+			$valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final + $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'];
     	}
+
+    	$this->model->rendicion_final = $rendicion_final;
+    	$this->model->valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final;
 
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
 	}
