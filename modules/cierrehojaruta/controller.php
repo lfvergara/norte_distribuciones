@@ -54,6 +54,8 @@ class CierreHojaRutaController {
     	$where = "dchr.cierrehojaruta_id = {$cierrehojaruta_id}";
     	$detallecierrehojaruta_collection = CollectorCondition()->get('DetalleCierreHojaRuta', $where, 4, $from, $select);
 
+    	$rendicion_final = 0;
+    	$valor_mercaderia_entregada_final = 0;
     	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
     		$egreso_id = $valor['EGRESOID'];
     		$importe_total_egreso = $valor['EGRIMPTOT'];
@@ -65,8 +67,13 @@ class CierreHojaRutaController {
 
 			if (is_array($notacredito) AND !empty($notacredito)) {
 				$importe_notacredito = $notacredito[0]['IMPORTETOTAL'];
+    			$importe_total_egreso = $importe_total_egreso - $valor['EGRIMPTOT'];
 				$detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] = $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] - $importe_notacredito;
 			} 
+
+			if ($detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] == 0) {
+				$detallecierrehojaruta_collection[$clave]['IMPORTE'] = 0;
+			}
     	}
 
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
