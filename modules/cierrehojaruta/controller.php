@@ -30,7 +30,7 @@ class CierreHojaRutaController {
     	$this->view->panel($cierrehojaruta_collection, $cobrador_collection);
 	}
 
-	function consultar($arg) {
+	function bk_consultar($arg) {
     	SessionHandler()->check_session();
 		$cierrehojaruta_id = $arg;
 		$this->model->cierrehojaruta_id = $cierrehojaruta_id;
