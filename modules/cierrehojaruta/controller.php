@@ -87,7 +87,7 @@ class CierreHojaRutaController {
 			$valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final + $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'];
     	}
 
-		//$egreso_ids = implode(',', $egreso_ids);
+		$egreso_ids = implode(',', $egreso_ids);
     	$this->model->rendicion_final = $rendicion_final;
     	$this->model->valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final;
 
