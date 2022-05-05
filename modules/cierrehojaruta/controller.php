@@ -56,8 +56,10 @@ class CierreHojaRutaController {
 
     	$rendicion_final = 0;
     	$valor_mercaderia_entregada_final = 0;
+    	$egreso_ids = array();
     	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
     		$egreso_id = $valor['EGRESOID'];
+    		if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
     		$importe_total_egreso = $valor['EGRIMPTOT'];
 
     		$select = "nc.importe_total AS IMPORTETOTAL";
@@ -73,6 +75,8 @@ class CierreHojaRutaController {
 
 			if ($detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] == 0) {
 				$detallecierrehojaruta_collection[$clave]['IMPORTE'] = 0;
+				$detallecierrehojaruta_collection[$clave]['ESTADOENTREGA'] = 'ANULADO';
+				$detallecierrehojaruta_collection[$clave]['TIPOPAGO'] = '-';
 			}
 
 			if ($detallecierrehojaruta_collection[$clave]['CONPAG'] == 2 AND $detallecierrehojaruta_collection[$clave]['IMPORTE'] > $detallecierrehojaruta_collection[$clave]['EGRIMPTOT']) {
@@ -88,6 +92,8 @@ class CierreHojaRutaController {
 
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
 	}
+
+	$egreso_ids = implode(',', $egreso_ids);
 
 	function buscar() {
     	SessionHandler()->check_session();
