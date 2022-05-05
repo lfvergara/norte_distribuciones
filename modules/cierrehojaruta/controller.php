@@ -120,6 +120,7 @@ class CierreHojaRutaController {
     	$cm->cobrador_id = $cobrador;
     	$cm->get();
     	$cm->rendicion_total = number_format($rendicion_total, 2, ',', '.');
+    	$cm->facturacion_total = number_format($facturacion_total, 2, ',', '.');
 
     	$this->view->buscar($cierrehojaruta_collection, $cobrador_collection, $cm);
 	}	
