@@ -43,6 +43,35 @@ class CierreHojaRutaController {
     	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
 	}
 
+	function consultar($arg) {
+    	SessionHandler()->check_session();
+		$cierrehojaruta_id = $arg;
+		$this->model->cierrehojaruta_id = $cierrehojaruta_id;
+		$this->model->get();
+
+		$select = "dchr.detallecierrehojaruta_id AS DCHRID, itp.denominacion AS TIPOPAGO, ee.denominacion AS ESTADOENTREGA, CASE WHEN eafip.egresoafip_id IS NULL THEN CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE e.tipofactura = tf.tipofactura_id), ' ', LPAD(e.punto_venta, 4, 0), '-', LPAD(e.numero_factura, 8, 0)) ELSE CONCAT((SELECT tf.nomenclatura FROM tipofactura tf WHERE eafip.tipofactura = tf.tipofactura_id), ' ', LPAD(eafip.punto_venta, 4, 0), '-', LPAD(eafip.numero_factura, 8, 0)) END AS FACTURA, FORMAT(dchr.importe, 2,'de_DE') AS IMPORTE, e.egreso_id AS EGRESOID, e.importe_total AS EGRIMPTOT";
+    	$from = "detallecierrehojaruta dchr INNER JOIN ingresotipopago itp ON dchr.ingresotipopago = itp.ingresotipopago_id INNER JOIN estadoentrega ee ON dchr.estadoentrega = ee.estadoentrega_id INNER JOIN egreso e ON dchr.egreso_id = e.egreso_id LEFT JOIN egresoafip eafip ON e.egreso_id = eafip.egreso_id";
+    	$where = "dchr.cierrehojaruta_id = {$cierrehojaruta_id}";
+    	$detallecierrehojaruta_collection = CollectorCondition()->get('DetalleCierreHojaRuta', $where, 4, $from, $select);
+
+    	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
+    		$egreso_id = $valor['EGRESOID'];
+    		$importe_total_egreso = $valor['EGRIMPTOT'];
+
+    		$select = "nc.importe_total AS IMPORTETOTAL";
+			$from = "notacredito nc";
+			$where = "nc.egreso_id = {$egreso_id}";
+			$notacredito = CollectorCondition()->get('NotaCredito', $where, 4, $from, $select);
+
+			if (is_array($notacredito) AND !empty($notacredito)) {
+				$importe_notacredito = $notacredito[0]['IMPORTETOTAL'];
+				$detallecierrehojaruta_collection[$clave]['EGRIMPTOT'] = $egreso_collection[$clave]['EGRIMPTOT'] - $importe_notacredito;
+			} 
+    	}
+
+    	$this->view->consultar($detallecierrehojaruta_collection, $this->model);
+	}
+
 	function buscar() {
     	SessionHandler()->check_session();
     	$desde = filter_input(INPUT_POST, 'desde');

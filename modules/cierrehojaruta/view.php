@@ -32,7 +32,7 @@ class CierreHojaRutaView extends View {
 		$render = $this->render_breadcrumb($render);
 		$template = $this->render_template($render);
 		print $template;
-	}	
+	}
 
 	function buscar($cierrehojaruta_collection, $cobrador_collection, $obj_cobrador) {
 		$gui = file_get_contents("static/modules/cierrehojaruta/buscar.html");
