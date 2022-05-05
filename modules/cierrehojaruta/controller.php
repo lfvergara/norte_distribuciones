@@ -75,7 +75,7 @@ class CierreHojaRutaController {
 				$detallecierrehojaruta_collection[$clave]['IMPORTE'] = 0;
 			}
 
-			if ($detallecierrehojaruta_collection[$clave]['CONPAG'] == 2 AND $detallecierrehojaruta_collection[$clave]['IMPORTE'] > $detallecierrehojaruta_collection[$clave]['EGRIMPTOT']) {
+			if ($detallecierrehojaruta_collection[$clave]['CONPAG'] == 2) {
 				$detallecierrehojaruta_collection[$clave]['IMPORTE'] = $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'];
 			}
 
