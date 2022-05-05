@@ -59,7 +59,7 @@ class CierreHojaRutaController {
     	$egreso_ids = array();
     	foreach ($detallecierrehojaruta_collection as $clave=>$valor) {
     		$egreso_id = $valor['EGRESOID'];
-    		if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
+    		//if (!in_array($egreso_id, $egreso_ids)) $egreso_ids[] = $egreso_id;
     		$importe_total_egreso = $valor['EGRIMPTOT'];
 
     		$select = "nc.importe_total AS IMPORTETOTAL";
@@ -87,7 +87,7 @@ class CierreHojaRutaController {
 			$valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final + $detallecierrehojaruta_collection[$clave]['EGRIMPTOT'];
     	}
 
-		$egreso_ids = implode(',', $egreso_ids);
+		//$egreso_ids = implode(',', $egreso_ids);
     	$this->model->rendicion_final = $rendicion_final;
     	$this->model->valor_mercaderia_entregada_final = $valor_mercaderia_entregada_final;
 
