@@ -548,6 +548,15 @@ class HojaRutaController {
 			$condicionpago_id = $em->condicionpago->condicionpago_id;
 			$importe_total = $em->importe_total;
 
+			$select = "nc.importe_total AS IMPORTE";
+            $from = "notacredito nc";
+            $where = "nc.egreso_id = {$egreso_id}";
+            $importe_notacredito = CollectorCondition()->get('NotaCredito', $where, 4, $from, $select);
+            if (is_array($importe_notacredito) AND !empty($importe_notacredito)) {
+            	$importe_notacredito = $importe_notacredito[0]['IMPORTE'];
+				$importe_total = $importe_total - $importe_notacredito;
+            }
+
 			$eem = new EgresoEntrega();
 			$eem->egresoentrega_id = $egresoentrega_id;
 			$eem->get();
