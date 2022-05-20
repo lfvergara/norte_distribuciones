@@ -321,7 +321,7 @@ class StockController {
 
 	function vdr_stock() {
     	SessionHandler()->check_session();
-    	$almacen_id = $usuario = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
+    	$almacen_id = $_SESSION["data-login-" . APP_ABREV]["almacen-almacen_id"];
     	$am = new Almacen();
     	$am->almacen_id = $almacen_id;
     	$am->get();
@@ -341,7 +341,7 @@ class StockController {
 
 			$select = "MAX(s.stock_id) AS STOCK_ID";
 			$from = "stock s";
-			$where = "s.producto_id IN ({$producto_ids}) AND s.almacen = {$almacen_id}";
+			$where = "s.producto_id IN ({$producto_ids}) AND s.almacen_id = {$almacen_id}";
 			$groupby = "s.producto_id";
 			$stockid_collection = CollectorCondition()->get('Stock', $where, 4, $from, $select, $groupby);
 
