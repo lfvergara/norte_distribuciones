@@ -520,7 +520,7 @@ class ReporteController {
 
 		$select = "e.egreso_id AS EGRID, ROUND(e.importe_total, 2) AS IMPTOT";
 		$from = "egreso e INNER JOIN egresoentrega ee ON e.egresoentrega = ee.egresoentrega_id";
-		$where = "e.condicionpago = 2 AND ee.fecha = '{$fecha_filtro}' AND ee.estadoentrega = 4";
+		$where = "e.condicionpago = 2 AND ee.fecha = '{$fecha_sys}' AND ee.estadoentrega = 4";
 		$cobranzacontado_collection = CollectorCondition()->get('Egreso', $where, 4, $from, $select);
 
 		$sum_contado = 0;
