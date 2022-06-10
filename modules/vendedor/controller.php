@@ -704,6 +704,7 @@ class VendedorController {
 		$nombre = filter_input(INPUT_POST, 'nombre');
 		$comision = filter_input(INPUT_POST, 'comision');
 		$documento = filter_input(INPUT_POST, 'documento');
+		$codigopostal = filter_input(INPUT_POST, 'codigopostal');
 		$domicilio = filter_input(INPUT_POST, 'domicilio');
 		$localidad = filter_input(INPUT_POST, 'localidad');
 		$provincia = filter_input(INPUT_POST, 'provincia');
