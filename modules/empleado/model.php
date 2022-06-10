@@ -7,17 +7,17 @@ class Empleado extends StandardObject {
 	
 	function __construct(Provincia $provincia=NULL, DocumentoTipo $documentotipo=NULL) {
 		$this->empleado_id = 0;
-                $this->apellido = '';
+        $this->apellido = '';
 		$this->nombre = '';
 		$this->documento = 0;
-                $this->telefono = 0;
-                $this->domicilio = '';
-                $this->codigopostal = 0;
-                $this->barrio = '';
-                $this->observacion = '';
+        $this->telefono = 0;
+        $this->domicilio = '';
+        $this->codigopostal = 0;
+        $this->barrio = '';
+        $this->observacion = '';
 		$this->oculto = 0;
-                $this->provincia = $provincia;
-                $this->documentotipo = $documentotipo;
+        $this->provincia = $provincia;
+        $this->documentotipo = $documentotipo;
 	}
 }
 ?>

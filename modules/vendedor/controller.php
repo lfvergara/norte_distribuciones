@@ -713,8 +713,8 @@ class VendedorController {
 		$this->model->apellido = (is_null($apellido) OR empty($apellido)) ? '-' : $apellido;
 		$this->model->nombre = (is_null($nombre) OR empty($nombre)) ? '-' : $nombre;
 		$this->model->comision = (is_null($comision) OR empty($comision)) ? 0 : $comision;
-		$this->model->frecuenciaventa = filter_input(INPUT_POST, 'frecuenciaventa');
 		$this->model->documento = (is_null($documento) OR empty($documento)) ? 0 : $documento;
+		$this->model->frecuenciaventa = filter_input(INPUT_POST, 'frecuenciaventa');
 		$this->model->documentotipo = $documentotipo;
 		$this->model->provincia = $provincia;
 		$this->model->codigopostal = (is_null($codigopostal) OR empty($codigopostal)) ? 0 : $codigopostal;
@@ -724,6 +724,7 @@ class VendedorController {
 		$this->model->domicilio = (is_null($domicilio) OR empty($domicilio)) ? '-' : $domicilio;
 		$this->model->observacion = filter_input(INPUT_POST, 'observacion');
 		$this->model->oculto = 0;
+		print_r($this->model);exit;
 		$this->model->save();
 		$vendedor_id = $this->model->vendedor_id;
 
