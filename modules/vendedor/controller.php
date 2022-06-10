@@ -706,7 +706,7 @@ class VendedorController {
 		$documento = filter_input(INPUT_POST, 'documento');
 		$codigopostal = filter_input(INPUT_POST, 'codigopostal');
 		$domicilio = filter_input(INPUT_POST, 'domicilio');
-		$localidad = filter_input(INPUT_POST, 'localidad');
+		$barrio = filter_input(INPUT_POST, 'barrio');
 		$provincia = filter_input(INPUT_POST, 'provincia');
 		$documentotipo = filter_input(INPUT_POST, 'documentotipo');
 		
@@ -718,13 +718,12 @@ class VendedorController {
 		$this->model->documentotipo = $documentotipo;
 		$this->model->provincia = $provincia;
 		$this->model->codigopostal = (is_null($codigopostal) OR empty($codigopostal)) ? 0 : $codigopostal;
-		$this->model->localidad = (is_null($localidad) OR empty($localidad)) ? '-' : $localidad;
+		$this->model->barrio = (is_null($barrio) OR empty($barrio)) ? '-' : $barrio;
 		$this->model->latitud = filter_input(INPUT_POST, 'latitud');
 		$this->model->longitud = filter_input(INPUT_POST, 'longitud');
 		$this->model->domicilio = (is_null($domicilio) OR empty($domicilio)) ? '-' : $domicilio;
 		$this->model->observacion = filter_input(INPUT_POST, 'observacion');
 		$this->model->oculto = 0;
-		print_r($this->model);exit;
 		$this->model->save();
 		$vendedor_id = $this->model->vendedor_id;
 
@@ -766,7 +765,7 @@ class VendedorController {
 		$em->telefono = (is_null($telefono) OR empty($telefono)) ? 0 : $telefono;
 		$em->domicilio = (is_null($domicilio) OR empty($domicilio)) ? '-' : $domicilio;
 		$em->codigopostal = (is_null($codigopostal) OR empty($codigopostal)) ? 0 : $codigopostal;
-		$em->localidad = (is_null($localidad) OR empty($localidad)) ? '-' : $localidad;
+		$em->barrio = (is_null($barrio) OR empty($barrio)) ? '-' : $barrio;
 		$em->observacion = 'Vendedor';
 		$em->oculto = 0;
 		$em->provincia = $provincia;
